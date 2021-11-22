@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7D324EF7-1178-4C47-83CD-0665F7861660}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gaston11276.Playercharacters.Client</RootNamespace>
+    <AssemblyName>Gaston11276.Playercharacters.Client.net</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AllowedReferenceRelatedFileExtensions>
+      .allowedextension
+    </AllowedReferenceRelatedFileExtensions>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CitizenFX.Core.Client, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CitizenFX.Core.Client.1.0.1688\lib\net45\CitizenFX.Core.Client.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=2019.1.3.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2019.1.3\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NFive.SDK.Client.net, Version=0.1.0.67, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NFive.SDK.Client.0.1.0.67\lib\net452\NFive.SDK.Client.net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NFive.SDK.Core.net, Version=0.1.0.60, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NFive.SDK.Core.0.1.0.60\lib\net452\NFive.SDK.Core.net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NGettext, Version=0.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NGettext.0.6.4\lib\net45\NGettext.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SimpleUi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SimpleUi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Camera\UiCamera.cs" />
+    <Compile Include="Creator\UiAnimations\UiAnimations.cs" />
+    <Compile Include="Creator\UiAnimations\UiEntryAnimation.cs" />
+    <Compile Include="Creator\UiAppearance.cs" />
+    <Compile Include="Creator\UiComponents\UiComponents.cs" />
+    <Compile Include="Creator\Creator.cs" />
+    <Compile Include="Creator\UiComponents\UiEntryComponent.cs" />
+    <Compile Include="Creator\UiComponents\UiEntryProp.cs" />
+    <Compile Include="Creator\UiDecorations\UiDecorations.cs" />
+    <Compile Include="Creator\UiDecorations\UiEntryDecoration.cs" />
+    <Compile Include="Creator\UiFaceFeatures\UiEntryFaceFeature.cs" />
+    <Compile Include="Creator\UiFaceFeatures\UiFaceFeatures.cs" />
+    <Compile Include="Creator\UiHeadBlendData\UiHeadBlendData.cs" />
+    <Compile Include="Creator\UiHeadOverlays\UiEntryEyeColor.cs" />
+    <Compile Include="Creator\UiHeadOverlays\UiEntryHair.cs" />
+    <Compile Include="Creator\UiHeadOverlays\UiEntryHeadOverlay.cs" />
+    <Compile Include="Creator\UiHeadOverlays\UiHeadOverlays.cs" />
+    <Compile Include="Creator\Hud.cs" />
+    <Compile Include="Creator\Looks.cs" />
+    <Compile Include="Creator\UiModel\UiModel.cs" />
+    <Compile Include="Models\Character.cs" />
+    <Compile Include="Models\CharacterSession.cs" />
+    <Compile Include="Models\Container.cs" />
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\ItemDefinition.cs" />
+    <Compile Include="Models\PedComponents.cs" />
+    <Compile Include="Models\PedDecorations.cs" />
+    <Compile Include="Models\PedFaceFeatures.cs" />
+    <Compile Include="Models\PedHeadBlendData.cs" />
+    <Compile Include="Models\PedHeadOverlay.cs" />
+    <Compile Include="Models\PedProps.cs" />
+    <Compile Include="Models\WorldItem.cs" />
+    <Compile Include="Overlays\PlayercharactersOverlay.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PlayercharactersService.cs" />
+    <Compile Include="SimpleUi\Editbox.cs" />
+    <Compile Include="SimpleUi\Textbox.cs" />
+    <Compile Include="SimpleUi\UiPanel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Playercharacters.Shared\Playercharacters.Shared.csproj">
+      <Project>{05BDE78C-E322-456C-A2CF-137A26E0B404}</Project>
+      <Name>Playercharacters.Shared</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Overlays\PlayercharactersOverlay.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
