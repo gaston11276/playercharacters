@@ -156,7 +156,7 @@ namespace Gaston11276.Playercharacters.Client
 			entry.btnIndexDecrease.SetProperties(UiElement.CANFOCUS);
 			entry.btnIndexDecrease.RegisterOnLMBRelease(entry.DecreaseIndex);
 			inputsOnMouseMove.Add(entry.btnIndexDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(entry.btnIndexDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(entry.btnIndexDecrease.OnMouseButton);
 			uiColumnDecrease.AddElement(entry.btnIndexDecrease);
 
 			entry.btnIndexIncrease.SetText("+");
@@ -164,7 +164,7 @@ namespace Gaston11276.Playercharacters.Client
 			entry.btnIndexIncrease.SetProperties(UiElement.CANFOCUS);
 			entry.btnIndexIncrease.RegisterOnLMBRelease(entry.IncreaseIndex);
 			inputsOnMouseMove.Add(entry.btnIndexIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(entry.btnIndexIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(entry.btnIndexIncrease.OnMouseButton);
 			uiColumnIncrease.AddElement(entry.btnIndexIncrease);
 
 			entry.GetIndexMax = GetModelIndexMax;

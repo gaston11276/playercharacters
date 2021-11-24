@@ -7,8 +7,8 @@ using Gaston11276.SimpleUi;
 namespace Gaston11276.Playercharacters.Client
 {
 	public delegate void OnMouseMove(float x, float y);
-	public delegate void OnLeftMouseButton(int state, float x, float y);
-	public delegate void OnKey(int e);
+	public delegate void OnMouseButton(int state, int button, float x, float y);
+	public delegate void OnKey(int state, int keycode);
 
 	public class KeyData
 	{
@@ -25,10 +25,15 @@ namespace Gaston11276.Playercharacters.Client
 	{
 		protected ILogger Logger;
 
-		
+		public delegate void OnHudOpen();
+		public delegate void OnHudClose();
+
+
 		protected List<OnMouseMove> inputsOnMouseMove = new List<OnMouseMove>();
-		protected List<OnLeftMouseButton> inputsOnLeftMouseButton = new List<OnLeftMouseButton>();
+		protected List<OnMouseButton> inputsOnMouseButton = new List<OnMouseButton>();
 		protected List<OnKey> inputsOnKey = new List<OnKey>();
+		protected List<OnHudOpen> onHudOpenCallbacks = new List<OnHudOpen>();
+		protected List<OnHudClose> onHudCloseCallbacks = new List<OnHudClose>();
 
 		protected UiPanel uiMain = null;
 
@@ -95,21 +100,50 @@ namespace Gaston11276.Playercharacters.Client
 		}
 
 
-		public void OnInputKey()
+		public void RegisterOnOpenCallback(OnHudOpen OnOpen)
 		{
-			foreach (KeyData keydata in keys)
+			onHudOpenCallbacks.Add(OnOpen);
+		}
+
+		public void RegisterOnCloseCallback(OnHudClose OnClose)
+		{
+			onHudCloseCallbacks.Add(OnClose);
+		}
+
+		protected virtual void OnOpen()
+		{
+			foreach (OnHudOpen onOpen in onHudOpenCallbacks)
 			{
-				if (keydata.hotkey.IsJustReleased())
+				onOpen();
+			}
+		}
+
+		protected virtual void OnClose()
+		{
+			foreach (OnHudClose onClose in onHudCloseCallbacks)
+			{
+				onClose();
+			}
+		}
+
+		public virtual void OnInputKey(int state, int keycode)
+		{
+			
+
+			//foreach (KeyData keydata in keys)
+			{
+				//if (keydata.hotkey.IsJustReleased())
 				{
 					foreach (OnKey OnKey in inputsOnKey)
 					{
-						OnKey(keydata.keycode);
+						//OnKey(keydata.keycode);
+						OnKey(state, keycode);
 					}
 				}
 			}
 		}
 
-		public void OnInputMouseMove(float cursorX, float cursorY)
+		public virtual void OnMouseMove(float cursorX, float cursorY)
 		{
 			foreach (OnMouseMove OnMouseMove in inputsOnMouseMove)
 			{
@@ -117,20 +151,20 @@ namespace Gaston11276.Playercharacters.Client
 			}
 		}
 
-		public void OnLMB(int state, float CursorX, float CursorY)
+		public virtual void OnMouseButton(int state, int button, float CursorX, float CursorY)
 		{
 			if (state == 1)
 			{
-				foreach (OnLeftMouseButton OnLeftMouseButton in inputsOnLeftMouseButton)
+				foreach (OnMouseButton OnMouseButton in inputsOnMouseButton)
 				{
-					OnLeftMouseButton(1, CursorX, CursorY);
+					OnMouseButton(state, button, CursorX, CursorY);
 				}
 			}
 			if (state == 3)
 			{
-				foreach (OnLeftMouseButton OnLeftMouseButton in inputsOnLeftMouseButton)
+				foreach (OnMouseButton OnMouseButton in inputsOnMouseButton)
 				{
-					OnLeftMouseButton(3, CursorX, CursorY);
+					OnMouseButton(state, button, CursorX, CursorY);
 				}
 			}
 		}
@@ -155,13 +189,17 @@ namespace Gaston11276.Playercharacters.Client
 			else
 			{
 				Logger.Debug("Hud: Open(): ERROR: uiMain is null.");
+				return;
 			}
+
+			OnOpen();
 			
 		}
 
 		public virtual void Close()
 		{
 			uiMain.SetFlags(UiElement.DISABLED);
+			OnClose();
 		}
 
 		public void Draw()
@@ -193,7 +231,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiMain.SetHDimension(Dimension.Max);
 			uiMain.SetVDimension(Dimension.Max);
 			inputsOnMouseMove.Add(uiMain.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiMain.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiMain.OnMouseButton);
 		}
 
 		public virtual void OnInputRMBMouseMoveAxis(int rmb, float axisX, float axisY)

@@ -56,7 +56,7 @@ namespace Gaston11276.Playercharacters.Client
 			btnShape1Decrease.SetProperties(UiElement.CANFOCUS);
 			btnShape1Decrease.RegisterOnLMBRelease(DecreaseParent1);
 			inputsOnMouseMove.Add(btnShape1Decrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(btnShape1Decrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(btnShape1Decrease.OnMouseButton);
 			uiColumnDecrease.AddElement(btnShape1Decrease);
 
 			Textbox btnShape1Increase = new Textbox();
@@ -65,7 +65,7 @@ namespace Gaston11276.Playercharacters.Client
 			btnShape1Increase.SetProperties(UiElement.CANFOCUS);
 			btnShape1Increase.RegisterOnLMBRelease(IncreaseParent1);
 			inputsOnMouseMove.Add(btnShape1Increase.OnCursorMove);
-			inputsOnLeftMouseButton.Add(btnShape1Increase.OnLeftMouseButton);
+			inputsOnMouseButton.Add(btnShape1Increase.OnMouseButton);
 			uiColumnIncrease.AddElement(btnShape1Increase);
 
 			Textbox labelParent2 = new Textbox();
@@ -85,7 +85,7 @@ namespace Gaston11276.Playercharacters.Client
 			btnShape2Decrease.SetProperties(UiElement.CANFOCUS);
 			btnShape2Decrease.RegisterOnLMBRelease(DecreaseParent2);
 			inputsOnMouseMove.Add(btnShape2Decrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(btnShape2Decrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(btnShape2Decrease.OnMouseButton);
 			uiColumnDecrease.AddElement(btnShape2Decrease);
 
 			Textbox btnShape2Increase = new Textbox();
@@ -94,7 +94,7 @@ namespace Gaston11276.Playercharacters.Client
 			btnShape2Increase.SetProperties(UiElement.CANFOCUS);
 			btnShape2Increase.RegisterOnLMBRelease(IncreaseParent2);
 			inputsOnMouseMove.Add(btnShape2Increase.OnCursorMove);
-			inputsOnLeftMouseButton.Add(btnShape2Increase.OnLeftMouseButton);
+			inputsOnMouseButton.Add(btnShape2Increase.OnMouseButton);
 			uiColumnIncrease.AddElement(btnShape2Increase);
 
 			Textbox labelShapeMix = new Textbox();
@@ -114,7 +114,7 @@ namespace Gaston11276.Playercharacters.Client
 			btnShapeMixDecrease.SetProperties(UiElement.CANFOCUS);
 			btnShapeMixDecrease.RegisterOnLMBRelease(DecreaseShapeMix);
 			inputsOnMouseMove.Add(btnShapeMixDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(btnShapeMixDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(btnShapeMixDecrease.OnMouseButton);
 			uiColumnDecrease.AddElement(btnShapeMixDecrease);
 
 			Textbox btnShapeMixIncrease = new Textbox();
@@ -123,7 +123,7 @@ namespace Gaston11276.Playercharacters.Client
 			btnShapeMixIncrease.SetProperties(UiElement.CANFOCUS);
 			btnShapeMixIncrease.RegisterOnLMBRelease(IncreaseShapeMix);
 			inputsOnMouseMove.Add(btnShapeMixIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(btnShapeMixIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(btnShapeMixIncrease.OnMouseButton);
 			uiColumnIncrease.AddElement(btnShapeMixIncrease);
 
 			Textbox labelSkinMix = new Textbox();
@@ -143,7 +143,7 @@ namespace Gaston11276.Playercharacters.Client
 			btnSkinMixDecrease.SetProperties(UiElement.CANFOCUS);
 			btnSkinMixDecrease.RegisterOnLMBRelease(DecreaseSkinMix);
 			inputsOnMouseMove.Add(btnSkinMixDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(btnSkinMixDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(btnSkinMixDecrease.OnMouseButton);
 			uiColumnDecrease.AddElement(btnSkinMixDecrease);
 
 			Textbox btnSkinMixIncrease = new Textbox();
@@ -152,7 +152,7 @@ namespace Gaston11276.Playercharacters.Client
 			btnSkinMixIncrease.SetProperties(UiElement.CANFOCUS);
 			btnSkinMixIncrease.RegisterOnLMBRelease(IncreaseSkinMix);
 			inputsOnMouseMove.Add(btnSkinMixIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(btnSkinMixIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(btnSkinMixIncrease.OnMouseButton);
 			uiColumnIncrease.AddElement(btnSkinMixIncrease);
 		}
 

@@ -26,7 +26,7 @@ namespace Gaston11276.Playercharacters.Client
 		protected UiPanel contentFrame = new UiPanel();
 
 		protected List<OnMouseMove> inputsOnMouseMove;
-		protected List<OnLeftMouseButton> inputsOnLeftMouseButton;
+		protected List<OnMouseButton> inputsOnMouseButton;
 		protected List<OnKey> inputsOnKey;
 
 		public UiAppearance()
@@ -40,10 +40,10 @@ namespace Gaston11276.Playercharacters.Client
 			this.Logger = Logger;
 		}
 
-		public void SetInput(List<OnMouseMove> inputsOnMouseMove, List<OnLeftMouseButton> inputsOnLeftMouseButton, List<OnKey> inputsOnKey)
+		public void SetInput(List<OnMouseMove> inputsOnMouseMove, List<OnMouseButton> inputsOnMouseButton, List<OnKey> inputsOnKey)
 		{
 			this.inputsOnMouseMove = inputsOnMouseMove;
-			this.inputsOnLeftMouseButton = inputsOnLeftMouseButton;
+			this.inputsOnMouseButton = inputsOnMouseButton;
 			this.inputsOnKey = inputsOnKey;
 		}
 
@@ -123,7 +123,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiAppearanceMain.SetPadding(new UiRectangle(defaultPadding));
 			uiAppearanceMain.SetProperties(UiElement.FLOATING | UiElement.COLLISION_PARENT | UiElement.MOVABLE | UiElement.RESIZEABLE);
 			inputsOnMouseMove.Add(uiAppearanceMain.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiAppearanceMain.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiAppearanceMain.OnMouseButton);
 			uiMain.AddElement(uiAppearanceMain);
 
 			UiPanel uiHeaderPanel = new UiPanel();
@@ -158,7 +158,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiButtonApply.SetProperties(UiElement.CANFOCUS);
 			uiButtonApply.RegisterOnLMBRelease(SaveCharacter);
 			inputsOnMouseMove.Add(uiButtonApply.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiButtonApply.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiButtonApply.OnMouseButton);
 			uiButtonsPanel.AddElement(uiButtonApply);
 
 			Textbox uiButtonCancel = new Textbox();
@@ -167,7 +167,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiButtonCancel.SetProperties(UiElement.CANFOCUS);
 			uiButtonCancel.RegisterOnLMBRelease(RevertCharacter);
 			inputsOnMouseMove.Add(uiButtonCancel.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiButtonCancel.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiButtonCancel.OnMouseButton);
 			uiButtonsPanel.AddElement(uiButtonCancel);
 		}
 

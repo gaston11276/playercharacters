@@ -23,7 +23,7 @@ namespace Gaston11276.SimpleUi
 
 	
 
-		public void OnKey(int keycode)
+		public void OnKey(int state, int keycode)
 		{
 			if ((flags & SELECTED) != 0)
 			{
@@ -34,12 +34,12 @@ namespace Gaston11276.SimpleUi
 
 
 				
-				if (keycode >= 48 && keycode <= 57)
+				if (state == 3 && keycode >= 48 && keycode <= 57)
 				{
 					// Number keys pressed so need to so special processing
 					// also check if shift pressed
 				}
-				else if (keycode >= 65 && keycode <= 90)
+				else if (state == 3 && keycode >= 65 && keycode <= 90)
 				{
 					
 					string input = ((char)keycode).ToString();
@@ -57,7 +57,7 @@ namespace Gaston11276.SimpleUi
 					TextChanged();
 				}
 				
-				else if (keycode == 8)
+				else if (state == 3 && keycode == 8)
 				{
 					// Backspace
 					//System.Console.WriteLine($"{name}: Backspace, removing last character from \"{text}\"");

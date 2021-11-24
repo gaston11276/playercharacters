@@ -99,7 +99,7 @@ namespace Gaston11276.Playercharacters.Client
 			component.btnComponentDecrease.SetProperties(UiElement.CANFOCUS);
 			component.btnComponentDecrease.RegisterOnLMBRelease(component.DecreaseIndex);
 			inputsOnMouseMove.Add(component.btnComponentDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(component.btnComponentDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(component.btnComponentDecrease.OnMouseButton);
 			uiColumnIndexDecrease.AddElement(component.btnComponentDecrease);
 
 			component.btnComponentIncrease.SetText("+");
@@ -107,7 +107,7 @@ namespace Gaston11276.Playercharacters.Client
 			component.btnComponentIncrease.SetProperties(UiElement.CANFOCUS);
 			component.btnComponentIncrease.RegisterOnLMBRelease(component.IncreaseIndex);
 			inputsOnMouseMove.Add(component.btnComponentIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(component.btnComponentIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(component.btnComponentIncrease.OnMouseButton);
 			uiColumnIndexIncrease.AddElement(component.btnComponentIncrease);
 
 			component.uiTextureId.SetPadding(new UiRectangle(defaultPadding));
@@ -119,7 +119,7 @@ namespace Gaston11276.Playercharacters.Client
 			component.btnTextureDecrease.SetProperties(UiElement.CANFOCUS);
 			component.btnTextureDecrease.RegisterOnLMBRelease(component.DecreaseTexture);
 			inputsOnMouseMove.Add(component.btnTextureDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(component.btnTextureDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(component.btnTextureDecrease.OnMouseButton);
 			uiColumnTextureDecrease.AddElement(component.btnTextureDecrease);
 
 			component.btnTextureIncrease.SetText("+");
@@ -127,7 +127,7 @@ namespace Gaston11276.Playercharacters.Client
 			component.btnTextureIncrease.SetProperties(UiElement.CANFOCUS);
 			component.btnTextureIncrease.RegisterOnLMBRelease(component.IncreaseTexture);
 			inputsOnMouseMove.Add(component.btnTextureIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(component.btnTextureIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(component.btnTextureIncrease.OnMouseButton);
 			uiColumnTextureIncrease.AddElement(component.btnTextureIncrease);
 
 			component.GetIndexMax = GetComponentIndexMax;
@@ -160,7 +160,7 @@ namespace Gaston11276.Playercharacters.Client
 			component.btnComponentDecrease.SetProperties(UiElement.CANFOCUS);
 			component.btnComponentDecrease.RegisterOnLMBRelease(component.DecreaseIndex);
 			inputsOnMouseMove.Add(component.btnComponentDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(component.btnComponentDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(component.btnComponentDecrease.OnMouseButton);
 			uiColumnIndexDecrease.AddElement(component.btnComponentDecrease);
 
 			component.btnComponentIncrease.SetText("+");
@@ -168,7 +168,7 @@ namespace Gaston11276.Playercharacters.Client
 			component.btnComponentIncrease.SetProperties(UiElement.CANFOCUS);
 			component.btnComponentIncrease.RegisterOnLMBRelease(component.IncreaseIndex);
 			inputsOnMouseMove.Add(component.btnComponentIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(component.btnComponentIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(component.btnComponentIncrease.OnMouseButton);
 			uiColumnIndexIncrease.AddElement(component.btnComponentIncrease);
 
 			component.uiTextureId.SetPadding(new UiRectangle(defaultPadding));
@@ -179,7 +179,7 @@ namespace Gaston11276.Playercharacters.Client
 			component.btnTextureDecrease.SetProperties(UiElement.CANFOCUS);
 			component.btnTextureDecrease.RegisterOnLMBRelease(component.DecreaseTexture);
 			inputsOnMouseMove.Add(component.btnTextureDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(component.btnTextureDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(component.btnTextureDecrease.OnMouseButton);
 			uiColumnTextureDecrease.AddElement(component.btnTextureDecrease);
 
 			component.btnTextureIncrease.SetText("+");
@@ -187,7 +187,7 @@ namespace Gaston11276.Playercharacters.Client
 			component.btnTextureIncrease.SetProperties(UiElement.CANFOCUS);
 			component.btnTextureIncrease.RegisterOnLMBRelease(component.IncreaseTexture);
 			inputsOnMouseMove.Add(component.btnTextureIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(component.btnTextureIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(component.btnTextureIncrease.OnMouseButton);
 			uiColumnTextureIncrease.AddElement(component.btnTextureIncrease);
 
 			component.GetIndexMax = GetPropIndexMax;

@@ -8,6 +8,9 @@ namespace Gaston11276.Playercharacters.Client
 	public class Looks : Hud
 	{
 		static private UiCamera camera = new UiCamera();
+		bool rotatingCamera = false;
+		float lastCursorX = 0f;
+		float lastCursorY = 0f;
 
 		UiModel uiModel;
 		UiHeadBlendData uiHeadBlendData;
@@ -28,37 +31,59 @@ namespace Gaston11276.Playercharacters.Client
 			uiModel = new UiModel();
 			uiModel.RegisterSaveCharacter(SaveCharacter);
 			uiModel.RegisterRevertCharacter(RevertCharacter);
-			uiModel.SetInput(inputsOnMouseMove, inputsOnLeftMouseButton, inputsOnKey);
+			uiModel.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
 
 			uiHeadBlendData = new UiHeadBlendData();
 			uiHeadBlendData.RegisterSaveCharacter(SaveCharacter);
 			uiHeadBlendData.RegisterRevertCharacter(RevertCharacter);
-			uiHeadBlendData.SetInput(inputsOnMouseMove, inputsOnLeftMouseButton, inputsOnKey);
+			uiHeadBlendData.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
 
 			uiFaceFeatures = new UiFaceFeatures();
 			uiFaceFeatures.RegisterSaveCharacter(SaveCharacter);
 			uiFaceFeatures.RegisterRevertCharacter(RevertCharacter);
-			uiFaceFeatures.SetInput(inputsOnMouseMove, inputsOnLeftMouseButton, inputsOnKey);
+			uiFaceFeatures.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
 
 			uiHeadOverlays = new UiHeadOverlays();
 			uiHeadOverlays.RegisterSaveCharacter(SaveCharacter);
 			uiHeadOverlays.RegisterRevertCharacter(RevertCharacter);
-			uiHeadOverlays.SetInput(inputsOnMouseMove, inputsOnLeftMouseButton, inputsOnKey);
+			uiHeadOverlays.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
 
 			uiDecorations = new UiDecorations();
 			uiDecorations.RegisterSaveCharacter(SaveCharacter);
 			uiDecorations.RegisterRevertCharacter(RevertCharacter);
-			uiDecorations.SetInput(inputsOnMouseMove, inputsOnLeftMouseButton, inputsOnKey);
+			uiDecorations.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
 
 			uiComponents = new UiComponents();
 			uiComponents.RegisterSaveCharacter(SaveCharacter);
 			uiComponents.RegisterRevertCharacter(RevertCharacter);
-			uiComponents.SetInput(inputsOnMouseMove, inputsOnLeftMouseButton, inputsOnKey);
+			uiComponents.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
 
 			uiAnimations = new UiAnimations();
 			uiAnimations.RegisterSaveCharacter(SaveCharacter);
 			uiAnimations.RegisterRevertCharacter(RevertCharacter);
-			uiAnimations.SetInput(inputsOnMouseMove, inputsOnLeftMouseButton, inputsOnKey);
+			uiAnimations.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
+		}
+
+		protected override void OnOpen()
+		{
+			base.OnOpen();
+
+			camera.SetMode(CameraMode.Front);
+			Game.Player.CanControlCharacter = false;
+			Game.Player.Character.IsPositionFrozen = true;
+			Game.Player.Character.IsInvincible = true;
+			Game.Player.Character.Task.ClearAllImmediately();
+		}
+
+		protected override void OnClose()
+		{
+			base.OnClose();
+
+			camera.SetMode(CameraMode.Game);
+			Game.Player.CanControlCharacter = true;
+			Game.Player.Character.IsPositionFrozen = false;
+			Game.Player.Character.IsInvincible = false;
+			Game.Player.Character.Task.ClearAllImmediately();
 		}
 
 		public override void SetLogger(ILogger Logger)
@@ -77,6 +102,27 @@ namespace Gaston11276.Playercharacters.Client
 			this.RevertCharacterCallback = RevertCharacterCallback;
 		}
 
+		public override void OnInputKey(int state, int keycode)
+		{
+			if (IsOpen())
+			{
+				base.OnInputKey(state, keycode);
+
+				if (state == 3 && keycode == 27)// Escape
+				{
+					Close();
+				}
+			}
+			else
+			{
+				/*if (keycode == 113)// F2
+				{
+					Open();
+				}*/
+			}
+
+		}
+
 		public void SetCharacter(Character character)
 		{
 			uiModel.SetCharacter(character);
@@ -88,33 +134,30 @@ namespace Gaston11276.Playercharacters.Client
 			uiAnimations.SetCharacter(character);
 		}
 
-		public override void Open()
+		public override void OnMouseButton(int state, int button, float CursorX, float CursorY)
 		{
-			uiMain.ClearFlags(UiElement.DISABLED);
-			camera.SetMode(CameraMode.Front);
+			base.OnMouseButton(state, button, CursorX, CursorY);
 
-			Game.Player.CanControlCharacter = false;
-			Game.Player.Character.IsPositionFrozen = true;
-			Game.Player.Character.IsInvincible = true;
-			Game.Player.Character.Task.ClearAllImmediately();
-		}
-
-		public override void Close ()
-		{
-			uiMain.SetFlags(UiElement.DISABLED);
-			camera.SetMode(CameraMode.Game);
-
-			Game.Player.CanControlCharacter = true;
-			Game.Player.Character.IsPositionFrozen = false;
-			Game.Player.Character.IsInvincible = false;
-			Game.Player.Character.Task.ClearAllImmediately();
-		}
-
-		public override void OnInputRMBMouseMoveAxis(int state, float AxisX, float AxisY)
-		{
-			if (state == 2)
+			if (!rotatingCamera && state == 1 && button == 2)
 			{
+				rotatingCamera = true;
+			}
+			else if (rotatingCamera && state == 3 && button == 2)
+			{
+				rotatingCamera = false;
+			}
+		}
+
+		public override void OnMouseMove(float CursorX, float CursorY)
+		{
+			base.OnMouseMove(CursorX, CursorY);
+			if (rotatingCamera)
+			{
+				float AxisX = ((float)(lastCursorX - CursorX)) / 1280f;
+				float AxisY = ((float)(lastCursorY - CursorY)) / 1280f;
 				camera.UpdateCamera(AxisX, AxisY);
+				lastCursorX = CursorX;
+				lastCursorY = CursorY;
 			}
 		}
 
@@ -150,7 +193,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiLooksPanel.SetAlignment(VAlignment.Top);
 			uiLooksPanel.SetProperties(UiElement.FLOATING | UiElement.COLLISION_PARENT | UiElement.MOVABLE);
 			inputsOnMouseMove.Add(uiLooksPanel.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiLooksPanel.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiLooksPanel.OnMouseButton);
 			uiMain.AddElement(uiLooksPanel);
 
 			Textbox buttonModel= new Textbox();
@@ -162,7 +205,7 @@ namespace Gaston11276.Playercharacters.Client
 			buttonModel.RegisterOnSelectCallback(uiModel.Open);
 			buttonModel.RegisterOffSelectCallback(uiModel.Close);
 			inputsOnMouseMove.Add(buttonModel.OnCursorMove);
-			inputsOnLeftMouseButton.Add(buttonModel.OnLeftMouseButton);
+			inputsOnMouseButton.Add(buttonModel.OnMouseButton);
 			uiLooksPanel.AddElement(buttonModel);
 
 			Textbox buttonHeadBlendData= new Textbox();
@@ -175,7 +218,7 @@ namespace Gaston11276.Playercharacters.Client
 			buttonHeadBlendData.RegisterOnSelectCallback(uiHeadBlendData.Open);
 			buttonHeadBlendData.RegisterOffSelectCallback(uiHeadBlendData.Close);
 			inputsOnMouseMove.Add(buttonHeadBlendData.OnCursorMove);
-			inputsOnLeftMouseButton.Add(buttonHeadBlendData.OnLeftMouseButton);
+			inputsOnMouseButton.Add(buttonHeadBlendData.OnMouseButton);
 			uiLooksPanel.AddElement(buttonHeadBlendData);
 
 			Textbox buttonFaceFeatures = new Textbox();
@@ -188,7 +231,7 @@ namespace Gaston11276.Playercharacters.Client
 			buttonFaceFeatures.RegisterOnSelectCallback(uiFaceFeatures.Open);
 			buttonFaceFeatures.RegisterOffSelectCallback(uiFaceFeatures.Close);
 			inputsOnMouseMove.Add(buttonFaceFeatures.OnCursorMove);
-			inputsOnLeftMouseButton.Add(buttonFaceFeatures.OnLeftMouseButton);
+			inputsOnMouseButton.Add(buttonFaceFeatures.OnMouseButton);
 			uiLooksPanel.AddElement(buttonFaceFeatures);
 
 			Textbox buttonHeadOverlays = new Textbox();
@@ -201,7 +244,7 @@ namespace Gaston11276.Playercharacters.Client
 			buttonHeadOverlays.RegisterOnSelectCallback(uiHeadOverlays.Open);
 			buttonHeadOverlays.RegisterOffSelectCallback(uiHeadOverlays.Close);
 			inputsOnMouseMove.Add(buttonHeadOverlays.OnCursorMove);
-			inputsOnLeftMouseButton.Add(buttonHeadOverlays.OnLeftMouseButton);
+			inputsOnMouseButton.Add(buttonHeadOverlays.OnMouseButton);
 			uiLooksPanel.AddElement(buttonHeadOverlays);
 
 			Textbox buttonDecorations = new Textbox();
@@ -214,7 +257,7 @@ namespace Gaston11276.Playercharacters.Client
 			buttonDecorations.RegisterOnSelectCallback(uiDecorations.Open);
 			buttonDecorations.RegisterOffSelectCallback(uiDecorations.Close);
 			inputsOnMouseMove.Add(buttonDecorations.OnCursorMove);
-			inputsOnLeftMouseButton.Add(buttonDecorations.OnLeftMouseButton);
+			inputsOnMouseButton.Add(buttonDecorations.OnMouseButton);
 			uiLooksPanel.AddElement(buttonDecorations);
 
 			Textbox buttonComponents= new Textbox();
@@ -227,7 +270,7 @@ namespace Gaston11276.Playercharacters.Client
 			buttonComponents.RegisterOnSelectCallback(uiComponents.Open);
 			buttonComponents.RegisterOffSelectCallback(uiComponents.Close);
 			inputsOnMouseMove.Add(buttonComponents.OnCursorMove);
-			inputsOnLeftMouseButton.Add(buttonComponents.OnLeftMouseButton);
+			inputsOnMouseButton.Add(buttonComponents.OnMouseButton);
 			uiLooksPanel.AddElement(buttonComponents);
 
 			Textbox buttonAnimations = new Textbox();
@@ -240,7 +283,7 @@ namespace Gaston11276.Playercharacters.Client
 			buttonAnimations.RegisterOnSelectCallback(uiAnimations.Open);
 			buttonAnimations.RegisterOffSelectCallback(uiAnimations.Close);
 			inputsOnMouseMove.Add(buttonAnimations.OnCursorMove);
-			inputsOnLeftMouseButton.Add(buttonAnimations.OnLeftMouseButton);
+			inputsOnMouseButton.Add(buttonAnimations.OnMouseButton);
 			uiLooksPanel.AddElement(buttonAnimations);
 
 			uiModel.CreateUi(uiMain);

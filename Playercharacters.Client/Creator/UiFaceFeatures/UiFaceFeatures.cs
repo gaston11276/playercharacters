@@ -88,7 +88,7 @@ namespace Gaston11276.Playercharacters.Client
 			facefeature.btnDecrease.SetProperties(UiElement.CANFOCUS);
 			facefeature.btnDecrease.RegisterOnLMBRelease(facefeature.Decrease);
 			inputsOnMouseMove.Add(facefeature.btnDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(facefeature.btnDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(facefeature.btnDecrease.OnMouseButton);
 			uiColumnDecrease.AddElement(facefeature.btnDecrease);
 
 			facefeature.btnIncrease.SetText("+");
@@ -96,7 +96,7 @@ namespace Gaston11276.Playercharacters.Client
 			facefeature.btnIncrease.SetProperties(UiElement.CANFOCUS);
 			facefeature.btnIncrease.RegisterOnLMBRelease(facefeature.Increase);
 			inputsOnMouseMove.Add(facefeature.btnIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(facefeature.btnIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(facefeature.btnIncrease.OnMouseButton);
 			uiColumnIncrease.AddElement(facefeature.btnIncrease);
 
 			facefeature.SetValue = SetFaceFeatureValue;

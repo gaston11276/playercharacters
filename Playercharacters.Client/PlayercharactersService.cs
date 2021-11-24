@@ -41,32 +41,28 @@ namespace Gaston11276.Playercharacters.Client
 		Creator creator;
 		Looks looks;
 
-		private Hotkey toggleCreator;
-		private Hotkey toggleLooks;
+		private Hotkey openCreator;
+		private Hotkey openLooks;
+		
+		bool holdFocus = true;
+
 		private Hotkey LMB;
 		private Hotkey RMB;
-
 		private int lastCursorX;
 		private int lastCursorY;
 
-		bool holdFocus = true;
-
-
 		//DEBUG
-		int currentControl = 0;
-		Hotkey nextControl = new Hotkey(InputControl.SelectNextWeapon);
-		Hotkey prevControl = new Hotkey(InputControl.SelectPrevWeapon);
-		UiPanel debugPanel = new UiPanel();
-		Textbox debug01 = new Textbox();
-		Textbox debug02 = new Textbox();
-		Textbox debug03 = new Textbox();
-		Textbox debug04 = new Textbox();
-		Textbox debug05 = new Textbox();
-		Textbox debug06 = new Textbox();
-		Textbox debug07 = new Textbox();
-		Textbox debug08 = new Textbox();
-		Textbox debug09 = new Textbox();
-		Textbox debug10 = new Textbox();
+		private Hotkey Nui1;
+		private Hotkey Nui2;
+		private Hotkey hotkeyF1;
+		private Hotkey hotkeyF2;
+		private Hotkey hotkeyF3;
+		private Hotkey hotkeyF5;
+		private Hotkey hotkeyF6;
+		private Hotkey hotkeyF7;
+		private Hotkey hotkeyF9;
+		private Hotkey hotkeyF10;
+		private Hotkey hotkeyF11;
 
 		public PlayercharactersService(ILogger logger, ITickManager ticks, ICommunicationManager comms, ICommandManager commands, IOverlayManager overlay, User user) : base(logger, ticks, comms, commands, overlay, user)
 		{
@@ -77,15 +73,19 @@ namespace Gaston11276.Playercharacters.Client
 			creator.CreateUi();
 			creator.RegisterLoadCharactersCallback(LoadCharacters);
 			creator.RegisterOnCreateCallback(OnCreate);
-			creator.RegisterOnSelectCallback(OnSelect);
 			creator.RegisterOnDeleteCallback(OnDelete);
-			creator.RegisterOnPlayCallback(OnPlay);
+
+			creator.RegisterOnCreatorOpenCallback(OnCreatorOpen);
+			creator.RegisterOnCreatorCloseCallback(OnCreatorClose);
+
 			creator.Build();
 
 			looks = new Looks();
 			looks.SetLogger(this.Logger);
 			looks.RegisterSaveCallback(SaveCharacter);
 			looks.RegisterRevertCallback(RevertCharacter);
+			looks.RegisterOnOpenCallback(OnLooksOpen);
+			looks.RegisterOnCloseCallback(OnLooksClose);
 			looks.CreateUi();
 			looks.Build();
 
@@ -94,6 +94,11 @@ namespace Gaston11276.Playercharacters.Client
 			//API.GetScreenResolution(ref screenWidth, ref screenHeight);
 			//creator.SetResolution(screenWidth, screenHeight);
 			//looks.SetResolution(screenWidth, screenHeight);
+		}
+
+		public override async Task Loaded()
+		{
+			
 		}
 
 		public override async Task Started()
@@ -107,66 +112,167 @@ namespace Gaston11276.Playercharacters.Client
 			// Create overlay
 			this.overlay = new PlayercharactersOverlay(this.OverlayManager);
 
-			this.toggleCreator = new Hotkey(this.config.SelectionScreen.HotkeyCreator);
-			this.toggleLooks = new Hotkey(this.config.SelectionScreen.HotkeyLooks);
+			this.openCreator = new Hotkey(this.config.SelectionScreen.HotkeyCreator);
+			this.openLooks = new Hotkey(this.config.SelectionScreen.HotkeyLooks);
 			this.LMB = new Hotkey(InputControl.CursorAccept);
 			this.RMB = new Hotkey(InputControl.CursorCancel);
-			
-			debug01.SetText("Debug1");
-			debug02.SetText("Debug2");
-			debug03.SetText("Debug3");
-			debug04.SetText("Debug4");
-			debug05.SetText("Debug5");
-			debug06.SetText("Debug6");
-			debug07.SetText("Debug7");
-			debug08.SetText("Debug8");
-			debug09.SetText("Debug9");
-			debug10.SetText("Debug10");
+			this.Nui1 = new Hotkey(InputControl.ScriptedFlyZUp);
+			this.Nui2 = new Hotkey(InputControl.ScriptedFlyZDown);
 
-			currentControl = 0;
+			hotkeyF1 = new Hotkey(InputControl.ReplayStartStopRecording);
+			hotkeyF2 = new Hotkey(InputControl.ReplayStartStopRecordingSecondary);
+			hotkeyF3 = new Hotkey(InputControl.ReplayTimelineSave);
+			hotkeyF5 = new Hotkey(InputControl.SelectCharacterMichael);
+			hotkeyF6 = new Hotkey(InputControl.SelectCharacterFranklin);
+			hotkeyF7 = new Hotkey(InputControl.SelectCharacterTrevor);
+			hotkeyF9 = new Hotkey(InputControl.DropWeapon);
+			hotkeyF10 = new Hotkey(InputControl.DropAmmo);
+			hotkeyF11 = new Hotkey(InputControl.SwitchVisor);
 
-			debugPanel.SetProperties(UiElement.MOVABLE);
-			debugPanel.SetHDimension(Dimension.Absolute);
-			debugPanel.SetVDimension(Dimension.Absolute);
-			debugPanel.SetPosition(0.5f, 0.5f);
-			debugPanel.SetWidth(0.3f);
-			debugPanel.SetHeight(0.3f);
-			//debugPanel.SetAlignment(HAlignment.Left);
-			debugPanel.SetOrientation(Orientation.Vertical);
-			debugPanel.AddElement(debug01);
-			debugPanel.AddElement(debug02);
-			debugPanel.AddElement(debug03);
-			debugPanel.AddElement(debug04);
-			debugPanel.AddElement(debug05);
-			debugPanel.AddElement(debug06);
-			debugPanel.AddElement(debug07);
-			debugPanel.AddElement(debug08);
-			debugPanel.AddElement(debug09);
-			debugPanel.AddElement(debug10);
-			debugPanel.Build();
-
-			this.Ticks.On(OnToggleCreator);
-			this.Ticks.On(OnToggleLooks);
 			this.Ticks.On(OnInput);
 			this.Ticks.On(OnDraw);
 
+			this.overlay = new PlayercharactersOverlay(OverlayManager);
+			this.overlay.OnKey += OnKey;
+			this.overlay.OnMouseButton += OnMouseButton;
+			this.overlay.OnMouseMove += OnMouseMove;
 
+			API.ShutdownLoadingScreen(); // Otherwise stuck at mountain view
+			creator.Open();
 		}
 
-		public override async Task HoldFocus()
+		void OnCreatorOpen()
 		{
-			Screen.Fading.FadeOut(100);
-			while (Screen.Fading.IsFadingOut) await Delay(10);
+			this.Ticks.Off(OnSaveCharacter);
+			this.Ticks.Off(OnSavePosition);
+			LoadCharacters();
+			OpenNui();
+		}
 
-			OpenCreator();
-			Screen.Fading.FadeIn(1);
-
-			while (holdFocus || creator.IsOpen())
+		void OnCreatorClose(System.Guid characterId)
+		{
+			CloseNui();
+			if (activeCharacter == null || activeCharacter.Id != characterId)
 			{
-				await Delay(20);
+				SetNewCharacter(characterId);
+			}
+			
+			this.Ticks.On(OnSaveCharacter);
+			this.Ticks.On(OnSavePosition);
+		}
+
+		void OnLooksOpen()
+		{
+			this.Ticks.Off(OnSaveCharacter);
+			this.Ticks.Off(OnSavePosition);
+			//Screen.Hud.IsVisible = false;
+			//API.DisplayHud(false);
+			looks.SetCharacter(activeCharacter);
+			OpenNui();
+		}
+
+		void OnLooksClose()
+		{
+			CloseNui();
+			this.Ticks.On(OnSaveCharacter);
+			this.Ticks.On(OnSavePosition);
+		}
+
+	
+
+		private void OnKey(object sender, OnKeyOverlayEventArgs args)
+		{
+			//Logger.Debug($"OnKey: State: {args.state} Key: {args.keycode}");
+			creator.OnInputKey(args.state, args.keycode);
+			looks.OnInputKey(args.state, args.keycode);
+		}
+		private void OnMouseButton(object sender, OnMouseButtonOverlayEventArgs args)
+		{
+			Logger.Debug($"OnMouseButton: State: {args.state} Button: {args.button}");
+
+			int x = 0; int y = 0;
+			API.GetNuiCursorPosition(ref x, ref y);
+			
+			if (creator.IsOpen())
+			{
+				//Logger.Debug($"Sending LMB to creator: Coords: X: {x} Y: {y}");
+				creator.OnMouseButton(args.state, args.button, x, y);
+			}
+			if (looks.IsOpen())
+			{
+				//Logger.Debug($"Sending LMB to looks: Coords: X: {x} Y: {y}");
+				looks.OnMouseButton(args.state, args.button, x, y);
 			}
 		}
 
+		private void OnMouseMove(object sender, OverlayEventArgs args)
+		{
+			//Logger.Debug($"OnMouseMove:");
+
+			int x = 0; int y = 0;
+			API.GetNuiCursorPosition(ref x, ref y);
+			//Logger.Debug($"OnMouseButton: Coords: X: {x} Y: {y}");
+			if (creator.IsOpen())
+			{
+				creator.OnMouseMove(x, y);
+			}
+
+			if (looks.IsOpen())
+			{
+				looks.OnMouseMove(x, y);
+				//looks.OnInputRMBMouseMoveAxis(1, x, y)
+			}
+		}
+		
+
+		async void OpenNui()
+		{
+			this.overlay.Show(true, true);
+			holdFocus = true;
+			await HoldNui();
+		}
+
+		public async Task HoldNui()
+		{
+			while (holdFocus)// || creator.IsOpen())
+			{
+				await Delay(20);
+			}
+			API.SetNuiFocus(false, false);
+		}
+
+		private void CloseNui()
+		{
+			holdFocus = false;
+			this.overlay.Hide(false);
+		}
+
+		
+		//public override async Task HoldFocus()
+		//{
+			/*
+			Logger.Debug("--------------------------------  Holding focus----------------------------------------");
+
+			//Screen.Fading.FadeOut(100);
+			//while (Screen.Fading.IsFadingOut) await Delay(10);
+
+			//OpenCreator();
+			//Screen.Fading.FadeIn(1);
+
+			Logger.Debug("Waiting on hold.");
+			while (holdFocus)// || creator.IsOpen())
+			{
+				await Delay(20);
+			}
+
+			Logger.Debug("Focus was released. Closing nui.");
+			API.SetNuiFocus(false, false);
+
+			Logger.Debug("HoldFocus finished.");
+			*/
+		//}
+
+		/*
 		async void OpenCreator()
 		{
 			this.Ticks.Off(OnSaveCharacter);
@@ -214,7 +320,7 @@ namespace Gaston11276.Playercharacters.Client
 
 			//Logger.Debug($"Opening creator");
 			creator.Open();
-			holdFocus = false;
+			
 
 			LoadCharacters();
 
@@ -225,14 +331,9 @@ namespace Gaston11276.Playercharacters.Client
 			//while (Screen.Fading.IsFadingIn) await Delay(10);
 			//Logger.Debug($"Fading in finished");
 
-		}
 
-		async void CloseCreator()
-		{
-			creator.Close();
-			await Delay(1);
 		}
-
+		*/
 		private async void LoadCharacters()
 		{
 			await AsyncLoadCharacters();
@@ -245,13 +346,12 @@ namespace Gaston11276.Playercharacters.Client
 			creator.UpdateCharacterList();
 		}
 
-		private async void OnPlay(System.Guid selectedCharacterId)
+		private async void SetNewCharacter(System.Guid selectedCharacterId)
 		{
 			Character selectedCharacter = characters.First(c => c.Id == selectedCharacterId);
 			this.session = await this.Comms.Event(PlayercharactersEvents.Select).ToServer().Request<CharacterSession>(selectedCharacter.Id);
-			await Play(selectedCharacter);
+			await SwitchCharacter(selectedCharacter);
 		}
-
 
 		private async void OnCreate()
 		{
@@ -274,13 +374,6 @@ namespace Gaston11276.Playercharacters.Client
 			this.Comms.Event(SessionEvents.DisconnectPlayer).ToServer().Emit("Thanks for playing");
 		}
 
-		private async void OnSelect(System.Guid selectedCharacterId)
-		{
-			//Character selectedCharacter = characters.First(c => c.Id == selectedCharacterId);
-			//this.session = await this.Comms.Event(PlayercharactersEvents.Select).ToServer().Request<CharacterSession>(selectedCharacter.Id);
-			//await Play(selectedCharacter);
-		}
-
 		private async void OnDelete(System.Guid selectedCharacterId)
 		{
 			this.Logger.Debug($"Delete {selectedCharacterId}");
@@ -288,7 +381,7 @@ namespace Gaston11276.Playercharacters.Client
 			creator.SetCharacters(characters);
 		}
 
-		private async Task Play(Character character)
+		private async Task SwitchCharacter(Character character)
 		{
 			Game.Player.Unfreeze();
 			Screen.Hud.IsVisible = true;
@@ -299,14 +392,6 @@ namespace Gaston11276.Playercharacters.Client
 				await Delay(10);
 			}
 
-			//API.SetPedDefaultComponentVariation(Game.PlayerPed.Handle);
-
-
-
-
-
-
-
 			Game.Player.Character.Position = character.Position.ToVector3().ToCitVector3();
 			Game.Player.Character.Armor = character.Armor;
 
@@ -314,8 +399,6 @@ namespace Gaston11276.Playercharacters.Client
 			//await BaseScript.Delay(100); // Required to load
 			//Game.Player.Character.MovementAnimationSet = character.AnimationSet;
 
-
-			CloseCreator();
 
 			this.activeCharacter = character;
 			// Set player health (Rare #OnSpawnDeath Fix)
@@ -326,65 +409,8 @@ namespace Gaston11276.Playercharacters.Client
 			looks.SetCharacter(activeCharacter);
 			looks.ApplyToPed();
 
-			this.Ticks.On(OnSaveCharacter);
-			this.Ticks.On(OnSavePosition);
-		}
-
-		void OpenLooks()
-		{
-			this.Ticks.Off(OnSaveCharacter);
-			this.Ticks.Off(OnSavePosition);
-			Screen.Hud.IsVisible = false;
-			API.DisplayHud(false);
-
-			looks.SetCharacter(activeCharacter);
-			looks.Open();
-		}
-
-		void CloseLooks()
-		{
-			looks.Close();
-
-			API.DisplayHud(true);
-			Screen.Hud.IsVisible = true;
-			this.Ticks.On(OnSaveCharacter);
-			this.Ticks.On(OnSavePosition);
-		}
-
-
-		public async Task OnToggleCreator()
-		{
-			if (toggleCreator.IsJustPressed())
-			{
-				if (!creator.IsOpen())
-				{
-					OpenCreator();
-				}
-				else
-				{
-					CloseCreator();
-				}
-			}
-			await Delay(1);
-		}
-
-		public async Task OnToggleLooks()
-		{
-			if (toggleLooks.IsJustPressed())
-			{
-				if (!creator.IsOpen())
-				{
-					if (!looks.IsOpen())
-					{
-						OpenLooks();
-					}
-					else
-					{
-						CloseLooks();
-					}
-				}
-			}
-			await Delay(1);
+			//this.Ticks.On(OnSaveCharacter);
+			//this.Ticks.On(OnSavePosition);
 		}
 
 
@@ -430,15 +456,56 @@ namespace Gaston11276.Playercharacters.Client
 
 		private void OnInput()
 		{
+			if (openCreator.IsJustReleased()) // default F1
+			{
+				creator.Open();
+			}
+
+			if (openLooks.IsJustReleased()) // default F2
+			{
+				looks.Open();
+			}
+
+			if (this.hotkeyF5.IsJustPressed())
+			{
+				
+			}
+			if (this.hotkeyF6.IsJustPressed())
+			{
+				
+			}
+			if (this.hotkeyF7.IsJustPressed())
+			{
+				
+			}
+			if (this.hotkeyF9.IsJustPressed())
+			{
+				OpenNui();
+			}
+			if (this.hotkeyF10.IsJustPressed())
+			{
+				CloseNui();
+			}
+			if (this.hotkeyF11.IsJustPressed())
+			{
+				//CloseNui();
+			}
+
+			
+
+
+			return;
+
 			if (creator.IsOpen() || looks.IsOpen())
 			{
-
+				/*
 				Hotkey bajs = new Hotkey(InputControl.Attack);
 				if (bajs.IsJustReleased())
 				{
 					Logger.Debug("Rebuilding looks");
 					looks.Build();
 				}
+				*/
 
 
 				int cursorX = new int();
@@ -500,24 +567,24 @@ namespace Gaston11276.Playercharacters.Client
 
 				if (creator.IsOpen())
 				{
-					creator.OnInputKey();
+					//creator.OnInputKey();
 					if (leftMouseButtonState == 1 || leftMouseButtonState == 3)
 					{
-						creator.OnLMB(leftMouseButtonState, cursorX, cursorY);
+						//creator.OnMouseButton(leftMouseButtonState, cursorX, cursorY);
 					}
 					if (mouseHasMoved)
 					{
-						creator.OnInputMouseMove(cursorX, cursorY);
+						creator.OnMouseMove(cursorX, cursorY);
 					}
 				}
 
 				if (looks.IsOpen())
 				{
-					looks.OnInputKey();
+					//looks.OnInputKey();
 					looks.OnInputRMBMouseMoveAxis(rightMouseButtonState, AxisX, AxisY);
 					if (leftMouseButtonState == 1 || leftMouseButtonState == 3)
 					{
-						looks.OnLMB(leftMouseButtonState, cursorX, cursorY);
+						//looks.OnLMB(leftMouseButtonState, cursorX, cursorY);
 					}
 					//if (rightMouseButtonState != 0)
 					//{
@@ -525,7 +592,7 @@ namespace Gaston11276.Playercharacters.Client
 					//}
 					if (mouseHasMoved)
 					{
-						looks.OnInputMouseMove(cursorX, cursorY);
+						looks.OnMouseMove(cursorX, cursorY);
 					}
 				}
 				lastCursorX = cursorX;
@@ -558,7 +625,7 @@ namespace Gaston11276.Playercharacters.Client
 			//for (int i = 0; i < (int)InputControl.VehicleFlyTransform; i++)
 			{
 
-				Hotkey hotkey = new Hotkey((InputControl)currentControl);
+				//Hotkey hotkey = new Hotkey((InputControl)currentControl);
 				
 				/*
 				Logger.Debug("------------------");
@@ -570,13 +637,13 @@ namespace Gaston11276.Playercharacters.Client
 				Logger.Debug($"User keykode: {hotkey.UserKeyboardKey}");
 				*/
 
-				debug01.SetText($"Display name: {hotkey.ControlDisplayName}");
-				debug02.SetText($"Native name: {hotkey.ControlNativeName}");
-				debug03.SetText($"Key: {hotkey.DefaultKeyboardKeyDisplayName}");
-				debug04.SetText($"Keycode: {hotkey.DefaultKeyboardKey}");
-				debug05.SetText($"User key: {hotkey.UserKeyboardKeyDisplayName}");
-				debug06.SetText($"User keykode: {hotkey.UserKeyboardKey}");
-				debugPanel.Build();
+				//debug01.SetText($"Display name: {hotkey.ControlDisplayName}");
+				//debug02.SetText($"Native name: {hotkey.ControlNativeName}");
+				//debug03.SetText($"Key: {hotkey.DefaultKeyboardKeyDisplayName}");
+				//debug04.SetText($"Keycode: {hotkey.DefaultKeyboardKey}");
+				//debug05.SetText($"User key: {hotkey.UserKeyboardKeyDisplayName}");
+				//debug06.SetText($"User keykode: {hotkey.UserKeyboardKey}");
+				//debugPanel.Build();
 
 			}
 			

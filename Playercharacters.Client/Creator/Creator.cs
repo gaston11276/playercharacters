@@ -7,12 +7,17 @@ namespace Gaston11276.Playercharacters.Client
 {
 	class Creator : Hud
 	{
-		public delegate void OnCreate();
-		public delegate void OnSelect(System.Guid Id);
-		public delegate void OnDelete(System.Guid Id);
-		public delegate void OnPlay(System.Guid Id);
+		public delegate void fpOnCreate();
+		public delegate void fpOnSelect(System.Guid Id);
+		public delegate void fpOnDelete(System.Guid Id);
+		public delegate void fpOnPlay(System.Guid Id);
 
-		public delegate void OnLoadCharacters();
+		public delegate void fpOnCreatorOpen();
+		protected List<fpOnCreatorOpen> onCreatorOpenCallbacks = new List<fpOnCreatorOpen>();
+		public delegate void fpOnCreatorClose(System.Guid characterId);
+		protected List<fpOnCreatorClose> onCreatorCloseCallbacks = new List<fpOnCreatorClose>();
+
+		public delegate void fpOnLoadCharacters();
 
 		private System.Guid selectedCharacterId;
 		private List<Character> characters;
@@ -30,11 +35,11 @@ namespace Gaston11276.Playercharacters.Client
 		private Textbox uiCharactersButtonPlay;
 		private Textbox uiCharactersButtonDelete;
 
-		private OnCreate OnCreateCallback;
-		private OnSelect OnSelectCallback;
-		private OnDelete OnDeleteCallback;
-		private OnPlay OnPlayCallback;
-		private OnLoadCharacters OnLoadCharactersCallback;
+		private fpOnCreate OnCreateCallback;
+		private fpOnSelect OnSelectCallback;
+		private fpOnDelete OnDeleteCallback;
+		private fpOnPlay OnPlayCallback;
+		private fpOnLoadCharacters OnLoadCharactersCallback;
 
 		public Creator()
 		{
@@ -49,6 +54,32 @@ namespace Gaston11276.Playercharacters.Client
 			uiCreateCharacterButton = new Textbox();
 			uiCharactersButtonPlay = new Textbox();
 			uiCharactersButtonDelete = new Textbox();
+		}
+
+		public void RegisterOnCreatorOpenCallback(fpOnCreatorOpen OnOpen)
+		{
+			onCreatorOpenCallbacks.Add(OnOpen);
+		}
+
+		public void RegisterOnCreatorCloseCallback(fpOnCreatorClose OnClose)
+		{
+			onCreatorCloseCallbacks.Add(OnClose);
+		}
+
+		private void OnCreatorOpen()
+		{
+			foreach (fpOnCreatorOpen onCreatorOpen in onCreatorOpenCallbacks)
+			{
+				onCreatorOpen();
+			}
+		}
+
+		private void OnCreatorClose()
+		{
+			foreach (fpOnCreatorClose onCreatorClose in onCreatorCloseCallbacks)
+			{
+				onCreatorClose(selectedCharacterId);
+			}
 		}
 
 		public void GetCharacterInfo(ref Character character)
@@ -108,33 +139,33 @@ namespace Gaston11276.Playercharacters.Client
 				characterEntry.RegisterOnSelectCallback(uiCharactersButtonDelete.Enable);
 				characterEntry.RegisterOffSelectCallback(uiCharactersButtonDelete.Disable);
 				inputsOnMouseMove.Add(characterEntry.OnCursorMove);
-				inputsOnLeftMouseButton.Add(characterEntry.OnLeftMouseButton);
+				inputsOnMouseButton.Add(characterEntry.OnMouseButton);
 				uiCharactersList.AddElement(characterEntry);
 			}
 			uiMain.FirstBuild();
 		}
 
-		public void RegisterLoadCharactersCallback(OnLoadCharacters OnLoadCharacters)
+		public void RegisterLoadCharactersCallback(fpOnLoadCharacters OnLoadCharacters)
 		{
 			this.OnLoadCharactersCallback = OnLoadCharacters;
 		}
 
-		public void RegisterOnCreateCallback(OnCreate OnCreate)
+		public void RegisterOnCreateCallback(fpOnCreate OnCreate)
 		{
 			this.OnCreateCallback = OnCreate;
 		}
 
-		public void RegisterOnSelectCallback(OnSelect OnSelect)
+		public void RegisterOnSelectCallback(fpOnSelect OnSelect)
 		{
 			this.OnSelectCallback = OnSelect;
 		}
 
-		public void RegisterOnDeleteCallback(OnDelete OnDelete)
+		public void RegisterOnDeleteCallback(fpOnDelete OnDelete)
 		{
 			this.OnDeleteCallback = OnDelete;
 		}
 
-		public void RegisterOnPlayCallback(OnPlay OnPlay)
+		public void RegisterOnPlayCallback(fpOnPlay OnPlay)
 		{
 			this.OnPlayCallback = OnPlay;
 		}
@@ -144,28 +175,65 @@ namespace Gaston11276.Playercharacters.Client
 			OnLoadCharactersCallback();
 		}
 
+		protected override void OnOpen()
+		{
+			base.OnOpen();
+			OnCreatorOpen();
+		}
+
+		protected override void OnClose()
+		{
+			base.OnClose();
+			OnCreatorClose();
+		}
+
 		public void OnCharacterSelected(System.Guid selectedCharacterId)
 		{
 			this.selectedCharacterId = selectedCharacterId;
 		}
 
-		private async void OnPlay0()
+		public override void OnInputKey(int state, int keycode)
 		{
-			OnPlayCallback(selectedCharacterId);
+
+
+			if (IsOpen())
+			{
+				base.OnInputKey(state, keycode);
+
+				if (state == 3 && keycode == 27)// Escape
+				{
+					Close();
+				}
+			}
+			else
+			{
+				/*
+				if (keycode == 112)// F1
+				{
+					Open();
+				}*/
+			}
+			
 		}
 
-		private void OnCreate0()
+		private async void OnPlay()
+		{
+			//OnPlayCallback(selectedCharacterId);
+			Close();
+		}
+
+		private void OnCreate()
 		{
 			OnCreateCallback();
 		}
 
-		private void OnSelect0(System.Guid selectedCharacterId)
+		private void OnSelect(System.Guid selectedCharacterId)
 		{
 			this.selectedCharacterId = selectedCharacterId;
 			OnSelectCallback(selectedCharacterId);
 		}
 
-		private void OnDelete0()
+		private void OnDelete()
 		{
 			OnDeleteCallback(selectedCharacterId);
 		}
@@ -200,7 +268,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiNewCharacterPanel.SetAlignment(VAlignment.Top);
 			uiNewCharacterPanel.SetProperties(UiElement.FLOATING | UiElement.COLLISION_PARENT | UiElement.SELECTABLE | UiElement.MOVABLE | UiElement.RESIZEABLE);
 			inputsOnMouseMove.Add(uiNewCharacterPanel.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiNewCharacterPanel.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiNewCharacterPanel.OnMouseButton);
 			uiMain.AddElement(uiNewCharacterPanel);
 
 			UiPanel uiNewCharacterHeaderPanel = new UiPanel();
@@ -262,7 +330,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiEditForename.SetProperties(UiElement.CANFOCUS | UiElement.SELECTABLE);
 			uiEditForename.RegisterOnTextChanged(OnTextChanged);
 			inputsOnMouseMove.Add(uiEditForename.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiEditForename.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiEditForename.OnMouseButton);
 			inputsOnKey.Add(uiEditForename.OnKey);
 			uiNewCharacterEditPanelRight.AddElement(uiEditForename);
 
@@ -274,7 +342,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiEditMiddlename.SetProperties(UiElement.CANFOCUS | UiElement.SELECTABLE);
 			uiEditMiddlename.RegisterOnTextChanged(OnTextChanged);
 			inputsOnMouseMove.Add(uiEditMiddlename.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiEditMiddlename.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiEditMiddlename.OnMouseButton);
 			inputsOnKey.Add(uiEditMiddlename.OnKey);
 			uiNewCharacterEditPanelRight.AddElement(uiEditMiddlename);
 
@@ -286,7 +354,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiEditLastname.SetProperties(UiElement.CANFOCUS | UiElement.SELECTABLE);
 			uiEditLastname.RegisterOnTextChanged(OnTextChanged);
 			inputsOnMouseMove.Add(uiEditLastname.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiEditLastname.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiEditLastname.OnMouseButton);
 			inputsOnKey.Add(uiEditLastname.OnKey);
 			uiNewCharacterEditPanelRight.AddElement(uiEditLastname);
 
@@ -298,7 +366,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiEditGender.SetProperties(UiElement.CANFOCUS | UiElement.SELECTABLE);
 			uiEditGender.RegisterOnTextChanged(OnTextChanged);
 			inputsOnMouseMove.Add(uiEditGender.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiEditGender.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiEditGender.OnMouseButton);
 			inputsOnKey.Add(uiEditGender.OnKey);
 			uiNewCharacterEditPanelRight.AddElement(uiEditGender);
 
@@ -323,9 +391,9 @@ namespace Gaston11276.Playercharacters.Client
 			uiCreateCharacterButton.SetProperties(UiElement.CANFOCUS);
 			uiCreateCharacterButton.RegisterOnDisableCallback(uiCreateCharacterButton.OnDisable);
 			uiCreateCharacterButton.RegisterOffDisableCallback(uiCreateCharacterButton.OffDisable);
-			uiCreateCharacterButton.RegisterOnLMBRelease(OnCreate0);
+			uiCreateCharacterButton.RegisterOnLMBRelease(OnCreate);
 			inputsOnMouseMove.Add(uiCreateCharacterButton.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiCreateCharacterButton.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiCreateCharacterButton.OnMouseButton);
 			uiNewCharacterButtonsPanel.AddElement(uiCreateCharacterButton);
 
 
@@ -344,7 +412,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiCharactersPanel.SetProperties(UiElement.FLOATING | UiElement.COLLISION_PARENT | UiElement.MOVABLE | UiElement.RESIZEABLE);
 			uiCharactersPanel.RegisterOnShowCallback(LoadCharacters);
 			inputsOnMouseMove.Add(uiCharactersPanel.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiCharactersPanel.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiCharactersPanel.OnMouseButton);
 			uiMain.AddElement(uiCharactersPanel);
 
 			UiPanel uiCharactersHeaderPanel = new UiPanel();
@@ -388,9 +456,9 @@ namespace Gaston11276.Playercharacters.Client
 			uiCharactersButtonPlay.RegisterOnDisableCallback(uiCharactersButtonPlay.OnDisable);
 			uiCharactersButtonPlay.RegisterOffDisableCallback(uiCharactersButtonPlay.OffDisable);
 			uiCharactersButtonPlay.SetFlags(UiElement.DISABLED);
-			uiCharactersButtonPlay.RegisterOnLMBRelease(OnPlay0);
+			uiCharactersButtonPlay.RegisterOnLMBRelease(OnPlay);
 			inputsOnMouseMove.Add(uiCharactersButtonPlay.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiCharactersButtonPlay.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiCharactersButtonPlay.OnMouseButton);
 			uiCharactersButtonsLeft.AddElement(uiCharactersButtonPlay);
 
 			uiCharactersButtonDelete = new Textbox();
@@ -401,9 +469,9 @@ namespace Gaston11276.Playercharacters.Client
 			uiCharactersButtonDelete.RegisterOnDisableCallback(uiCharactersButtonDelete.OnDisable);
 			uiCharactersButtonDelete.RegisterOffDisableCallback(uiCharactersButtonDelete.OffDisable);
 			uiCharactersButtonDelete.SetFlags(UiElement.DISABLED);
-			uiCharactersButtonDelete.RegisterOnLMBRelease(OnDelete0);
+			uiCharactersButtonDelete.RegisterOnLMBRelease(OnDelete);
 			inputsOnMouseMove.Add(uiCharactersButtonDelete.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiCharactersButtonDelete.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiCharactersButtonDelete.OnMouseButton);
 			uiCharactersButtonsLeft.AddElement(uiCharactersButtonDelete);
 
 			Textbox uiCharactersButtonNew = new Textbox();
@@ -413,7 +481,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiCharactersButtonNew.SetProperties(UiElement.CANFOCUS);
 			uiCharactersButtonNew.RegisterOnLMBRelease(ToggleCreator);
 			inputsOnMouseMove.Add(uiCharactersButtonNew.OnCursorMove);
-			inputsOnLeftMouseButton.Add(uiCharactersButtonNew.OnLeftMouseButton);
+			inputsOnMouseButton.Add(uiCharactersButtonNew.OnMouseButton);
 			uiCharactersButtonsRight.AddElement(uiCharactersButtonNew);
 		}
 

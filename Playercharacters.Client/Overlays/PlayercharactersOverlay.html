@@ -1,28 +1,122 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<style type="text/css">
-			html, body {
-				width: 100vw;
-				height: 100vh;
-				margin: 0;
-				overflow: hidden;
-				font-size: 10vh;
-				user-select: none;
-				outline: none;
-				background-color: transparent;
-			}
-		</style>
+	<title>Page Title</title>
 
-		<script>
-			nfive.show();
-		</script>
-	</head>
+	<style type="text/css">
+		html, body {
+			width: 100vw;
+			height: 100vh;
+			margin: 0;
+			overflow: hidden;
+			font-size: 10vh;
+			user-select: none;
+			outline: none;
+			background-color: transparent;
+		}
+	</style>
 
-	<body>
 
-	</body>
+	<script>
+		//nfive.show();
+	</script>
+
+	<script>
+		'use strict';
+
+		document.addEventListener('keypress', (event) => {
+			const keyName = event.key;
+			nfive.send('OnKeyPress', event.keyCode);
+			//}
+		}, false);
+
+		document.addEventListener('keydown', (event) => {
+			const keyName = event.key;
+
+			//if (keyName === 'Control') {
+			//	// do not alert when only Control key is pressed.
+			//	return;
+			//}
+
+			//if (event.ctrlKey) {
+			//	// Even though event.key is not 'Control' (e.g., 'a' is pressed),
+			//	// event.ctrlKey may be true if Ctrl key is pressed at the same time.
+			//	alert(`Combination of ctrlKey + ${keyName}`);
+			//} else {
+			//alert(`Key pressed ${keyName}`);
+
+			nfive.send('OnKeyDown', event.keyCode);
+			//}
+		}, false);
+
+		document.addEventListener('keyup', (event) => {
+			const keyName = event.key;
+			nfive.send('OnKeyUp', event.keyCode);
+		}, false);
+
+	</script>
+
+
+	<script>
+		'use strict';
+		
+		//document.addEventListener('click', (event) => {
+		//	nfive.send('OnMouseButtonPress', event.button, event.clientX, event.clientY);
+		//}, false);
+
+		document.addEventListener('mousedown', (event) => {
+			nfive.send('OnMouseButtonDown', event.button, event.clientX, event.clientY);
+		}, false);
+
+		document.addEventListener('mouseup', (event) => {
+			nfive.send('OnMouseButtonRelease', event.button, event.clientX, event.clientY);
+		}, false);
+
+		document.addEventListener('mousemove', (event) => {
+			nfive.send('OnMouseMove', event.clientX, event.clientY)
+		}, false);
+
+	</script>
+
+
+
+
+</head>
+
+<body>
+
+
+	<!--
+	<input type="text" onkeydown="keyCode(event)">
+	<script>
+		function keyCode(event) {
+			var x = event.keyCode;
+			nfive.send('OnKeyCode', x);
+
+			//var x = event.keyCode;
+			//if (x == 27) {
+			//	alert("Someone_clicked_accidentally_escape_Button");
+			//}
+		}
+	</script>
+		-->
+
+
+	<!---
+	<input type="text" size="80" onkeydown="keyCode(event)">
+	<script>
+		function keyCode(event) {
+			nfive.send('keyCode', event);
+
+			//var x = event.keyCode;
+			//if (x == 27) {
+			//	alert("Someone_clicked_accidentally_escape_Button");
+			//}
+		}
+	</script>
+		-->
+</body>
 </html>

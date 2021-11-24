@@ -155,7 +155,7 @@ namespace Gaston11276.Playercharacters.Client
 			headoverlay.btnIndexDecrease.SetProperties(UiElement.CANFOCUS);
 			headoverlay.btnIndexDecrease.RegisterOnLMBRelease(headoverlay.DecreaseIndex);
 			inputsOnMouseMove.Add(headoverlay.btnIndexDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(headoverlay.btnIndexDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(headoverlay.btnIndexDecrease.OnMouseButton);
 			uiColumnIndexDecrease.AddElement(headoverlay.btnIndexDecrease);
 
 			headoverlay.btnIndexIncrease.SetText("+");
@@ -163,7 +163,7 @@ namespace Gaston11276.Playercharacters.Client
 			headoverlay.btnIndexIncrease.SetProperties(UiElement.CANFOCUS);
 			headoverlay.btnIndexIncrease.RegisterOnLMBRelease(headoverlay.IncreaseIndex);
 			inputsOnMouseMove.Add(headoverlay.btnIndexIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(headoverlay.btnIndexIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(headoverlay.btnIndexIncrease.OnMouseButton);
 			uiColumnIndexIncrease.AddElement(headoverlay.btnIndexIncrease);
 
 			headoverlay.uiColorId.SetPadding(new UiRectangle(defaultPadding));
@@ -175,7 +175,7 @@ namespace Gaston11276.Playercharacters.Client
 			headoverlay.btnColorIdDecrease.SetProperties(UiElement.CANFOCUS);
 			headoverlay.btnColorIdDecrease.RegisterOnLMBRelease(headoverlay.DecreaseColor);
 			inputsOnMouseMove.Add(headoverlay.btnColorIdDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(headoverlay.btnColorIdDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(headoverlay.btnColorIdDecrease.OnMouseButton);
 			uiColumnColorDecrease.AddElement(headoverlay.btnColorIdDecrease);
 
 			headoverlay.btnColorIdIncrease.SetText("+");
@@ -183,7 +183,7 @@ namespace Gaston11276.Playercharacters.Client
 			headoverlay.btnColorIdIncrease.SetProperties(UiElement.CANFOCUS);
 			headoverlay.btnColorIdIncrease.RegisterOnLMBRelease(headoverlay.IncreaseColor);
 			inputsOnMouseMove.Add(headoverlay.btnColorIdIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(headoverlay.btnColorIdIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(headoverlay.btnColorIdIncrease.OnMouseButton);
 			uiColumnColorIncrease.AddElement(headoverlay.btnColorIdIncrease);
 
 			// Opacity
@@ -196,7 +196,7 @@ namespace Gaston11276.Playercharacters.Client
 			headoverlay.btnOpacityDecrease.SetProperties(UiElement.CANFOCUS);
 			headoverlay.btnOpacityDecrease.RegisterOnLMBRelease(headoverlay.DecreaseOpacity);
 			inputsOnMouseMove.Add(headoverlay.btnOpacityDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(headoverlay.btnOpacityDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(headoverlay.btnOpacityDecrease.OnMouseButton);
 			uiColumnOpacityDecrease.AddElement(headoverlay.btnOpacityDecrease);
 
 			headoverlay.btnOpacityIncrease.SetText("+");
@@ -204,7 +204,7 @@ namespace Gaston11276.Playercharacters.Client
 			headoverlay.btnOpacityIncrease.SetProperties(UiElement.CANFOCUS);
 			headoverlay.btnOpacityIncrease.RegisterOnLMBRelease(headoverlay.IncreaseOpacity);
 			inputsOnMouseMove.Add(headoverlay.btnOpacityIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(headoverlay.btnOpacityIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(headoverlay.btnOpacityIncrease.OnMouseButton);
 			uiColumnOpacityIncrease.AddElement(headoverlay.btnOpacityIncrease);
 
 			headoverlay.GetIndexMax = GetHeadOverlayIndexMax;
@@ -241,7 +241,7 @@ namespace Gaston11276.Playercharacters.Client
 			entry.btnIndexDecrease.SetProperties(UiElement.CANFOCUS);
 			entry.btnIndexDecrease.RegisterOnLMBRelease(entry.DecreaseIndex);
 			inputsOnMouseMove.Add(entry.btnIndexDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(entry.btnIndexDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(entry.btnIndexDecrease.OnMouseButton);
 			uiColumnHairIndexDecrease.AddElement(entry.btnIndexDecrease);
 
 			entry.btnIndexIncrease.SetText("+");
@@ -249,7 +249,7 @@ namespace Gaston11276.Playercharacters.Client
 			entry.btnIndexIncrease.SetProperties(UiElement.CANFOCUS);
 			entry.btnIndexIncrease.RegisterOnLMBRelease(entry.IncreaseIndex);
 			inputsOnMouseMove.Add(entry.btnIndexIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(entry.btnIndexIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(entry.btnIndexIncrease.OnMouseButton);
 			uiColumnHairIndexIncrease.AddElement(entry.btnIndexIncrease);
 
 			// Color 1
@@ -262,7 +262,7 @@ namespace Gaston11276.Playercharacters.Client
 			entry.btnColorIdDecrease.SetProperties(UiElement.CANFOCUS);
 			entry.btnColorIdDecrease.RegisterOnLMBRelease(entry.DecreaseColor);
 			inputsOnMouseMove.Add(entry.btnColorIdDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(entry.btnColorIdDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(entry.btnColorIdDecrease.OnMouseButton);
 			uiColumnHairColorDecrease.AddElement(entry.btnColorIdDecrease);
 
 			entry.btnColorIdIncrease.SetText("+");
@@ -270,7 +270,7 @@ namespace Gaston11276.Playercharacters.Client
 			entry.btnColorIdIncrease.SetProperties(UiElement.CANFOCUS);
 			entry.btnColorIdIncrease.RegisterOnLMBRelease(entry.IncreaseColor);
 			inputsOnMouseMove.Add(entry.btnColorIdIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(entry.btnColorIdIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(entry.btnColorIdIncrease.OnMouseButton);
 			uiColumnHairColorIncrease.AddElement(entry.btnColorIdIncrease);
 
 			// Color 2
@@ -283,7 +283,7 @@ namespace Gaston11276.Playercharacters.Client
 			entry.btnSecondaryColorIdDecrease.SetProperties(UiElement.CANFOCUS);
 			entry.btnSecondaryColorIdDecrease.RegisterOnLMBRelease(entry.DecreaseSecondaryColor);
 			inputsOnMouseMove.Add(entry.btnSecondaryColorIdDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(entry.btnSecondaryColorIdDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(entry.btnSecondaryColorIdDecrease.OnMouseButton);
 			uiColumnHairSecondaryColorDecrease.AddElement(entry.btnSecondaryColorIdDecrease);
 
 			entry.btnSecondaryColorIdIncrease.SetText("+");
@@ -291,7 +291,7 @@ namespace Gaston11276.Playercharacters.Client
 			entry.btnSecondaryColorIdIncrease.SetProperties(UiElement.CANFOCUS);
 			entry.btnSecondaryColorIdIncrease.RegisterOnLMBRelease(entry.IncreaseSecondaryColor);
 			inputsOnMouseMove.Add(entry.btnSecondaryColorIdIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(entry.btnSecondaryColorIdIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(entry.btnSecondaryColorIdIncrease.OnMouseButton);
 			uiColumnHairSecondaryColorIncrease.AddElement(entry.btnSecondaryColorIdIncrease);
 
 			entry.GetNumberOfHairIndex = GetNumberOfPedHairVariations;
@@ -327,7 +327,7 @@ namespace Gaston11276.Playercharacters.Client
 			entry.btnIndexDecrease.SetProperties(UiElement.CANFOCUS);
 			entry.btnIndexDecrease.RegisterOnLMBRelease(entry.DecreaseIndex);
 			inputsOnMouseMove.Add(entry.btnIndexDecrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(entry.btnIndexDecrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(entry.btnIndexDecrease.OnMouseButton);
 			uiColumnHairIndexDecrease.AddElement(entry.btnIndexDecrease);
 
 			entry.btnIndexIncrease.SetText("+");
@@ -335,7 +335,7 @@ namespace Gaston11276.Playercharacters.Client
 			entry.btnIndexIncrease.SetProperties(UiElement.CANFOCUS);
 			entry.btnIndexIncrease.RegisterOnLMBRelease(entry.IncreaseIndex);
 			inputsOnMouseMove.Add(entry.btnIndexIncrease.OnCursorMove);
-			inputsOnLeftMouseButton.Add(entry.btnIndexIncrease.OnLeftMouseButton);
+			inputsOnMouseButton.Add(entry.btnIndexIncrease.OnMouseButton);
 			uiColumnHairIndexIncrease.AddElement(entry.btnIndexIncrease);
 
 			entry.GetNumberOfEyeColors = GetNumberOfPedEyeColors;
