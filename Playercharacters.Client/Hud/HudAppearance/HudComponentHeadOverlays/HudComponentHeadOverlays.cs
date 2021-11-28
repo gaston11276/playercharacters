@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Gaston11276.SimpleUi;
@@ -6,8 +5,6 @@ using Gaston11276.Playercharacters.Shared.Models;
 
 namespace Gaston11276.Playercharacters.Client
 {
-	
-
 	public class HudComponentHeadOverlays : HudComponent
 	{
 		// Upper panel columns

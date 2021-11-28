@@ -11,15 +11,6 @@ using Gaston11276.Playercharacters.Shared.Models;
 
 namespace Gaston11276.Playercharacters.Client
 {
-	public enum eDecorType
-	{
-		Float = 1,
-		Bool,
-		Int,
-		Unk,
-		Time
-	};
-
 	public class DecorationTattoo
 	{
 		public DecorationZone zone;

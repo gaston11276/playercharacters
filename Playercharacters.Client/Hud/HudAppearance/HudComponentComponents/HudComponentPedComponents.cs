@@ -1,4 +1,3 @@
-
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Gaston11276.SimpleUi;

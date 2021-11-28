@@ -1,13 +1,10 @@
-using NFive.SDK.Core.Diagnostics;
+using System.Threading.Tasks;
 using Gaston11276.SimpleUi;
-using Gaston11276.Playercharacters.Shared.Models;
 
 namespace Gaston11276.Playercharacters.Client
 {
-	class UiEntrySpawnPosition
+	class UiEntrySpawnPosition : HudEntry
 	{
-		ILogger Logger;
-
 		public Textbox uiLabel = new Textbox();
 		public Textbox uiSpawnName = new Textbox();
 		public Textbox uiSpawnIndex = new Textbox();
@@ -29,15 +26,11 @@ namespace Gaston11276.Playercharacters.Client
 			
 		}
 
-		public void SetLogger(ILogger Logger)
-		{
-			this.Logger = Logger;
-		}
-
-		public void SetUi()
+		public async Task SetUi()
 		{
 			uiSpawnIndex.SetText($"{GetIndex()}/{GetIndexMax()}");
 			uiSpawnName.SetText($"{GetName()}");
+			await Delay(HudComponent.delayMs);
 		}
 
 		public void IncreaseIndex()

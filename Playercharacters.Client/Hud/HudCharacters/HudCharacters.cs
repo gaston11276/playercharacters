@@ -7,7 +7,6 @@ namespace Gaston11276.Playercharacters.Client
 {
 	class HudCharacters : Hud
 	{
-		public delegate void fpVoid();
 		public delegate void fpGuid(System.Guid Id);
 
 		protected List<fpVoid> onCreatorOpenCallbacks = new List<fpVoid>();

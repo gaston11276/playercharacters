@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using NFive.SDK.Core.Diagnostics;
 using Gaston11276.SimpleUi;
 using Gaston11276.Playercharacters.Client.Models;
@@ -19,10 +18,9 @@ namespace Gaston11276.Playercharacters.Client
 
 		protected Character character;
 
-		public delegate void OnSaveCharacter();
-		protected OnSaveCharacter SaveCharacterCallback;
-		public delegate void OnRevertCharacter();
-		protected OnRevertCharacter RevertCharacterCallback;
+		public delegate void fpVoid();
+		protected fpVoid SaveCharacterCallback;
+		protected fpVoid RevertCharacterCallback;
 
 		protected UiPanel uiAppearanceMain;
 		protected Textbox uiHeader = new Textbox();
@@ -50,7 +48,6 @@ namespace Gaston11276.Playercharacters.Client
 
 		public virtual async void SetUi()
 		{
-			//uiAppearanceMain.FirstBuild();
 			await Delay(delayMs);
 		}
 
@@ -101,17 +98,15 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			this.camera?.SetMode(cameraMode);
 			uiAppearanceMain.ClearFlags(UiElement.HIDDEN);
-			//SetUi();
 			OnOpen();
-
-			
 		}
+
 		public void Close()
 		{
 			uiAppearanceMain.SetFlags(UiElement.HIDDEN);
-
 			OnClose();
 		}
+
 		public bool IsOpen()
 		{
 			return ((uiAppearanceMain.GetFlags() & UiElement.HIDDEN) == 0);
@@ -122,11 +117,12 @@ namespace Gaston11276.Playercharacters.Client
 			this.character = character;
 		}
 
-		public void RegisterSaveCharacter(OnSaveCharacter SaveCharacterCallback)
+		public void RegisterSaveCharacter(fpVoid SaveCharacterCallback)
 		{
 			this.SaveCharacterCallback = SaveCharacterCallback;
 		}
-		public void RegisterRevertCharacter(OnRevertCharacter RevertCharacterCallback)
+
+		public void RegisterRevertCharacter(fpVoid RevertCharacterCallback)
 		{
 			this.RevertCharacterCallback = RevertCharacterCallback;
 		}
@@ -192,8 +188,6 @@ namespace Gaston11276.Playercharacters.Client
 			
 			CreateColumns();
 			CreateContent();
-
-			
 		}
 
 		protected void CreateApplyCancelButtons()

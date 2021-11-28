@@ -28,19 +28,16 @@ namespace Gaston11276.Playercharacters.Client
 		public Textbox btnIndexDecrease = new Textbox();
 		public Textbox btnIndexIncrease = new Textbox();
 
-		public delegate void SetModelIndex(int index);
-		public SetModelIndex SetIndex;
-		public delegate int GetModelIndex();
-		public GetModelIndex GetIndex;
-		public GetModelIndex GetIndexMax;
+		public delegate void fpSetInt(int index);
+		public fpSetInt SetIndex;
+		public delegate int fpGetInt();
+		public fpGetInt GetIndex;
+		public fpGetInt GetIndexMax;
 
-		//public delegate void SetModelName(string name);
-		//public SetModelIndex SetName;
-		public delegate string GetModelName(int index);
-		public GetModelName GetName;
+		public delegate string fpGetString(int index);
+		public fpGetString GetName;
 
 		int currentIndex;
-
 
 		public UiEntryModel()
 		{
@@ -61,10 +58,6 @@ namespace Gaston11276.Playercharacters.Client
 
 		public void IncreaseIndex()
 		{
-			
-
-			//int index = GetIndex();
-			Logger.Debug($"Increasing index {currentIndex}");
 			int indexMax = GetIndexMax();
 			currentIndex++;
 
@@ -73,24 +66,22 @@ namespace Gaston11276.Playercharacters.Client
 				currentIndex = indexMax;
 			}
 
-			Logger.Debug($"Increasing index to {currentIndex}");
 			uiIndex.SetText($"{currentIndex}/{indexMax}");
 			SetIndex(currentIndex);
 		}
 
 		public void DecreaseIndex()
 		{
-			int index = GetIndex();
 			int indexMax = GetIndexMax();
-			index--;
+			currentIndex--;
 
-			if (index < 0)
+			if (currentIndex < 0)
 			{
-				index = 0;
+				currentIndex = 0;
 			}
 
-			uiIndex.SetText($"{index}/{indexMax}");
-			SetIndex(index);
+			uiIndex.SetText($"{currentIndex}/{indexMax}");
+			SetIndex(currentIndex);
 		}
 	}
 
@@ -110,10 +101,9 @@ namespace Gaston11276.Playercharacters.Client
 
 		public HudComponentModel()
 		{
+			cameraMode = CameraMode.Front;
 			modelData = new List<ModelData>();
 			CreateModelData(modelData);
-
-			cameraMode = CameraMode.Front;
 		}
 
 		public override void CreateColumns()
@@ -167,8 +157,6 @@ namespace Gaston11276.Playercharacters.Client
 			entry.GetIndex = GetModelIndex;
 			entry.SetIndex = SetModelIndex;
 			entry.GetName= GetModelName;
-			//entry.SetName= SetModelName;
-
 
 			return entry;
 		}
@@ -176,10 +164,7 @@ namespace Gaston11276.Playercharacters.Client
 		public override void CreateContent()
 		{
 			uiHeader.SetText("Model");
-
 			uiModel = CreateEntry(0, "Model");
-
-			
 		}
 
 

@@ -10,15 +10,6 @@ namespace Gaston11276.Playercharacters.Client
 	public class HudComponentDecorations : HudComponent
 	{
 		public List<DecorationTattooZoneGroup> m_available_tattoos = new List<DecorationTattooZoneGroup>();
-		//public List<DecorationTattooZone> m_applied_tattoos = new List<DecorationTattooZone>();
-
-		//public int m_current_tattoo_group_index;
-		//public int m_current_tattoo_index;
-
-		//UiPanel uiColumnZoneLabels = new UiPanel();
-		//UiPanel uiColumnIndex = new UiPanel();
-		//UiPanel uiColumnDecrease = new UiPanel();
-		//UiPanel uiColumnIncrease = new UiPanel();
 
 		UiPanel uiPage01 = new UiPanel();
 		UiPanel uiPage02 = new UiPanel();
@@ -107,19 +98,9 @@ namespace Gaston11276.Playercharacters.Client
 		UiEntryDecoration Face;
 		UiEntryDecoration Unknown;
 
-		public delegate void Action();
-		//Action hej = Test1;
-		Task t1;
-		Task t2;
-		Task t3;
-
-
 		public HudComponentDecorations()
 		{
 			cameraMode = CameraMode.Front;
-
-			//m_current_tattoo_group_index = 0;
-			//m_current_tattoo_index = -1;
 
 			List<DecorationTattoo> tmp_list = new List<DecorationTattoo>();
 			Tattoos.CreateTattoos(ref tmp_list);
@@ -219,108 +200,10 @@ namespace Gaston11276.Playercharacters.Client
 			await Unknown.SetUi();
 		}
 
-		void Test1()
-		{
-			Logger.Debug("Test 1 starting.");
-
-			if (t2 == null)
-			{
-				Logger.Debug($"Creating new tast for Task 2.");
-				t2 = new Task(Test2);
-			}
-
-			if (t3 == null)
-			{
-				Logger.Debug($"Creating new tast for Task 3.");
-				t3 = new Task(Test3);
-			}
-
-			if (t2.Status == TaskStatus.Running)
-			{
-				Logger.Debug($"Task 2 is still running");
-			}
-			else
-			{
-				Logger.Debug($"Starting Task 2.");
-				t2.Start();
-			}
-
-			if (t3.Status == TaskStatus.Running)
-			{
-				Logger.Debug($"Task 3 is still running");
-			}
-			else
-			{
-				Logger.Debug($"Starting Task 3.");
-				t3.Start();
-			}
-
-			//Logger.Debug($"Status2: {t2.Status}");
-			//Logger.Debug($"Status2: {t3.Status}");
-			
-			if (t2.IsCompleted)
-			{
-				Logger.Debug("Test 2 seems completed.");
-			}
-
-			if (t3.IsCompleted)
-			{
-				Logger.Debug("Test 3 seems completed.");
-			}
-
-
-
-			//t2.Wait();
-			//Logger.Debug("Test 1: Test 2 finished.");
-
-			//t3.Wait();
-			//Logger.Debug("Test 1: Test 3 finished.");
-
-			Logger.Debug("Test 1 finished.");
-
-		}
-
-		void Test2()
-		{
-			Logger.Debug("Test 2 starting.");
-
-			int i = 10;
-			while (i > 0)
-			{
-				Logger.Debug($"Test 2 working... {i--}");
-				Task.Delay(1000);
-			}
-
-			Logger.Debug("Test 2 finished.");
-		}
-
-		void Test3()
-		{
-			Logger.Debug("Test 3 starting.");
-
-			int i = 20;
-			while (i > 0)
-			{
-				Logger.Debug($"Test 3 working... {i--}");
-				Task.Delay(600);
-			}
-
-			Logger.Debug("Test 3 finished.");
-		}
-
-		void SetDecorationUi()
-		{
-			
-
-			Logger.Debug("Setting UiDecoration finished.");
-		}
-
 		private UiEntryDecoration CreateTattooEntry(UiPanel page, DecorationZone zone, string label)
 		{
 			cameraMode = CameraMode.Face;
-
 			float defaultPadding = 0.0025f;
-
 
 			UiPanel columnZoneLabels = (UiPanel)page.GetElement(0);
 			UiPanel columnName = (UiPanel)page.GetElement(1);
@@ -835,11 +718,9 @@ namespace Gaston11276.Playercharacters.Client
 			contentFrame.AddElement(uiPages);
 			uiPages.SetMoveFlags(UiElement.HIDDEN);
 
-
 			// Buttons
 			UiPanel uiPagesButtons = new UiPanel();
 			uiPagesButtons.SetPadding(new UiRectangle(defaultPadding));
-			//uiPagesButtons.SetGravity(HGravity.Right);
 			uiPagesButtons.SetFlags(UiElement.TRANSPARENT);
 			contentFrame.AddElement(uiPagesButtons);
 
@@ -865,8 +746,6 @@ namespace Gaston11276.Playercharacters.Client
 			inputsOnMouseMove.Add(uiButtonNext.OnCursorMove);
 			inputsOnMouseButton.Add(uiButtonNext.OnMouseButton);
 			uiPagesButtons.AddElement(uiButtonNext);
-
-
 			
 			uiPage01.SetPadding(new UiRectangle(defaultPadding));
 			CreatePageColumns(uiPage01);
@@ -901,10 +780,6 @@ namespace Gaston11276.Playercharacters.Client
 			uiPage07.SetPadding(new UiRectangle(defaultPadding));
 			CreatePageColumns(uiPage07);
 			uiPages.AddElement(uiPage07);
-
-			
-
-
 		}
 
 		protected void CreatePageColumns(UiPanel uiPage)
@@ -1031,31 +906,14 @@ namespace Gaston11276.Playercharacters.Client
 				return "None";
 			}
 
-			//Logger.Debug("-------------------------");
-			//Logger.Debug($"GetName() Zone {(int)zone}{zone} - Index {index}");
-			//Logger.Debug($"Number of zones {m_available_tattoos.Count} - Index {index}");
-
-
 			if ((int)zone < m_available_tattoos.Count)
 			{
-				//Logger.Debug($"Number of indexes: {m_available_tattoos[(int)zone].tattoos.Count}");
 				if (index < m_available_tattoos[(int)zone].tattoos.Count)
 				{
 					return m_available_tattoos[(int)zone].tattoos[index].overlay_str;
 				}
-				else
-				{
-					Logger.Debug($"ERROR: Index {index} ouotside range of zone {zone} {(int)zone}/{m_available_tattoos[(int)zone].tattoos.Count}");
-				}
 			}
-			else
-			{
-				Logger.Debug($"ERROR: Zone {zone} {(int)zone} outside range {m_available_tattoos.Count}");
-			}
-
-
-			return "Error";
-
+			return "Missing";
 		}
 
 		private int GetNumberOfTattoos(DecorationZone zone)

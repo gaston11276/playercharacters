@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
-using System.Drawing;
 using JetBrains.Annotations;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
@@ -139,8 +138,6 @@ namespace Gaston11276.Playercharacters.Client
 			int screenWidth = new int();
 			int screenHeight = new int();
 			API.GetActiveScreenResolution(ref screenWidth, ref screenHeight);
-			//Logger.Debug($"Active resolution: {screenWidth} {screenHeight}");
-			//Logger.Debug($"Aspect: {API.GetAspectRatio(true)} {API.GetAspectRatio(false)} - {API.GetScreenAspectRatio(true)} {API.GetScreenAspectRatio(false)}");
 			hudCharacters.SetResolution(screenWidth, screenHeight);
 			hudCharacters.Refresh();
 			hudAppearance.SetResolution(screenWidth, screenHeight);

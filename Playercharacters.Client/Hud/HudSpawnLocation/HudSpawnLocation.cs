@@ -1,9 +1,7 @@
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
-
 using NFive.SDK.Core.Diagnostics;
-using Gaston11276.SimpleUi;
-using Gaston11276.Playercharacters.Client.Models;
+
 
 namespace Gaston11276.Playercharacters.Client
 {
@@ -11,12 +9,10 @@ namespace Gaston11276.Playercharacters.Client
 	{
 		UiSpawnPosition uiSpawnLocation;
 
-
 		public HudSpawnLocation()
 		{
 			uiSpawnLocation = new UiSpawnPosition();
-			uiSpawnLocation.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
-			
+			uiSpawnLocation.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);			
 		}
 
 		protected override void OnOpen()
@@ -26,7 +22,6 @@ namespace Gaston11276.Playercharacters.Client
 			API.FreezePedCameraRotation(Game.PlayerPed.Handle);
 			
 			uiSpawnLocation.Open();
-
 			base.OnOpen();
 		}
 
@@ -36,7 +31,6 @@ namespace Gaston11276.Playercharacters.Client
 			Game.Player.Character.Task.ClearAllImmediately();
 			API.RenderScriptCams(false, true, 200, true, true);
 			uiSpawnLocation.Close();
-
 			base.OnClose();
 		}
 
@@ -61,14 +55,6 @@ namespace Gaston11276.Playercharacters.Client
 					Close();
 				}
 			}
-			else
-			{
-				/*if (keycode == 113)// F2
-				{
-					Open();
-				}*/
-			}
-
 		}
 
 		public override void CreateUi()
@@ -76,12 +62,6 @@ namespace Gaston11276.Playercharacters.Client
 			base.CreateUi();
 			uiSpawnLocation.SetLogger(Logger);
 			uiSpawnLocation.CreateUi(uiMain);
-		}
-
-		public override void Open()
-		{
-			base.Open();
-			
 		}
 	}
 }

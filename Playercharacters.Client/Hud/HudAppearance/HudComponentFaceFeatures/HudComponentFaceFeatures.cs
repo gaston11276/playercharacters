@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Gaston11276.SimpleUi;
-using Gaston11276.Playercharacters.Client.Models;
 using Gaston11276.Playercharacters.Shared.Models;
 
 namespace Gaston11276.Playercharacters.Client
@@ -41,7 +38,6 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			cameraMode = CameraMode.Face;
 		}
-
 
 		public override async void SetUi()
 		{
@@ -267,9 +263,6 @@ namespace Gaston11276.Playercharacters.Client
 			ApplyToPed(type, value);
 		}
 
-		
-
-		
 		public void ApplyToPed(PedFaceFeatureType type, float value)
 		{
 			API.SetPedFaceFeature(Game.PlayerPed.Handle, (int)type, value);

@@ -15,8 +15,6 @@ namespace Gaston11276.Playercharacters.Client
 		public delegate int GetEyeColor();
 		public GetEyeColor GetColor;
 		public GetEyeColor GetNumberOfEyeColors;
-
-
 		public UiEntryEyeColor()
 		{
 		}

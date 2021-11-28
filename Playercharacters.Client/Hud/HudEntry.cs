@@ -1,6 +1,4 @@
 using NFive.SDK.Core.Diagnostics;
-using Gaston11276.SimpleUi;
-using Gaston11276.Playercharacters.Shared.Models;
 
 namespace Gaston11276.Playercharacters.Client
 {
@@ -8,7 +6,6 @@ namespace Gaston11276.Playercharacters.Client
 	{
 		protected fpDelay Delay;
 		protected ILogger Logger;
-
 
 		public HudEntry()
 		{ }

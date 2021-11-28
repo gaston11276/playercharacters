@@ -13,14 +13,13 @@ namespace Gaston11276.Playercharacters.Client
 		Face,
 	}
 
-	
-
 	public class UiCamera
 	{
 		ILogger Logger;
 
 		public const float DegToRad = (float)Math.PI / 180.0f;
 		public const float RadToDeg = 180.0f / (float)Math.PI;
+
 		public static float AngleBetween(Vector3 a, Vector3 b)
 		{
 			double sinA = a.X * b.Y - b.X * a.Y;
@@ -43,10 +42,10 @@ namespace Gaston11276.Playercharacters.Client
 
 		public void SetMode(CameraMode mode)
 		{
-			//Logger.Debug("Setting mode");
 			this.mode = mode;
 			UpdateMode();
 		}
+
 		void UpdateMode()
 		{ 
 			float distance = 3f;
@@ -176,35 +175,21 @@ namespace Gaston11276.Playercharacters.Client
 			{
 				accumulated_rotation = 180f + (accumulated_rotation + 180f);
 			}
-			//debug.Out($"Acc rotation: {accumulated_rotation}");
-
 
 
 			float angle = accumulated_rotation * DegToRad;
-			//debug.Out($"Rad: {angle}");
 
-			Vector3 axis = new Vector3(0f, 0f, 1f);// m_camera.Rotation;
+			Vector3 axis = new Vector3(0f, 0f, 1f);
 			axis.Normalize();
-			if (accumulated_rotation < 0)
-			{
-				//axis *= -1f;
-			}
-			Vector3 vec_ped_to_cam = new Vector3(0f, -1f, 0f);// Game.PlayerPed.ForwardVector;// m_camera.Position - Game.PlayerPed.Position;
+			Vector3 vec_ped_to_cam = new Vector3(0f, -1f, 0f);
 
 			Vector3 pedpos = Game.PlayerPed.Position;
-			Vector3 new_vec_ped_to_cam = Vector3.TransformCoordinate(vec_ped_to_cam, Matrix.RotationAxis(axis, angle));// new Vector3(0f, 0f, 1f), angle));// axis, angle));
+			Vector3 new_vec_ped_to_cam = Vector3.TransformCoordinate(vec_ped_to_cam, Matrix.RotationAxis(axis, angle));
 			new_vec_ped_to_cam.Normalize();
 
 			pedpos.Z += height;
 			camera.Position = pedpos + new_vec_ped_to_cam * distance;
-
-
-
 			camera.Rotation = axis * accumulated_rotation;
-			//debug.Out($"Cam axis: {axis}");
-			//debug.Out($"Cam Rot: {m_camera.Rotation.Length()}");
-
-
 		}
 	}
 }

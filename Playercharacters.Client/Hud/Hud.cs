@@ -29,26 +29,18 @@ namespace Gaston11276.Playercharacters.Client
 		protected ILogger Logger;
 		protected fpDelay Delay;
 
-		public delegate void OnHudOpen();
-		public delegate void OnHudClose();
-
+		public delegate void fpVoid();
 
 		protected List<OnMouseMove> inputsOnMouseMove = new List<OnMouseMove>();
 		protected List<OnMouseButton> inputsOnMouseButton = new List<OnMouseButton>();
 		protected List<OnKey> inputsOnKey = new List<OnKey>();
-		protected List<OnHudOpen> onHudOpenCallbacks = new List<OnHudOpen>();
-		protected List<OnHudClose> onHudCloseCallbacks = new List<OnHudClose>();
+		protected List<fpVoid> onHudOpenCallbacks = new List<fpVoid>();
+		protected List<fpVoid> onHudCloseCallbacks = new List<fpVoid>();
 
 		protected UiPanel uiMain = null;
-
 		protected float defaultPadding = 0.0025f;
-
 		protected List<KeyData> keys;
-		//protected float screenWidth;
-		//protected float screenHeight;
-
 		protected int hotkey;
-
 		public bool isRefreshingUi = false;
 
 		public Hud()
@@ -56,9 +48,6 @@ namespace Gaston11276.Playercharacters.Client
 			uiMain = new UiPanel();
 			InitInput();
 		}
-
-		
-		
 
 		public virtual void SetDelay(fpDelay Delay)
 		{
@@ -69,14 +58,6 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			this.Logger = Logger;
 		}
-
-		/*
-		public void SetResolution(float screenWidth, float screenHeight)
-		{
-			this.screenWidth = screenWidth;
-			this.screenHeight = screenHeight;
-		}
-		*/
 
 		void AddKeyData(int keycode, InputControl control)
 		{
@@ -118,19 +99,19 @@ namespace Gaston11276.Playercharacters.Client
 		}
 
 
-		public void RegisterOnOpenCallback(OnHudOpen OnOpen)
+		public void RegisterOnOpenCallback(fpVoid OnOpen)
 		{
 			onHudOpenCallbacks.Add(OnOpen);
 		}
 
-		public void RegisterOnCloseCallback(OnHudClose OnClose)
+		public void RegisterOnCloseCallback(fpVoid OnClose)
 		{
 			onHudCloseCallbacks.Add(OnClose);
 		}
 
 		protected virtual void OnOpen()
 		{
-			foreach (OnHudOpen onOpen in onHudOpenCallbacks)
+			foreach (fpVoid onOpen in onHudOpenCallbacks)
 			{
 				onOpen();
 			}
@@ -138,7 +119,7 @@ namespace Gaston11276.Playercharacters.Client
 
 		protected virtual void OnClose()
 		{
-			foreach (OnHudClose onClose in onHudCloseCallbacks)
+			foreach (fpVoid onClose in onHudCloseCallbacks)
 			{
 				onClose();
 			}
@@ -151,18 +132,9 @@ namespace Gaston11276.Playercharacters.Client
 
 		public virtual void OnInputKey(int state, int keycode)
 		{
-			
-
-			//foreach (KeyData keydata in keys)
+			foreach (OnKey OnKey in inputsOnKey)
 			{
-				//if (keydata.hotkey.IsJustReleased())
-				{
-					foreach (OnKey OnKey in inputsOnKey)
-					{
-						//OnKey(keydata.keycode);
-						OnKey(state, keycode);
-					}
-				}
+				OnKey(state, keycode);
 			}
 		}
 
@@ -228,15 +200,7 @@ namespace Gaston11276.Playercharacters.Client
 
 		public void Draw()
 		{
-			if (uiMain != null)
-			{
-				uiMain.Draw();
-			}
-			else
-			{
-				Logger.Debug("Hud: Draw(): ERROR: uiMain is null.");
-			}
-			
+			uiMain.Draw();			
 		}
 
 		public void SetResolution(int width, int height)
@@ -244,6 +208,7 @@ namespace Gaston11276.Playercharacters.Client
 			UiPanel.screenResolutionX = width;
 			UiPanel.screenResolutionY = height;
 		}
+
 		public virtual void CreateUi()
 		{
 			uiMain.SetFlags(UiElement.HIDDEN);
@@ -251,8 +216,6 @@ namespace Gaston11276.Playercharacters.Client
 			uiMain.SetLogger(this.Logger);
 			uiMain.name = "Main";
 
-			//UiPanel.screenResolutionX = 1920;
-			//UiPanel.screenResolutionY = 1080;
 			UiPanel.screenBoundaries = new UiRectangle(0f, 0f, 1f, 1f);
 
 			uiMain.SetFlags(UiElement.TRANSPARENT);
@@ -261,11 +224,6 @@ namespace Gaston11276.Playercharacters.Client
 			uiMain.SetVDimension(Dimension.Max);
 			inputsOnMouseMove.Add(uiMain.OnCursorMove);
 			inputsOnMouseButton.Add(uiMain.OnMouseButton);
-		}
-
-		public virtual void OnInputRMBMouseMoveAxis(int rmb, float axisX, float axisY)
-		{
-
 		}
 
 		public virtual async Task RefreshUi()

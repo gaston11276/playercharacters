@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Gaston11276.SimpleUi;
-using Gaston11276.Playercharacters.Shared.Models;
 
 namespace Gaston11276.Playercharacters.Client
 {
@@ -32,22 +30,20 @@ namespace Gaston11276.Playercharacters.Client
 		UiPanel uiColumnIncrease = new UiPanel();
 
 		UiEntrySpawnPosition uiEntrySpawnPosition;
-
 		List<SpawnPosition> spawnPositions = new List<SpawnPosition>();
 
 		int spawnIndex = 0;
 
-
 		public UiSpawnPosition()
 		{
 			cameraMode = CameraMode.Front;
-
 			CreateSpawnPositions(ref spawnPositions);
 		}
 
-		public void SetUi()
+		public override async void SetUi()
 		{
-			uiEntrySpawnPosition.SetUi();
+			await uiEntrySpawnPosition.SetUi();
+			base.SetUi();
 		}
 
 		public override void CreateColumns()
@@ -224,7 +220,6 @@ namespace Gaston11276.Playercharacters.Client
 			API.SetEntityCoordsNoOffset(ped_id, x, y, z, false, false, false);
 			API.NetworkResurrectLocalPlayer(x, y, z, heading, true, true);
 			API.ClearPedTasksImmediately(ped_id);
-			//RemoveAllPedWeapons(ped_id, false);
 			API.ClearPlayerWantedLevel(Game.Player.Handle);
 		}
 
