@@ -1,14 +1,7 @@
 using System.Collections.Generic;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
-using static CitizenFX.Core.Native.API;
-
-using CitizenFX.Core;
-
 using NFive.SDK.Core.Diagnostics;
-
-
-
 
 namespace Gaston11276.SimpleUi
 {
@@ -17,38 +10,19 @@ namespace Gaston11276.SimpleUi
 		static public ILogger Logger;
 		public System.Guid Id;
 
-		Rectangle rectangle;
-		//Argb color;
-
 		public delegate void OnSelectId(System.Guid id);
 		protected List<OnSelectId> callbacksOnSelectId;
 
 		public UiPanel()
 		{
 			Type = UiElementType.Rectangle;
-
-			//color = colorBackground;
 			callbacksOnSelectId = new List<OnSelectId>();
-
-			// API Specific
-			rectangle = new Rectangle();
 		}
 
-		/*
-		public new void AddElement(UiElement element)
+		public void SetLogger(ILogger Logger)
 		{
-			element.Parent = this;
-			elements.Add(element);
+			UiPanel.Logger = Logger;
 		}
-		*/
-
-		/*
-		public override void SetBackgroundColor(int alpha, int red, int green, int blue)
-		{
-			//colorBackground.SetARGB(alpha, red, green, blue);
-			//currentColorBackground = color;
-		}
-		*/
 
 		public void RegisterOnSelectIdCallback(OnSelectId OnSelectId)
 		{
@@ -81,16 +55,14 @@ namespace Gaston11276.SimpleUi
 			currentColorBackground = colorBackground;
 		}
 
-		public new void OnDisable()
+		public new void OnDisabled()
 		{
 			currentColorBackground = colorDisabled;
-			//Redraw();
 		}
 
-		public new void OffDisable()
+		public new void OffDisabled()
 		{
 			currentColorBackground = colorBackground;
-			//Redraw();
 		}
 
 		protected override void RunOnSelectCallbacks()
@@ -126,41 +98,24 @@ namespace Gaston11276.SimpleUi
 			SetFlags(DISABLED);
 		}
 
-		public void SetLogger(ILogger Logger)
+		public void Select()
 		{
-			UiPanel.Logger = Logger;
+			SetFlags(SELECTED);
 		}
 
-		/*
-		protected override void Redraw()
+		public void Deselect()
 		{
-			
+			ClearFlags(SELECTED);
 		}
-		*/
 
 		public virtual void Draw()
 		{
-			//Logger.Debug($"1 Draw(): {name}");
-			if ((flags & (HIDDEN | DISABLED)) != 0)
+			if ((flags & HIDDEN) != 0)
 			{
 				return;
 			}
 
-			//System.Console.WriteLine($"{name}: Draw()");
-			//rectangle.X = (int)drawingRectangle.Left();
-			//rectangle.Y = (int)drawingRectangle.Top();
-			//rectangle.Width = (int)drawingRectangle.Width();
-			//rectangle.Height = (int)drawingRectangle.Height();
-
-			//System.Console.WriteLine($"X {rectangle.X} Y: {rectangle.Y} W: {rectangle.Width} H: {rectangle.Height}");
-
-
-			//Vector3 vec3 = rectangle.Position;
-
-
-			//Logger.Debug($"2 Draw(): {name}");
-
-			if ((flags & NO_DRAW) == 0)
+			if ((flags & TRANSPARENT) == 0)
 			{
 				API.DrawRect(drawingRectangle.CenterX(),
 							drawingRectangle.CenterY(),

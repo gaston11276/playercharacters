@@ -34,6 +34,7 @@ namespace Gaston11276.Playercharacters.Server
 			// Send configuration when requested
 			this.comms.Event(PlayercharactersEvents.Configuration).FromClients().OnRequest(e => e.Reply(this.Configuration));
 			this.comms.Event(PlayercharactersEvents.GetCharactersForUser).FromClients().OnRequest(GetCharactersForUser);
+			this.comms.Event(PlayercharactersEvents.GetCharacterForUser).FromClients().OnRequest<Character>(GetCharacterForUser);
 			this.comms.Event(PlayercharactersEvents.CreateCharacter).FromClients().OnRequest<Character>(CreateCharacter);
 			this.comms.Event(PlayercharactersEvents.DeleteCharacter).FromClients().OnRequest<Guid>(DeleteCharacter);
 			this.comms.Event(PlayercharactersEvents.Select).FromClients().OnRequest<Guid>(Select);
@@ -246,6 +247,23 @@ namespace Gaston11276.Playercharacters.Server
 			}
 		}
 
+		private void GetCharacterForUser(ICommunicationMessage e, Character character)
+		{
+			//this.Logger.Info($"GetCharactersForUser(ICommunicationMessage e, Guid userId)");
+			GetCharacterForUser(e, e.User.Id, character.Id);
+		}
+
+		private void GetCharacterForUser(ICommunicationMessage e, Guid userId, Guid characterId)
+		{
+			//this.Logger.Info($"GetCharactersForUser(ICommunicationMessage e, Guid userId) - userId: {userId}");
+			using (var context = new StorageContext())
+			{
+				//var character = context.Characters.SingleAsync(c => c.Deleted == null && c.UserId == userId && c.Id == characterId);
+				var character = context.Characters.Find(characterId);
+				e.Reply(character);
+			}
+		}
+
 		private async void CreateCharacter(ICommunicationMessage e, Character character)
 		{
 			this.Logger.Debug($"Server: Creating character {character.FullName}");
@@ -281,7 +299,7 @@ namespace Gaston11276.Playercharacters.Server
 						transaction.Commit();
 
 						// Send back updated user
-						//e.Reply(character);
+						e.Reply(character);
 					}
 					catch (Exception ex)
 					{

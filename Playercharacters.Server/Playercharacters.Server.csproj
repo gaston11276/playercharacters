@@ -102,11 +102,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CharacterManager.cs" />
+    <Compile Include="CMCharacterId.cs" />
     <Compile Include="Events\CharacterEventArgs.cs" />
     <Compile Include="Events\CharacterSessionEventArgs.cs" />
     <Compile Include="IInventoryManager.cs" />
     <Compile Include="InventoryManager.cs" />
-    <Compile Include="Migrations\202111221803540_Initial.cs" />
+    <Compile Include="Migrations\202111251718210_Initial.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\CharacterInventory.cs" />

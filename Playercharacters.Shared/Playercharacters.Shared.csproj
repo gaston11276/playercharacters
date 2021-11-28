@@ -52,6 +52,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CMCharacterId.cs" />
     <Compile Include="Exceptions\ContainerValidationException.cs" />
     <Compile Include="Exceptions\ItemNotInContainerException.cs" />
     <Compile Include="Exceptions\ItemNoUsesRemainingException.cs" />

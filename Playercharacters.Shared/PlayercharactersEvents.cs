@@ -6,6 +6,7 @@ namespace Gaston11276.Playercharacters.Shared
 		public const string Disconnecting = "gaston11276:playercharactersEvents:disconnecting";
 		
 		public const string GetCharactersForUser = "gaston11276:playercharactersEvents:getcharactersforuser";
+		public const string GetCharacterForUser = "gaston11276:playercharactersEvents:getcharacterforuser";
 
 		public const string CreateCharacter = "gaston11276:playercharactersEvents:create";
 		public const string CharacterCreated = "gaston11276:playercharactersEvents:created";

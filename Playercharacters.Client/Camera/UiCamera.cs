@@ -155,5 +155,56 @@ namespace Gaston11276.Playercharacters.Client
 			}
 
 		}
+
+		public void SetCamera(float distance, float height, float rotation)
+		{
+			
+			Vector3 ped_rot = Game.PlayerPed.Rotation;
+			float ped_angle = ped_rot.Length();
+			if (ped_rot.Z > 0f)
+			{
+				ped_angle *= -1f;
+			}
+
+
+			float accumulated_rotation = ped_rot.Length() + rotation;
+			if (accumulated_rotation > 180f)
+			{
+				accumulated_rotation = -180 + (accumulated_rotation - 180f);
+			}
+			else if (accumulated_rotation < -180f)
+			{
+				accumulated_rotation = 180f + (accumulated_rotation + 180f);
+			}
+			//debug.Out($"Acc rotation: {accumulated_rotation}");
+
+
+
+			float angle = accumulated_rotation * DegToRad;
+			//debug.Out($"Rad: {angle}");
+
+			Vector3 axis = new Vector3(0f, 0f, 1f);// m_camera.Rotation;
+			axis.Normalize();
+			if (accumulated_rotation < 0)
+			{
+				//axis *= -1f;
+			}
+			Vector3 vec_ped_to_cam = new Vector3(0f, -1f, 0f);// Game.PlayerPed.ForwardVector;// m_camera.Position - Game.PlayerPed.Position;
+
+			Vector3 pedpos = Game.PlayerPed.Position;
+			Vector3 new_vec_ped_to_cam = Vector3.TransformCoordinate(vec_ped_to_cam, Matrix.RotationAxis(axis, angle));// new Vector3(0f, 0f, 1f), angle));// axis, angle));
+			new_vec_ped_to_cam.Normalize();
+
+			pedpos.Z += height;
+			camera.Position = pedpos + new_vec_ped_to_cam * distance;
+
+
+
+			camera.Rotation = axis * accumulated_rotation;
+			//debug.Out($"Cam axis: {axis}");
+			//debug.Out($"Cam Rot: {m_camera.Rotation.Length()}");
+
+
+		}
 	}
 }
