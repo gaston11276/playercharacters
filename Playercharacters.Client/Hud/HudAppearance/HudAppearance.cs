@@ -14,22 +14,22 @@ namespace Gaston11276.Playercharacters.Client
 		float lastCursorX = 0f;
 		float lastCursorY = 0f;
 
-		HudComponentModel hudModel = new HudComponentModel();
+		//HudComponentModel hudModel = new HudComponentModel();
 		HudComponentHeadBlendData hudHeadBlendData = new HudComponentHeadBlendData();
 		HudComponentFaceFeatures hudFaceFeatures = new HudComponentFaceFeatures();
 		HudComponentHeadOverlays hudHeadOverlays = new HudComponentHeadOverlays();
 		HudComponentDecorations hudDecorations = new HudComponentDecorations();
 		HudComponentPedComponents hudPedComponents = new HudComponentPedComponents();
-		HudComponentAnimations hudAnimations = new HudComponentAnimations();
+		//HudComponentAnimations hudAnimations = new HudComponentAnimations();
 
 		fpVoid SaveCharacterCallback;
 		fpVoid RevertCharacterCallback;
 
 		public HudAppearance()
 		{
-			hudModel.RegisterSaveCharacter(SaveCharacter);
-			hudModel.RegisterRevertCharacter(RevertCharacter);
-			hudModel.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
+			//hudModel.RegisterSaveCharacter(SaveCharacter);
+			//hudModel.RegisterRevertCharacter(RevertCharacter);
+			//hudModel.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
 
 			hudHeadBlendData.RegisterSaveCharacter(SaveCharacter);
 			hudHeadBlendData.RegisterRevertCharacter(RevertCharacter);
@@ -51,9 +51,9 @@ namespace Gaston11276.Playercharacters.Client
 			hudPedComponents.RegisterRevertCharacter(RevertCharacter);
 			hudPedComponents.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
 
-			hudAnimations.RegisterSaveCharacter(SaveCharacter);
-			hudAnimations.RegisterRevertCharacter(RevertCharacter);
-			hudAnimations.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
+			//hudAnimations.RegisterSaveCharacter(SaveCharacter);
+			//hudAnimations.RegisterRevertCharacter(RevertCharacter);
+			//hudAnimations.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
 		}
 
 		protected override void OnOpen()
@@ -114,13 +114,13 @@ namespace Gaston11276.Playercharacters.Client
 
 		public void SetCharacter(Character character)
 		{
-			hudModel.SetCharacter(character);
+			//hudModel.SetCharacter(character);
 			hudHeadBlendData.SetCharacter(character);
 			hudFaceFeatures.SetCharacter(character);
 			hudHeadOverlays.SetCharacter(character);
 			hudDecorations.SetCharacter(character);
 			hudPedComponents.SetCharacter(character);
-			hudAnimations.SetCharacter(character);
+			//hudAnimations.SetCharacter(character);
 		}
 
 		public override void OnMouseButton(int state, int button, float CursorX, float CursorY)
@@ -155,21 +155,21 @@ namespace Gaston11276.Playercharacters.Client
 		public override void CreateUi()
 		{
 			base.CreateUi();
-			hudModel.SetLogger(Logger);
+			//hudModel.SetLogger(Logger);
 			hudHeadBlendData.SetLogger(Logger);
 			hudFaceFeatures.SetLogger(Logger);
 			hudHeadOverlays.SetLogger(Logger);
 			hudDecorations.SetLogger(Logger);
 			hudPedComponents.SetLogger(Logger);
-			hudAnimations.SetLogger(Logger);
+			//hudAnimations.SetLogger(Logger);
 
-			hudModel.SetCamera(camera);
+			//hudModel.SetCamera(camera);
 			hudHeadBlendData.SetCamera(camera);
 			hudFaceFeatures.SetCamera(camera);
 			hudHeadOverlays.SetCamera(camera);
 			hudDecorations.SetCamera(camera);
 			hudPedComponents.SetCamera(camera);
-			hudAnimations.SetCamera(camera);
+			//hudAnimations.SetCamera(camera);
 
 			UiPanel uiLooksPanel = new UiPanel();
 			uiLooksPanel.name = "MainPanel";
@@ -187,6 +187,7 @@ namespace Gaston11276.Playercharacters.Client
 			inputsOnMouseButton.Add(uiLooksPanel.OnMouseButton);
 			uiMain.AddElement(uiLooksPanel);
 
+			/*
 			Textbox buttonModel= new Textbox();
 			buttonModel.SetText("Model");
 			buttonModel.SetPadding(new UiRectangle(defaultPadding));
@@ -198,11 +199,12 @@ namespace Gaston11276.Playercharacters.Client
 			inputsOnMouseButton.Add(buttonModel.OnMouseButton);
 			uiLooksPanel.AddElement(buttonModel);
 			hudModel.RegisterOnCloseCallback(buttonModel.Deselect);
+			*/
 
 			Textbox buttonHeadBlendData= new Textbox();
 			buttonHeadBlendData.SetText("Head Blend Data");
 			buttonHeadBlendData.SetPadding(new UiRectangle(defaultPadding));
-			buttonHeadBlendData.SetMargin(new UiRectangle(0f, -0.004f, 0f, 0f));
+			//buttonHeadBlendData.SetMargin(new UiRectangle(0f, -0.004f, 0f, 0f));
 			buttonHeadBlendData.SetHDimension(Dimension.Max);
 			buttonHeadBlendData.SetProperties(UiElement.CANFOCUS | UiElement.SELECTABLE);
 			buttonHeadBlendData.RegisterOnSelectCallback(hudHeadBlendData.Open);
@@ -264,6 +266,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiLooksPanel.AddElement(buttonComponents);
 			hudPedComponents.RegisterOnCloseCallback(buttonComponents.Deselect);
 
+			/*
 			Textbox buttonAnimations = new Textbox();
 			buttonAnimations.SetText("Animations");
 			buttonAnimations.SetPadding(new UiRectangle(defaultPadding));
@@ -276,14 +279,15 @@ namespace Gaston11276.Playercharacters.Client
 			inputsOnMouseButton.Add(buttonAnimations.OnMouseButton);
 			uiLooksPanel.AddElement(buttonAnimations);
 			hudAnimations.RegisterOnCloseCallback(buttonAnimations.Deselect);
+			*/
 
-			hudModel.CreateUi(uiMain);
+			//hudModel.CreateUi(uiMain);
 			hudHeadBlendData.CreateUi(uiMain);
 			hudFaceFeatures.CreateUi(uiMain);
 			hudHeadOverlays.CreateUi(uiMain);
 			hudDecorations.CreateUi(uiMain);
 			hudPedComponents.CreateUi(uiMain);
-			hudAnimations.CreateUi(uiMain);
+			//hudAnimations.CreateUi(uiMain);
 		}
 
 		private void SaveCharacter()
@@ -303,31 +307,31 @@ namespace Gaston11276.Playercharacters.Client
 			hudHeadOverlays.ApplyToPed();
 			hudDecorations.ApplyToPed();
 			hudPedComponents.ApplyToPed();
-			hudAnimations.ApplyToPed();
+			//hudAnimations.ApplyToPed();
 		}
 	
 		public override void SetDelay(fpDelay Delay)
 		{
 			this.Delay = Delay;
 
-			hudModel.SetDelay(Delay);
+			//hudModel.SetDelay(Delay);
 			hudHeadBlendData.SetDelay(Delay);
 			hudFaceFeatures.SetDelay(Delay);
 			hudHeadOverlays.SetDelay(Delay);
 			hudDecorations.SetDelay(Delay);
 			hudPedComponents.SetDelay(Delay);
-			hudAnimations.SetDelay(Delay);
+			//hudAnimations.SetDelay(Delay);
 		}
 		
 		public override async Task RefreshUi()
 		{
-			hudModel.SetUi();
+			//hudModel.SetUi();
 			hudHeadBlendData.SetUi();
 			hudFaceFeatures.SetUi();
 			hudHeadOverlays.SetUi();
 			hudDecorations.SetUi();
 			hudPedComponents.SetUi();
-			hudAnimations.SetUi();
+			//hudAnimations.SetUi();
 			await Delay(1);
 		}
 	}

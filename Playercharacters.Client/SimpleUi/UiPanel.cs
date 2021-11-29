@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
 using NFive.SDK.Core.Diagnostics;
 
 namespace Gaston11276.SimpleUi

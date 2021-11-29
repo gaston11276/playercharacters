@@ -9,15 +9,12 @@ using NFive.SDK.Core.Diagnostics;
 using NFive.SDK.Core.Helpers;
 using NFive.SDK.Core.Models;
 using NFive.SDK.Core.Models.Player;
-using NFive.SDK.Core.Utilities;
 using NFive.SDK.Server.Controllers;
 using NFive.SDK.Server.Communications;
 using NFive.SDK.Server.Events;
 using Gaston11276.Playercharacters.Server.Models;
 using Gaston11276.Playercharacters.Server.Storage;
 using Gaston11276.Playercharacters.Shared;
-using Gaston11276.Playercharacters.Server;
-using Configuration = Gaston11276.Playercharacters.Shared.Configuration;
 
 namespace Gaston11276.Playercharacters.Server
 {
@@ -31,7 +28,7 @@ namespace Gaston11276.Playercharacters.Server
 		{
 			this.comms = comms;
 			this.inventoryManager = inventoryManager;
-			// Send configuration when requested
+
 			this.comms.Event(PlayercharactersEvents.Configuration).FromClients().OnRequest(e => e.Reply(this.Configuration));
 			this.comms.Event(PlayercharactersEvents.GetCharactersForUser).FromClients().OnRequest(GetCharactersForUser);
 			this.comms.Event(PlayercharactersEvents.GetCharacterForUser).FromClients().OnRequest<Character>(GetCharacterForUser);
@@ -40,10 +37,7 @@ namespace Gaston11276.Playercharacters.Server
 			this.comms.Event(PlayercharactersEvents.Select).FromClients().OnRequest<Guid>(Select);
 			this.comms.Event(PlayercharactersEvents.SaveCharacter).FromClients().On<Character>(SaveCharacter);
 			this.comms.Event(PlayercharactersEvents.SavePosition).FromClients().On<Guid, Position>(SavePosition);
-
 			this.comms.Event(PlayercharactersEvents.GetActive).FromServer().OnRequest(e => e.Reply(this.characterSessions));
-
-			// Listen for NFive SessionManager plugin events
 			this.comms.Event(SessionEvents.ClientDisconnected).FromServer().On<IClient, Session>(OnClientDisconnected);
 		}
 
@@ -134,11 +128,9 @@ namespace Gaston11276.Playercharacters.Server
 		
 		private async void OnClientDisconnected(ICommunicationMessage e, IClient client, Session session)
 		{
-			//await DeselectAll(session.UserId);
+			await DeselectAll(session.UserId);
 			await Delay(1);
 		}
-		
-
 		
 		public async Task DeselectAll(Guid id)
 		{
@@ -168,22 +160,17 @@ namespace Gaston11276.Playercharacters.Server
 				}
 			}
 		}
-		
 
 		private async void DeleteCharacter(ICommunicationMessage e, Guid id)
 		{
 			using (var context = new StorageContext())
 			{
 				var character = context.Characters.First(c => c.Id == id);
-
 				character.Deleted = DateTime.UtcNow;
-
 				await context.SaveChangesAsync();
-
 				GetCharactersForUser(e, e.User.Id);
 			}
 		}
-
 		
 		private async void Select(ICommunicationMessage e, Guid id)
 		{
@@ -212,19 +199,15 @@ namespace Gaston11276.Playercharacters.Server
 				};
 
 				context.CharacterSessions.Add(newSession);
-
 				await context.SaveChangesAsync();
 				transaction.Commit();
 
-				this.Logger.Debug("Created character session");
+				//this.Logger.Debug("Created character session");
 				//this.Logger.Debug($"Session: {new Serializer().Serialize(e.Session)}");
 
 				newSession.Session = e.Session;
-
 				e.Reply(newSession);
-
 				this.characterSessions.Add(newSession);
-
 				this.comms.Event(PlayercharactersEvents.Selected).ToServer().Emit(newSession);
 			}
 		}
@@ -242,7 +225,6 @@ namespace Gaston11276.Playercharacters.Server
 			using (var context = new StorageContext())
 			{
 				var characters = context.Characters.Where(c => c.Deleted == null && c.UserId == userId).ToList();
-
 				e.Reply(characters);
 			}
 		}
@@ -258,7 +240,6 @@ namespace Gaston11276.Playercharacters.Server
 			//this.Logger.Info($"GetCharactersForUser(ICommunicationMessage e, Guid userId) - userId: {userId}");
 			using (var context = new StorageContext())
 			{
-				//var character = context.Characters.SingleAsync(c => c.Deleted == null && c.UserId == userId && c.Id == characterId);
 				var character = context.Characters.Find(characterId);
 				e.Reply(character);
 			}
@@ -266,7 +247,7 @@ namespace Gaston11276.Playercharacters.Server
 
 		private async void CreateCharacter(ICommunicationMessage e, Character character)
 		{
-			this.Logger.Debug($"Server: Creating character {character.FullName}");
+			//this.Logger.Debug($"Server: Creating character {character.FullName}");
 			// TODO: Validate client sent values
 
 			// Don't trust important values from clients
@@ -311,23 +292,7 @@ namespace Gaston11276.Playercharacters.Server
 				}
 			}
 			
-
 			CreateInventories(character);
-
-			/*
-			comms.Event(PlayercharactersEvents.MessageEntered).ToClients().Emit(new PCMessage
-			{
-				Sender = e.User,
-				//Style = this.Configuration.DefaultStyle.ToString("G").ToLowerInvariant(),
-				TestMessage = "CharacterCreated",
-				Template = "default",
-				Values = new[]
-					{
-						e.User.Name
-
-					}
-			});
-			*/
 		}
 		
 
@@ -467,9 +432,7 @@ namespace Gaston11276.Playercharacters.Server
 				character.PedHeadBlendData.Parent2 = 10;
 				character.PedHeadBlendData.ShapeMix = 0.5f;
 				character.PedHeadBlendData.SkinMix = 0.5f;
-
 				character.PedHeadOverlays.Eyebrows.Opacity = 1f;
-
 				character.PedComponents.Torso.Index = 15;
 				character.PedComponents.Hair.Index = 4;
 				character.PedComponents.Legs.Index = 21;
@@ -478,27 +441,24 @@ namespace Gaston11276.Playercharacters.Server
 				character.PedComponents.Torso2.Index = 15;
 				character.PedProps.Hat.Index = 11;
 				character.PedProps.Glasses.Index = 6;
-				character.PedProps.Watch.Index = 2;
 			}
 			else
 			{
-				character.PedHeadBlendData.Parent1 = 12;
-				character.PedHeadBlendData.Parent2 = 21;
-				character.PedHeadBlendData.ShapeMix = 0.5f;
-				character.PedHeadBlendData.SkinMix = 0.5f;
-
+				character.PedHeadBlendData.Parent1 = 10;
+				character.PedHeadBlendData.Parent2 = 31;
+				character.PedHeadBlendData.ShapeMix = 0.9f;
+				character.PedHeadBlendData.SkinMix = 0.3f;
 				character.PedHeadOverlays.Eyebrows.Opacity = 1f;
-
-
 				character.PedComponents.Torso.Index = 15;
-				character.PedComponents.Hair.Index = 1;
+				character.PedComponents.Hair.Index = 4;
 				character.PedComponents.Legs.Index = 15;
 				character.PedComponents.Shoes.Index = 35;
 				character.PedComponents.Undershirt.Index = 15;
 				character.PedComponents.Torso2.Index = 15;
 				character.PedProps.Hat.Index = 57;
 				character.PedProps.Glasses.Index = 5;
-				character.PedProps.Watch.Index = 1;
+				character.PedProps.Watch.Texture = 5;
+				character.PedHeadOverlays.Eyebrows.Index = 10;
 			}
 		}
 	}

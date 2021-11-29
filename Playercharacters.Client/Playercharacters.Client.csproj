@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Camera\UiCamera.cs" />
     <Compile Include="Hud\HudEntry.cs" />
+    <Compile Include="Hud\HudInput.cs" />
     <Compile Include="Hud\HudSpawnLocation\HudSpawnLocation.cs" />
     <Compile Include="Hud\HudAppearance\HudComponentAnimations\HudComponentAnimations.cs" />
     <Compile Include="Hud\HudAppearance\HudComponentAnimations\UiEntryAnimation.cs" />
@@ -121,7 +122,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Overlays\main.js" />
     <Content Include="Overlays\PlayercharactersOverlay.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

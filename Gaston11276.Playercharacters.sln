@@ -1,17 +1,18 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7854AB5F-7EC3-4A49-B175-9F9077D1A65A}"
 	ProjectSection(SolutionItems) = preProject
 		nfive.yml = nfive.yml
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{ADD56124-BFCD-4AC5-8E13-5AF27314F403}") = "Playercharacters.Client", "Playercharacters.Client\Playercharacters.Client.csproj", "{7D324EF7-1178-4C47-83CD-0665F7861660}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playercharacters.Client", "Playercharacters.Client\Playercharacters.Client.csproj", "{7D324EF7-1178-4C47-83CD-0665F7861660}"
 EndProject
-Project("{ADD56124-BFCD-4AC5-8E13-5AF27314F403}") = "Playercharacters.Server", "Playercharacters.Server\Playercharacters.Server.csproj", "{0181F8BC-E99D-48C9-82F4-4F5250E6EBAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playercharacters.Server", "Playercharacters.Server\Playercharacters.Server.csproj", "{0181F8BC-E99D-48C9-82F4-4F5250E6EBAE}"
 EndProject
-Project("{ADD56124-BFCD-4AC5-8E13-5AF27314F403}") = "Playercharacters.Shared", "Playercharacters.Shared\Playercharacters.Shared.csproj", "{05BDE78C-E322-456C-A2CF-137A26E0B404}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playercharacters.Shared", "Playercharacters.Shared\Playercharacters.Shared.csproj", "{05BDE78C-E322-456C-A2CF-137A26E0B404}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,5 +32,11 @@ Global
 		{05BDE78C-E322-456C-A2CF-137A26E0B404}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05BDE78C-E322-456C-A2CF-137A26E0B404}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05BDE78C-E322-456C-A2CF-137A26E0B404}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58E88183-FEB3-4DA0-A98F-F9B3A0849080}
 	EndGlobalSection
 EndGlobal

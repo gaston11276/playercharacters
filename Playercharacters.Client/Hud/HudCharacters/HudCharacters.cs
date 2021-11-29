@@ -333,7 +333,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiNewCharacterEditPanelRight.AddElement(uiEditLastname);
 
 			uiEditGender = new Editbox();
-			uiEditGender.SetText("");
+			uiEditGender.SetText("M/F");
 			uiEditGender.SetPadding(new UiRectangle(defaultPadding));
 			uiEditGender.SetHDimension(Dimension.Max);
 			uiEditGender.SetGravity(HGravity.Left);
@@ -345,7 +345,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiNewCharacterEditPanelRight.AddElement(uiEditGender);
 
 			uiEditDateOfBirth = new Editbox();
-			uiEditDateOfBirth.SetText("1976-05-15");
+			uiEditDateOfBirth.SetText("2000-01-01");
 			uiEditDateOfBirth.SetPadding(new UiRectangle(defaultPadding));
 			uiEditDateOfBirth.SetHDimension(Dimension.Max);
 			uiEditDateOfBirth.SetGravity(HGravity.Left);

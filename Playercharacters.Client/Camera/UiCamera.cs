@@ -96,76 +96,33 @@ namespace Gaston11276.Playercharacters.Client
 
 		public void UpdateCamera(float axisX, float axisY)
 		{
-			//Logger.Debug($"Camera Input Axis X: {axisX} Axis Y: {axisY}");
-
-			//float angle = frametime * (float)Math.PI * 0.5f;
-			bool rotate = false;
-
 			float angleX = -2.0f;
 			angleX *= axisX;
+	
+			Vector3 vec_ped_to_cam = camera.Position - Game.PlayerPed.Position;
+			Vector3 pedpos = Game.PlayerPed.Position;
+			Vector3 new_vec_ped_to_cam = Vector3.TransformCoordinate(vec_ped_to_cam, Matrix.RotationAxis(new Vector3(0f, 0f, 1f), -angleX));
 
+			camera.Position = pedpos + new_vec_ped_to_cam;
 
-			rotate = true;
+			Vector3 cam_rot = camera.Rotation;
+			float current_angle = camera.Rotation.Length();
+			cam_rot.Normalize();
 
-			/*
-			if (IsControlPressed(0, (int)Controls.INPUT_REPLAY_SCREENSHOT))
+			float rot_angle = angleX * RadToDeg;
+			if (cam_rot.Z > 0f)
 			{
-				//angle_for_rot *= -1f;
-				angle *= -1f;
-				rotate = true;
-			}
-			//if (IsControlPressed(0, (int)Controls.INPUT_REPLAY_HIDEHUD))
-			{
-				rotate = true;
-			}
-			*/
-
-			if (rotate)
-			{
-				Vector3 vec_ped_to_cam = camera.Position - Game.PlayerPed.Position;
-				Vector3 pedpos = Game.PlayerPed.Position;
-				Vector3 new_vec_ped_to_cam = Vector3.TransformCoordinate(vec_ped_to_cam, Matrix.RotationAxis(new Vector3(0f, 0f, 1f), -angleX));
-
-				camera.Position = pedpos + new_vec_ped_to_cam;
-
-				Vector3 cam_rot = camera.Rotation;
-				float current_angle = camera.Rotation.Length();
-				cam_rot.Normalize();
-
-				float rot_angle = angleX * RadToDeg;
-				if (cam_rot.Z > 0f)
-				{
-					rot_angle *= -1f;
-				}
-
-
-				float new_angle = current_angle + rot_angle;
-
-				//m_ui.SetEntry(m_active_window, 0, 0, 0, $"Angle: {string.Format("{0:0.0#}", current_angle)}");
-				//m_ui.SetEntry(m_active_window, 0, 0, 1, $"Adding: {string.Format("{0:0.0#}", rot_angle)}");
-				//m_ui.SetEntry(m_active_window, 0, 0, 2, $"New angle: {string.Format("{0:0.0#}", new_angle)}");
-
-				cam_rot *= new_angle;
-				camera.Rotation = cam_rot;
-
-
-
-
+				rot_angle *= -1f;
 			}
 
+			float new_angle = current_angle + rot_angle;
+			cam_rot *= new_angle;
+			camera.Rotation = cam_rot;
 		}
 
 		public void SetCamera(float distance, float height, float rotation)
 		{
-			
 			Vector3 ped_rot = Game.PlayerPed.Rotation;
-			float ped_angle = ped_rot.Length();
-			if (ped_rot.Z > 0f)
-			{
-				ped_angle *= -1f;
-			}
-
-
 			float accumulated_rotation = ped_rot.Length() + rotation;
 			if (accumulated_rotation > 180f)
 			{
@@ -175,7 +132,6 @@ namespace Gaston11276.Playercharacters.Client
 			{
 				accumulated_rotation = 180f + (accumulated_rotation + 180f);
 			}
-
 
 			float angle = accumulated_rotation * DegToRad;
 
