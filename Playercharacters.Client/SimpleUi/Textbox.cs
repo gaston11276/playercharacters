@@ -63,6 +63,12 @@ namespace Gaston11276.SimpleUi
 			TextChanged();
 		}
 
+		public void SetFont(int fontIndex)
+		{
+			SetTextFont(fontIndex);
+			TextChanged();
+		}
+
 		public override void SetText(string text)
 		{
 			this.text = text;
@@ -142,7 +148,7 @@ namespace Gaston11276.SimpleUi
 				SetTextJustification(2);
 			}
 			
-			SetTextColour(255, 255, 255, 255);
+			SetTextColour(textColor.GetRed(), textColor.GetGreen(), textColor.GetBlue(), textColor.GetAlpha());
 			AddTextComponentString(this.text);
 			EndTextCommandDisplayText(text_x, text_y);
 			//ResetScriptGfxAlign();
