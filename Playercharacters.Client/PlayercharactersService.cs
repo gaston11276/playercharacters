@@ -51,11 +51,6 @@ namespace Gaston11276.Playercharacters.Client
 			
 		}
 
-		public override async Task Loaded()
-		{
-			
-		}
-
 		public override async Task Started()
 		{
 			// After a resolution change hud must be updated and rebuilt.
