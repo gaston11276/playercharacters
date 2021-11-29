@@ -9,9 +9,9 @@ Install the plugin into your server from the [NFive Hub](https://hub.nfive.io/ga
 # playercharacters
 This plugin is in an early state. Igicore's plugin Characters has been used as a foundation.
 
-F1 - Character creator
-F2 - Appearance menu
-F5 - Spawn location
+F1: - Character creator
+F2: - Appearance menu
+F5: - Spawn location
 
 - Playercharacters includes character creation supporting code first database as implemented by NFive/IgiCore.
 - The migration file assumes that your database already has tables for Users and Sessions as per default.
