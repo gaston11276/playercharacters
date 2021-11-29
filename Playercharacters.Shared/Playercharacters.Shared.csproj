@@ -52,7 +52,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CMCharacterId.cs" />
     <Compile Include="Exceptions\ContainerValidationException.cs" />
     <Compile Include="Exceptions\ItemNotInContainerException.cs" />
     <Compile Include="Exceptions\ItemNoUsesRemainingException.cs" />
@@ -84,7 +83,6 @@
     <Compile Include="Models\PedHeadOverlay\PedHeadOverlayType.cs" />
     <Compile Include="Models\PedProp\PedProp.cs" />
     <Compile Include="Models\PedProp\PedPropType.cs" />
-    <Compile Include="PCMessage.cs" />
     <Compile Include="PlayercharactersEvents.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
