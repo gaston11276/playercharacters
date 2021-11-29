@@ -82,8 +82,6 @@ namespace Gaston11276.Playercharacters.Client
 			this.config = await this.Comms.Event(PlayercharactersEvents.Configuration).ToServer().Request<Configuration>();
 			this.Comms.Event(PlayercharactersEvents.Configuration).FromServer().On<Configuration>((e, c) => this.config = c);
 
-
-			this.overlay = new PlayercharactersOverlay(this.OverlayManager);
 			this.openCreator = new Hotkey(this.config.SelectionScreen.HotkeyCreator);
 			this.openLooks = new Hotkey(this.config.SelectionScreen.HotkeyLooks);
 			this.openSpawn = new Hotkey(this.config.SelectionScreen.HotkeySpawnLocation);
@@ -96,6 +94,11 @@ namespace Gaston11276.Playercharacters.Client
 
 			this.Ticks.On(new Action(OnInput));
 			this.Ticks.On(new Action(OnDraw));
+		}
+
+		public override async Task HoldFocus()
+		{
+			API.SetManualShutdownLoadingScreenNui(true);
 
 			this.overlay = new PlayercharactersOverlay(OverlayManager);
 			this.overlay.OnKey += OnNuiKey;
@@ -109,6 +112,7 @@ namespace Gaston11276.Playercharacters.Client
 			}
 
 			while (!Screen.Fading.IsFadedOut) await Delay(20);
+
 			API.ShutdownLoadingScreen();
 		}
 
@@ -184,17 +188,16 @@ namespace Gaston11276.Playercharacters.Client
 
 		public async Task HoldNui()
 		{
-			while (holdFocus)// || creator.IsOpen())
+			while (holdFocus)
 			{
 				await Delay(20);
 			}
-			API.SetNuiFocus(false, false);
+			this.overlay.Blur();
 		}
 
 		private void CloseNui()
 		{
-			holdFocus = false;
-			this.overlay.Hide(false);
+			holdFocus = false;			
 		}
 
 		private async void LoadCharacters()
