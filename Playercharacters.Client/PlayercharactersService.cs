@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
@@ -93,8 +94,10 @@ namespace Gaston11276.Playercharacters.Client
 			hudAppearance.SetHotkey((int)HudInput.ConvertKeycode(openLooks.UserKeyboardKey));
 			hudSpawnLocation.SetHotkey((int)HudInput.ConvertKeycode(openSpawn.UserKeyboardKey));
 
-			this.Ticks.On(OnInput);
-			this.Ticks.On(OnDraw);
+			//Task onInput = new Task(new Action(OnInput));
+			this.Ticks.On(new Action(OnInput));
+			//Task onDraw = new Task(new Action(OnDraw));
+			this.Ticks.On(new Action(OnDraw));
 
 			this.overlay = new PlayercharactersOverlay(OverlayManager);
 			this.overlay.OnKey += OnNuiKey;
