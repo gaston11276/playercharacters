@@ -4,6 +4,9 @@
 
 NFive Plugin
 
+## Installation
+Install the plugin into your server from the [NFive Hub](https://hub.nfive.io/gaston11276/playercharacters): `nfpm install gaston11276/playercharacters`
+# playercharacters
 This plugin is in an early state. Igicore's plugin Characters has been used as a foundation.
 
 F1 - Character creator
@@ -27,7 +30,4 @@ F5 - Spawn location
 
 Please let me know what you think. I am grateful for any suggestion of improvement or just ideas of any kind.
 
-## Installation
-Install the plugin into your server from the [NFive Hub](https://hub.nfive.io/gaston11276/playercharacters): `nfpm install gaston11276/playercharacters`
-# playercharacters
 
