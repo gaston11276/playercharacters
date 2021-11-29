@@ -136,7 +136,11 @@ namespace Gaston11276.Playercharacters.Client
 			float angle = accumulated_rotation * DegToRad;
 
 			Vector3 axis = new Vector3(0f, 0f, 1f);
-			axis.Normalize();
+			if (accumulated_rotation < 0)
+			{
+				axis *= -1f;
+			}
+
 			Vector3 vec_ped_to_cam = new Vector3(0f, -1f, 0f);
 
 			Vector3 pedpos = Game.PlayerPed.Position;

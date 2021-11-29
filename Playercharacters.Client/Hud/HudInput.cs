@@ -1,9 +1,64 @@
+using System.Collections.Generic;
 using NFive.SDK.Core.Input;
+using NFive.SDK.Client.Input;
 
 namespace Gaston11276.Playercharacters.Client
 {
-	public class HudInput
+	public abstract class HudInput
 	{
+		public class KeyData
+		{
+			public int keycode;
+			public Hotkey hotkey;
+			public KeyData(int keycode, InputControl control)
+			{
+				this.keycode = keycode;
+				hotkey = new Hotkey(control);
+			}
+		}
+
+		
+
+		static void AddKeyData(int keycode, InputControl control, ref List<KeyData> keys)
+		{
+			KeyData keydata = new KeyData(keycode, control);
+			keydata.keycode = keycode;
+			keys.Add(keydata);
+		}
+
+		static public void InitInput(ref List<KeyData> keys)
+		{
+			keys = new List<KeyData>();
+			AddKeyData(65, InputControl.MoveLeftOnly, ref keys); // A
+			AddKeyData(66, InputControl.SpecialAbilitySecondary, ref keys); // B
+			AddKeyData(67, InputControl.CreatorRT, ref keys); // C
+			AddKeyData(68, InputControl.MoveRightOnly, ref keys); // D
+			AddKeyData(69, InputControl.Context, ref keys); // E
+			AddKeyData(70, InputControl.Arrest, ref keys); // F
+			AddKeyData(71, InputControl.Detonate, ref keys); // G
+			AddKeyData(72, InputControl.VehicleRoof, ref keys); // H
+			AddKeyData(73, 0, ref keys); // I
+			AddKeyData(74, 0, ref keys); // J
+			AddKeyData(75, InputControl.ReplayShoHotkey, ref keys); // K
+			AddKeyData(76, InputControl.CinematicSlowMo, ref keys);               // L
+			AddKeyData(77, InputControl.InteractionMenu, ref keys); // M
+			AddKeyData(78, InputControl.PushToTalk, ref keys); // N
+			AddKeyData(79, 0, ref keys); // O
+			AddKeyData(80, InputControl.FrontendPause, ref keys); // P
+			AddKeyData(81, InputControl.Cover, ref keys); // Q
+			AddKeyData(82, InputControl.Reload, ref keys); // R
+			AddKeyData(83, InputControl.MoveDownOnly, ref keys); // S
+			AddKeyData(84, InputControl.MpTextChatAll, ref keys); // T
+			AddKeyData(85, InputControl.ReplayScreenshot, ref keys); // U
+			AddKeyData(86, InputControl.NextCamera, ref keys); // V
+			AddKeyData(87, InputControl.MoveUpOnly, ref keys); // W
+			AddKeyData(88, InputControl.VehicleDuck, ref keys); // X
+			AddKeyData(89, InputControl.WeaponSpecial, ref keys); // Y
+			AddKeyData(90, InputControl.MultiplayerInfo, ref keys); // Z
+			AddKeyData(8, InputControl.PhoneCancel, ref keys); // Backspace
+		}
+
+
 		static public KeycodesVK ConvertKeycode(KeyCode nfiveKeycode)
 		{
 			switch (nfiveKeycode)

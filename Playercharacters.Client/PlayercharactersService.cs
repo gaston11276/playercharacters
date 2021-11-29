@@ -94,9 +94,7 @@ namespace Gaston11276.Playercharacters.Client
 			hudAppearance.SetHotkey((int)HudInput.ConvertKeycode(openLooks.UserKeyboardKey));
 			hudSpawnLocation.SetHotkey((int)HudInput.ConvertKeycode(openSpawn.UserKeyboardKey));
 
-			//Task onInput = new Task(new Action(OnInput));
 			this.Ticks.On(new Action(OnInput));
-			//Task onDraw = new Task(new Action(OnDraw));
 			this.Ticks.On(new Action(OnDraw));
 
 			this.overlay = new PlayercharactersOverlay(OverlayManager);
@@ -135,7 +133,7 @@ namespace Gaston11276.Playercharacters.Client
 			OpenNui();
 		}
 
-		async void OnCreatorClose(System.Guid characterId)
+		async void OnCreatorClose(Guid characterId)
 		{
 			CloseNui();
 

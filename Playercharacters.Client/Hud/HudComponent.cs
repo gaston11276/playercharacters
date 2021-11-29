@@ -5,7 +5,7 @@ using Gaston11276.Playercharacters.Client.Models;
 
 namespace Gaston11276.Playercharacters.Client
 {
-	public class HudComponent
+	public abstract class HudComponent
 	{
 		protected ILogger Logger;
 		protected fpDelay Delay;
@@ -30,10 +30,8 @@ namespace Gaston11276.Playercharacters.Client
 		protected List<OnMouseButton> inputsOnMouseButton;
 		protected List<OnKey> inputsOnKey;
 
-		public delegate void OnHudOpen();
-		public delegate void OnHudClose();
-		protected List<OnHudOpen> onHudOpenCallbacks = new List<OnHudOpen>();
-		protected List<OnHudClose> onHudCloseCallbacks = new List<OnHudClose>();
+		protected List<fpVoid> onHudOpenCallbacks = new List<fpVoid>();
+		protected List<fpVoid> onHudCloseCallbacks = new List<fpVoid>();
 
 		public HudComponent()
 		{
@@ -63,19 +61,19 @@ namespace Gaston11276.Playercharacters.Client
 			this.inputsOnKey = inputsOnKey;
 		}
 
-		public void RegisterOnOpenCallback(OnHudOpen OnOpen)
+		public void RegisterOnOpenCallback(fpVoid OnOpen)
 		{
 			onHudOpenCallbacks.Add(OnOpen);
 		}
 
-		public void RegisterOnCloseCallback(OnHudClose OnClose)
+		public void RegisterOnCloseCallback(fpVoid OnClose)
 		{
 			onHudCloseCallbacks.Add(OnClose);
 		}
 
 		protected virtual void OnOpen()
 		{
-			foreach (OnHudOpen onOpen in onHudOpenCallbacks)
+			foreach (fpVoid onOpen in onHudOpenCallbacks)
 			{
 				onOpen();
 			}
@@ -83,7 +81,7 @@ namespace Gaston11276.Playercharacters.Client
 
 		protected virtual void OnClose()
 		{
-			foreach (OnHudClose onClose in onHudCloseCallbacks)
+			foreach (fpVoid onClose in onHudCloseCallbacks)
 			{
 				onClose();
 			}

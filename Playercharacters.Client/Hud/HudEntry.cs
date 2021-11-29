@@ -2,7 +2,7 @@ using NFive.SDK.Core.Diagnostics;
 
 namespace Gaston11276.Playercharacters.Client
 {
-	public class HudEntry
+	public abstract class HudEntry
 	{
 		protected fpDelay Delay;
 		protected ILogger Logger;

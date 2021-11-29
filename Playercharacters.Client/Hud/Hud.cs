@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NFive.SDK.Core.Diagnostics;
-using NFive.SDK.Core.Input;
-using NFive.SDK.Client.Input;
 using Gaston11276.SimpleUi;
 
 namespace Gaston11276.Playercharacters.Client
@@ -12,19 +10,8 @@ namespace Gaston11276.Playercharacters.Client
 	public delegate void OnKey(int state, int keycode);
 
 	public delegate Task fpDelay(int ms);
-
-	public class KeyData
-	{
-		public int keycode;
-		public Hotkey hotkey;
-		public KeyData(int keycode, InputControl control)
-		{
-			this.keycode = keycode;
-			hotkey = new Hotkey(control);
-		}
-	}
 	
-	public class Hud
+	public abstract class Hud
 	{
 		protected ILogger Logger;
 		protected fpDelay Delay;
@@ -39,14 +26,16 @@ namespace Gaston11276.Playercharacters.Client
 
 		protected UiPanel uiMain = null;
 		protected float defaultPadding = 0.0025f;
-		protected List<KeyData> keys;
+		
 		protected int hotkey;
 		public bool isRefreshingUi = false;
+
+		protected List<HudInput.KeyData> keys;
 
 		public Hud()
 		{
 			uiMain = new UiPanel();
-			InitInput();
+			HudInput.InitInput(ref keys);
 		}
 
 		public virtual void SetDelay(fpDelay Delay)
@@ -58,46 +47,6 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			this.Logger = Logger;
 		}
-
-		void AddKeyData(int keycode, InputControl control)
-		{
-			KeyData keydata = new KeyData(keycode, control);
-			keydata.keycode = keycode;
-			keys.Add(keydata);
-		}
-
-		private void InitInput()
-		{
-			keys = new List<KeyData>();
-			AddKeyData(65, InputControl.MoveLeftOnly); // A
-			AddKeyData(66, InputControl.SpecialAbilitySecondary); // B
-			AddKeyData(67, InputControl.CreatorRT); // C
-			AddKeyData(68, InputControl.MoveRightOnly); // D
-			AddKeyData(69, InputControl.Context); // E
-			AddKeyData(70, InputControl.Arrest); // F
-			AddKeyData(71, InputControl.Detonate); // G
-			AddKeyData(72, InputControl.VehicleRoof); // H
-			AddKeyData(73, 0); // I
-			AddKeyData(74, 0); // J
-			AddKeyData(75, InputControl.ReplayShoHotkey); // K
-			AddKeyData(76, InputControl.CinematicSlowMo);				// L
-			AddKeyData(77, InputControl.InteractionMenu); // M
-			AddKeyData(78, InputControl.PushToTalk); // N
-			AddKeyData(79, 0); // O
-			AddKeyData(80, InputControl.FrontendPause); // P
-			AddKeyData(81, InputControl.Cover); // Q
-			AddKeyData(82, InputControl.Reload); // R
-			AddKeyData(83, InputControl.MoveDownOnly); // S
-			AddKeyData(84, InputControl.MpTextChatAll); // T
-			AddKeyData(85, InputControl.ReplayScreenshot); // U
-			AddKeyData(86, InputControl.NextCamera); // V
-			AddKeyData(87, InputControl.MoveUpOnly); // W
-			AddKeyData(88, InputControl.VehicleDuck); // X
-			AddKeyData(89, InputControl.WeaponSpecial); // Y
-			AddKeyData(90, InputControl.MultiplayerInfo); // Z
-			AddKeyData(8, InputControl.PhoneCancel); // Backspace
-		}
-
 
 		public void RegisterOnOpenCallback(fpVoid OnOpen)
 		{
