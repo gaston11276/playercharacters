@@ -1,6 +1,6 @@
 name: gaston11276/playercharacters
 version: 0.0.8
-description: NFive Plugin
+description: NFive Plugin. A character creator including appearance modification.
 author: gaston11276
 license: LGPL-3.0-or-later
 server:
