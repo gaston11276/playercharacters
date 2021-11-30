@@ -67,6 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera\UiCamera.cs" />
+    <Compile Include="Hud\HudCharacters\HudComponentCharacterList.cs" />
+    <Compile Include="Hud\HudCharacters\HudComponentNewCharacter.cs" />
+    <Compile Include="Hud\HudCharacters\HudEntrySpawnLocation.cs" />
     <Compile Include="Hud\HudEntry.cs" />
     <Compile Include="Hud\HudInput.cs" />
     <Compile Include="Hud\HudSpawnLocation\HudSpawnLocation.cs" />

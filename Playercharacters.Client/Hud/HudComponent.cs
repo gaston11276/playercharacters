@@ -18,7 +18,6 @@ namespace Gaston11276.Playercharacters.Client
 
 		protected Character character;
 
-		public delegate void fpVoid();
 		protected fpVoid SaveCharacterCallback;
 		protected fpVoid RevertCharacterCallback;
 
@@ -105,6 +104,18 @@ namespace Gaston11276.Playercharacters.Client
 			OnClose();
 		}
 
+		public void Toggle()
+		{
+			if (IsOpen())
+			{
+				Close();
+			}
+			else
+			{
+				Open();
+			}
+		}
+
 		public bool IsOpen()
 		{
 			return ((uiAppearanceMain.GetFlags() & UiElement.HIDDEN) == 0);
@@ -125,11 +136,11 @@ namespace Gaston11276.Playercharacters.Client
 			this.RevertCharacterCallback = RevertCharacterCallback;
 		}
 
-		public virtual void CreateContent()
+		protected virtual void CreateContent()
 		{
 		}
 
-		public virtual void CreateColumns()
+		protected virtual void CreateColumns()
 		{
 			
 		}
@@ -159,8 +170,6 @@ namespace Gaston11276.Playercharacters.Client
 		public void CreateUi(UiPanel uiMain)
 		{
 			uiAppearanceMain.SetFlags(UiElement.HIDDEN);
-			uiAppearanceMain.SetAlignment(HAlignment.Right);	// Make buttons (right-aligned) appear at the same location regardless of position or size
-			uiAppearanceMain.SetAlignment(VAlignment.Bottom);	// Make buttons (bottom-aligned) appear at the same location regardless of position or size
 			uiAppearanceMain.SetOrientation(Orientation.Vertical);
 			uiAppearanceMain.SetPadding(new UiRectangle(defaultPadding));
 			uiAppearanceMain.SetProperties(UiElement.FLOATING | UiElement.COLLISION_PARENT | UiElement.MOVABLE | UiElement.RESIZEABLE);
@@ -180,7 +189,6 @@ namespace Gaston11276.Playercharacters.Client
 
 			contentFrame.SetOrientation(Orientation.Vertical);
 			contentFrame.SetPadding(new UiRectangle(defaultPadding));
-			contentFrame.SetGravity(HGravity.Right);
 			contentFrame.SetFlags(UiElement.TRANSPARENT);
 			uiAppearanceMain.AddElement(contentFrame);
 			

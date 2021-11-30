@@ -70,7 +70,7 @@ namespace Gaston11276.Playercharacters.Client
 			await uiEyeColor.SetUi();
 		}
 
-		public override void CreateColumns()
+		protected override void CreateColumns()
 		{
 			// Upper panel
 			UiPanel uiCenterPanel = new UiPanel();
@@ -105,9 +105,11 @@ namespace Gaston11276.Playercharacters.Client
 			CreateColumn(uiLowerPanel, HGravity.Center, uiColumnHairSecondaryColorIncrease, "");
 		}
 
-		public override void CreateContent()
+		protected override void CreateContent()
 		{
 			uiHeader.SetText("Head Overlays");
+			uiAppearanceMain.SetAlignment(HAlignment.Right);  // Make buttons (right-aligned) appear at the same location regardless of position or size
+			uiAppearanceMain.SetAlignment(VAlignment.Bottom);   // Make buttons (bottom-aligned) appear at the same location regardless of position or size
 
 			// Upper panel
 			uiBlemishes = CreateHeadOverlay(PedHeadOverlayType.Blemishes, "Blemishes");

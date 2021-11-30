@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
 using Gaston11276.SimpleUi;
+using Gaston11276.Playercharacters.Shared.Models;
 
 namespace Gaston11276.Playercharacters.Client
 {
-	class UiEntrySpawnPosition : HudEntry
+	class UiEntrySpawnLocation: HudEntry
 	{
 		public Textbox uiLabel = new Textbox();
 		public Textbox uiName = new Textbox();
@@ -11,63 +12,50 @@ namespace Gaston11276.Playercharacters.Client
 		public Textbox btnDecrease = new Textbox();
 		public Textbox btnIncrease = new Textbox();
 
-		
 		public delegate void fpSetInt(int index);
 		public fpSetInt SetIndex;
+
 		public delegate int fpGetInt();
 		public fpGetInt GetIndex;
 		public fpGetInt GetIndexMax;
 
-		public delegate string fpGetString();
-		public fpGetString GetName;
-
-		public UiEntrySpawnPosition()
+		public UiEntrySpawnLocation()
 		{
 			
 		}
 
 		public async Task SetUi()
 		{
-			uiIndex.SetText($"{GetIndex()}/{GetIndexMax()}");
-			uiName.SetText($"{GetName()}");
+			uiIndex.SetText($"{GetIndex()}");
 			await Delay(HudComponent.delayMs);
 		}
 
-		public void IncreaseIndex()
+		public void Increase()
 		{
 			int index = GetIndex();
-			int indexMax = GetIndexMax();
 			index++;
 
-			if (index > indexMax)
+			if (index > GetIndexMax()-1)
 			{
-				index = indexMax;
+				index = GetIndexMax() - 1;
 			}
 
-			uiIndex.SetText($"{index}/{indexMax}");
+			uiIndex.SetText($"{index}");
 			SetIndex(index);
-
-			string spawnName = GetName();
-			uiName.SetText($"{spawnName}");
-			
 		}
 
-		public void DecreaseIndex()
+		public void Decrease()
 		{
 			int index = GetIndex();
-			int indexMax = GetIndexMax();
 			index--;
 
-			if (index < 0)
+			if (index < 01)
 			{
 				index = 0;
 			}
 
-			uiIndex.SetText($"{index}/{indexMax}");
+			uiIndex.SetText($"{index}");
 			SetIndex(index);
-
-			string spawnName = GetName();
-			uiName.SetText($"{spawnName}");
 		}
 	}
 }

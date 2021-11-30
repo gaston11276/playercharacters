@@ -258,7 +258,7 @@ namespace Gaston11276.Playercharacters.Server
 			character.Armor = 0;
 			character.Ssn = Character.GenerateSsn();
 			character.LastPlayed = DateTime.UtcNow;
-			character.Position = new Position(0f, 0f, 71f);
+			//character.Position = new Position(0f, 0f, 71f);
 			character.PedHeadBlendData = new PedHeadBlendData();
 			character.PedFaceFeatures = new PedFaceFeatures();
 			character.PedHeadOverlays = new PedHeadOverlays();

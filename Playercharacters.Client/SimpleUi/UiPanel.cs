@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CitizenFX.Core.Native;
 using NFive.SDK.Core.Diagnostics;
@@ -7,15 +8,14 @@ namespace Gaston11276.SimpleUi
 	public class UiPanel: UiElement, IUiElement
 	{
 		static public ILogger Logger;
-		public System.Guid Id;
-
-		public delegate void OnSelectId(System.Guid id);
-		protected List<OnSelectId> callbacksOnSelectId;
+		public Guid Id;
+		public delegate void fpGuid(Guid id);
+		protected List<fpGuid> callbacksOnSelectId;
 
 		public UiPanel()
 		{
 			Type = UiElementType.Rectangle;
-			callbacksOnSelectId = new List<OnSelectId>();
+			callbacksOnSelectId = new List<fpGuid>();
 		}
 
 		public void SetLogger(ILogger Logger)
@@ -23,7 +23,7 @@ namespace Gaston11276.SimpleUi
 			UiPanel.Logger = Logger;
 		}
 
-		public void RegisterOnSelectIdCallback(OnSelectId OnSelectId)
+		public void RegisterOnSelectIdCallback(fpGuid OnSelectId)
 		{
 			callbacksOnSelectId.Add(OnSelectId);
 		}
@@ -68,7 +68,7 @@ namespace Gaston11276.SimpleUi
 		{
 			base.RunOnSelectCallbacks();
 
-			foreach (OnSelectId OnSelectId in callbacksOnSelectId)
+			foreach (fpGuid  OnSelectId in callbacksOnSelectId)
 			{
 				OnSelectId(Id);
 			}

@@ -14,7 +14,7 @@ namespace Gaston11276.Playercharacters.Client
 			
 		}
 
-		public override void CreateContent()
+		protected override void CreateContent()
 		{
 			uiHeader.SetText("Animations");
 

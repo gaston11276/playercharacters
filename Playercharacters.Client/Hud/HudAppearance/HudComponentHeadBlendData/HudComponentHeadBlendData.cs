@@ -23,7 +23,7 @@ namespace Gaston11276.Playercharacters.Client
 			cameraMode = CameraMode.Face;
 		}
 
-		public override void CreateColumns()
+		protected override void CreateColumns()
 		{
 			UiPanel uiCenterPanel = new UiPanel();
 			uiCenterPanel.SetPadding(new UiRectangle(defaultPadding));
@@ -35,9 +35,11 @@ namespace Gaston11276.Playercharacters.Client
 			CreateColumn(uiCenterPanel, HGravity.Center, uiColumnIncrease);
 		}
 
-		public override void CreateContent()
+		protected override void CreateContent()
 		{
 			uiHeader.SetText("Head Blend Data");
+			uiAppearanceMain.SetAlignment(HAlignment.Right);  // Make buttons (right-aligned) appear at the same location regardless of position or size
+			uiAppearanceMain.SetAlignment(VAlignment.Bottom);   // Make buttons (bottom-aligned) appear at the same location regardless of position or size
 
 			Textbox labelParent1 = new Textbox();
 			labelParent1.SetText("Parent 1");

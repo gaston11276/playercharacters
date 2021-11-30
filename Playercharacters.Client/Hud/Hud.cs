@@ -5,6 +5,7 @@ using Gaston11276.SimpleUi;
 
 namespace Gaston11276.Playercharacters.Client
 {
+	public delegate void fpVoid();
 	public delegate void OnMouseMove(float x, float y);
 	public delegate void OnMouseButton(int state, int button, float x, float y);
 	public delegate void OnKey(int state, int keycode);
@@ -15,8 +16,6 @@ namespace Gaston11276.Playercharacters.Client
 	{
 		protected ILogger Logger;
 		protected fpDelay Delay;
-
-		public delegate void fpVoid();
 
 		protected List<OnMouseMove> inputsOnMouseMove = new List<OnMouseMove>();
 		protected List<OnMouseButton> inputsOnMouseButton = new List<OnMouseButton>();

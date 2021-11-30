@@ -114,39 +114,32 @@ namespace Gaston11276.SimpleUi
 				return;
 			}
 
-			float textX = 0f;
-			if (hGravity == HGravity.Left)
-			{
-				textX = drawingRectangle.Left() - (Padding.Left() * screenBoundaries.Width());
-			}
-			else if (hGravity == HGravity.Center)
-			{
-				textX = drawingRectangle.CenterX();
-			}
-			else if (hGravity == HGravity.Right)
-			{
-				textX = drawingRectangle.Right() - (Padding.Right() * screenBoundaries.Width());
-			}
-
+			
 			BeginTextCommandDisplayText("STRING");
 			SetTextScale(1f, 0.3f);
 
-			float y_adjust = -0.012f;
-			float text_x = textX;
-			float text_y = drawingRectangle.CenterY() + y_adjust;
-
+			float textX = 0f;
 			if (this.hGravity == HGravity.Left)
 			{
+				textX = drawingRectangle.Left() - (Padding.Left() * screenBoundaries.Width());
 				SetTextJustification(1);//0 center, 1 left, 2 right
 			}
 			else if (this.hGravity == HGravity.Center)
 			{
 				SetTextJustification(0);
+				textX = drawingRectangle.CenterX();
 			}
 			else if (this.hGravity == HGravity.Right)
 			{
 				SetTextJustification(2);
+				textX = drawingRectangle.Right() - (Padding.Right() * screenBoundaries.Width());
 			}
+
+			float y_adjust = -0.012f;
+			float text_x = textX;
+			float text_y = drawingRectangle.CenterY() + y_adjust;
+
+			
 			
 			SetTextColour(textColor.GetRed(), textColor.GetGreen(), textColor.GetBlue(), textColor.GetAlpha());
 			AddTextComponentString(this.text);

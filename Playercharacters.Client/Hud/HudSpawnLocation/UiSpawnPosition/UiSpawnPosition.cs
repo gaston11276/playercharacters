@@ -46,7 +46,7 @@ namespace Gaston11276.Playercharacters.Client
 			base.SetUi();
 		}
 
-		public override void CreateColumns()
+		protected override void CreateColumns()
 		{
 			// Upper panel
 			UiPanel uiCenterPanel = new UiPanel();
@@ -60,7 +60,7 @@ namespace Gaston11276.Playercharacters.Client
 			CreateColumn(uiCenterPanel, HGravity.Center, uiColumnIncrease, "");
 		}
 
-		public override void CreateContent()
+		protected override void CreateContent()
 		{
 			uiHeader.SetText("Spawn Position");
 			uiEntrySpawnPosition = CreateEntry("Location");
@@ -104,32 +104,32 @@ namespace Gaston11276.Playercharacters.Client
 			entry.uiLabel.SetFlags(UiElement.TRANSPARENT);
 			uiColumnLabels.AddElement(entry.uiLabel);
 
-			entry.uiSpawnName.SetPadding(new UiRectangle(defaultPadding));
-			entry.uiSpawnName.SetText(label);
-			entry.uiSpawnName.SetFlags(UiElement.TRANSPARENT);
-			uiColumnNames.AddElement(entry.uiSpawnName);
+			entry.uiName.SetPadding(new UiRectangle(defaultPadding));
+			entry.uiName.SetText(label);
+			entry.uiName.SetFlags(UiElement.TRANSPARENT);
+			uiColumnNames.AddElement(entry.uiName);
 
-			entry.uiSpawnIndex.SetText(label);
-			entry.uiSpawnIndex.SetPadding(new UiRectangle(defaultPadding));
-			entry.uiSpawnIndex.SetProperties(UiElement.CANFOCUS);
-			entry.uiSpawnIndex.SetFlags(UiElement.TRANSPARENT);
-			uiColumnIndex.AddElement(entry.uiSpawnIndex);
+			entry.uiIndex.SetText(label);
+			entry.uiIndex.SetPadding(new UiRectangle(defaultPadding));
+			entry.uiIndex.SetProperties(UiElement.CANFOCUS);
+			entry.uiIndex.SetFlags(UiElement.TRANSPARENT);
+			uiColumnIndex.AddElement(entry.uiIndex);
 
-			entry.btnIndexDecrease.SetText("-");
-			entry.btnIndexDecrease.SetPadding(new UiRectangle(defaultPadding));
-			entry.btnIndexDecrease.SetProperties(UiElement.CANFOCUS);
-			entry.btnIndexDecrease.RegisterOnLMBRelease(entry.DecreaseIndex);
-			inputsOnMouseMove.Add(entry.btnIndexDecrease.OnCursorMove);
-			inputsOnMouseButton.Add(entry.btnIndexDecrease.OnMouseButton);
-			uiColumnDecrease.AddElement(entry.btnIndexDecrease);
+			entry.btnDecrease.SetText("-");
+			entry.btnDecrease.SetPadding(new UiRectangle(defaultPadding));
+			entry.btnDecrease.SetProperties(UiElement.CANFOCUS);
+			entry.btnDecrease.RegisterOnLMBRelease(entry.DecreaseIndex);
+			inputsOnMouseMove.Add(entry.btnDecrease.OnCursorMove);
+			inputsOnMouseButton.Add(entry.btnDecrease.OnMouseButton);
+			uiColumnDecrease.AddElement(entry.btnDecrease);
 
-			entry.btnIndexIncrease.SetText("+");
-			entry.btnIndexIncrease.SetPadding(new UiRectangle(defaultPadding));
-			entry.btnIndexIncrease.SetProperties(UiElement.CANFOCUS);
-			entry.btnIndexIncrease.RegisterOnLMBRelease(entry.IncreaseIndex);
-			inputsOnMouseMove.Add(entry.btnIndexIncrease.OnCursorMove);
-			inputsOnMouseButton.Add(entry.btnIndexIncrease.OnMouseButton);
-			uiColumnIncrease.AddElement(entry.btnIndexIncrease);
+			entry.btnIncrease.SetText("+");
+			entry.btnIncrease.SetPadding(new UiRectangle(defaultPadding));
+			entry.btnIncrease.SetProperties(UiElement.CANFOCUS);
+			entry.btnIncrease.RegisterOnLMBRelease(entry.IncreaseIndex);
+			inputsOnMouseMove.Add(entry.btnIncrease.OnCursorMove);
+			inputsOnMouseButton.Add(entry.btnIncrease.OnMouseButton);
+			uiColumnIncrease.AddElement(entry.btnIncrease);
 
 			
 

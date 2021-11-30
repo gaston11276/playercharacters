@@ -26,6 +26,7 @@ namespace Gaston11276.Playercharacters.Client
 	[PublicAPI]
 	public class PlayercharactersService : Service
 	{
+		
 		private Configuration config;
 		private PlayercharactersOverlay overlay;
 
@@ -56,10 +57,8 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			// After a resolution change hud must be updated and rebuilt.
 			OnResolutionChanged(); // Should be called if resolution is changed.
-			
 
 			hudCharacters.SetLogger(this.Logger);
-			hudCharacters.RegisterLoadCharactersCallback(LoadCharacters);
 			hudCharacters.RegisterOnCreateCallback(OnCreate);
 			hudCharacters.RegisterOnDeleteCallback(OnDelete);
 			hudCharacters.RegisterOnCreatorOpenCallback(OnCreatorOpen);
@@ -212,7 +211,7 @@ namespace Gaston11276.Playercharacters.Client
 			hudCharacters.UpdateCharacterList();
 		}
 
-		private async Task SetNewCharacter(System.Guid selectedCharacterId)
+		private async Task SetNewCharacter(Guid selectedCharacterId)
 		{
 			Character selectedCharacter = characters.First(c => c.Id == selectedCharacterId);
 			await this.Comms.Event(PlayercharactersEvents.Select).ToServer().Request<CharacterSession>(selectedCharacter.Id);
