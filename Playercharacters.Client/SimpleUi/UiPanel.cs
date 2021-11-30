@@ -23,6 +23,12 @@ namespace Gaston11276.SimpleUi
 			UiPanel.Logger = Logger;
 		}
 
+		public override void AddElement(UiElement element)
+		{
+			((UiPanel)element).SetLogger(Logger);
+			base.AddElement(element);
+		}
+
 		public void RegisterOnSelectIdCallback(fpGuid OnSelectId)
 		{
 			callbacksOnSelectId.Add(OnSelectId);

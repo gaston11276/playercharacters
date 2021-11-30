@@ -11,6 +11,7 @@ namespace Gaston11276.Playercharacters.Client
 	{
 		public List<DecorationTattooZoneGroup> m_available_tattoos = new List<DecorationTattooZoneGroup>();
 
+		UiPanel uiPages = new UiPanel();
 		UiPanel uiPage01 = new UiPanel();
 		UiPanel uiPage02 = new UiPanel();
 		UiPanel uiPage03 = new UiPanel();
@@ -713,7 +714,7 @@ namespace Gaston11276.Playercharacters.Client
 
 		protected override void CreateColumns()
 		{
-			UiPanel uiPages = new UiPanel();
+			
 			uiPages.SetPadding(new UiRectangle(defaultPadding));
 			contentFrame.AddElement(uiPages);
 			uiPages.SetMoveFlags(UiElement.HIDDEN);
@@ -729,6 +730,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiButtonPrev.SetPadding(new UiRectangle(defaultPadding));
 			uiButtonPrev.SetProperties(UiElement.CANFOCUS);
 			uiButtonPrev.RegisterOnLMBRelease(uiPages.MoveFlagsUp);
+			uiButtonPrev.RegisterOnLMBRelease(RefreshPageInfo);
 			uiPages.RegisterOnFirst(uiButtonPrev.Disable);
 
 			inputsOnMouseMove.Add(uiButtonPrev.OnCursorMove);
@@ -740,6 +742,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiButtonNext.SetPadding(new UiRectangle(defaultPadding));
 			uiButtonNext.SetProperties(UiElement.CANFOCUS);
 			uiButtonNext.RegisterOnLMBRelease(uiPages.MoveFlagsDown);
+			uiButtonNext.RegisterOnLMBRelease(RefreshPageInfo);
 			uiButtonNext.RegisterOnLMBRelease(uiButtonPrev.Enable);
 			uiPages.RegisterOnLast(uiButtonNext.Disable);
 			uiButtonPrev.RegisterOnLMBRelease(uiButtonNext.Enable);
@@ -899,7 +902,19 @@ namespace Gaston11276.Playercharacters.Client
 			Face = CreateTattooEntry(uiPage07, DecorationZone.Face, "Face");
 			Unknown = CreateTattooEntry(uiPage07, DecorationZone.Unknown, "Unknown");
 
+			RefreshPageInfo();
+
 			CreateApplyCancelButtons();
+		}
+
+		private void RefreshPageInfo()
+		{
+			List<UiElement> openPages = uiPages.GetElementsCleared(UiElement.HIDDEN);
+			if (openPages.Count > 0)
+			{
+				int openedPageIndex = uiPages.GetElementIndex(openPages[0]);
+				uiHeader.SetText($"Tattoos {openedPageIndex+1}/{uiPages.GetNumElements()}");
+			}
 		}
 
 		private string GetName(DecorationZone zone, int index)
