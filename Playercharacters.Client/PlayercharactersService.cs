@@ -49,14 +49,11 @@ namespace Gaston11276.Playercharacters.Client
 		private int lastCursorY;
 
 		public PlayercharactersService(ILogger logger, ITickManager ticks, ICommunicationManager comms, ICommandManager commands, IOverlayManager overlay, User user) : base(logger, ticks, comms, commands, overlay, user)
-		{
-			
-		}
+		{}
 
 		public override async Task Started()
 		{
-			// After a resolution change hud must be updated and rebuilt.
-			OnResolutionChanged(); // Should be called if resolution is changed.
+			OnResolutionChanged(); // Should be called if resolution (or screen size) is changed.
 
 			hudCharacters.SetLogger(this.Logger);
 			hudCharacters.RegisterOnCreateCallback(OnCreate);
@@ -132,6 +129,7 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			this.Ticks.Off(OnSaveCharacter);
 			this.Ticks.Off(OnSavePosition);
+			Screen.Hud.IsVisible = false;
 			LoadCharacters();
 			OpenNui();
 		}
@@ -139,6 +137,7 @@ namespace Gaston11276.Playercharacters.Client
 		async void OnCreatorClose(Guid characterId)
 		{
 			CloseNui();
+			Screen.Hud.IsVisible = true;
 
 			if (activeCharacter == null || activeCharacter.Id != characterId)
 			{
@@ -154,13 +153,16 @@ namespace Gaston11276.Playercharacters.Client
 		void OnLooksOpen()
 		{
 			this.Ticks.Off(OnSaveCharacter);
-			this.Ticks.Off(OnSavePosition);				
+			this.Ticks.Off(OnSavePosition);
+			Screen.Hud.IsVisible = false;
 			OpenNui();
 		}
 
 		void OnLooksClose()
 		{
 			CloseNui();
+			Screen.Hud.IsVisible = true;
+
 			this.Ticks.On(OnSaveCharacter);
 			this.Ticks.On(OnSavePosition);
 		}
@@ -428,7 +430,6 @@ namespace Gaston11276.Playercharacters.Client
 			{
 				hudSpawnLocation.OnMouseMove(x, y);
 			}
-		}
-		
+		}	
 	}
 }
