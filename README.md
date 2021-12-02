@@ -8,7 +8,7 @@ NFive Plugin
 ## Installation
 Install the plugin into your server from the [NFive Hub](https://hub.nfive.io/gaston11276/playercharacters): `nfpm install gaston11276/playercharacters`
 # playercharacters
-This plugin is in an early state. Igicore's plugin Characters has been used as a foundation.
+Igicore's plugin Characters has been used as a foundation.
 
 F1 - Character creator.
 F2 - Appearance menu.
@@ -20,7 +20,7 @@ F5 - Spawn location.
 - Playercharacters includes a spawn-location menu that most likely will be moved to a separate plugin.
 - More values will be added to th configuration file.
 - Date of Birth is not implemented by ui at this point.
-- Menues for Model and Animations have been temporaly disabled.
+- Menu for Animations has been temporarily disabled.
 - Most tattoos does not belong to its respective zone but is found in the 'Unknown' zone, temporarly applied at the face tattoo index.
 - Props applying/removing is not yet handled properly, thus it might be tricky to have no prop at a certain index (like removing the watch).
 - Tattoo camera is not fine-tuned but can be rotated.
