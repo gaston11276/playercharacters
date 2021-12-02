@@ -203,7 +203,7 @@ namespace Gaston11276.Playercharacters.Client
 			Textbox buttonHeadBlendData= new Textbox();
 			buttonHeadBlendData.SetText("Head Blend Data");
 			buttonHeadBlendData.SetPadding(new UiRectangle(defaultPadding));
-			//buttonHeadBlendData.SetMargin(new UiRectangle(0f, -0.004f, 0f, 0f));
+			buttonHeadBlendData.SetMargin(new UiRectangle(0f, -0.004f, 0f, 0f));
 			buttonHeadBlendData.SetHDimension(Dimension.Max);
 			buttonHeadBlendData.SetProperties(UiElement.CANFOCUS | UiElement.SELECTABLE);
 			buttonHeadBlendData.RegisterOnSelectCallback(hudHeadBlendData.Open);
