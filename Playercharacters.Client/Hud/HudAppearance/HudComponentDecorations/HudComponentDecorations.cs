@@ -201,6 +201,11 @@ namespace Gaston11276.Playercharacters.Client
 			await Unknown.SetUi();
 		}
 
+		public async Task SetDefaults()
+		{
+			await Delay(10);
+		}
+
 		private UiEntryDecoration CreateTattooEntry(UiPanel page, DecorationZone zone, string label)
 		{
 			cameraMode = CameraMode.Face;

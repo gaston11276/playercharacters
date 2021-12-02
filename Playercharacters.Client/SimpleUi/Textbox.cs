@@ -109,7 +109,7 @@ namespace Gaston11276.SimpleUi
 		{
 			base.Draw();
 
-			if ((textFlags & TRANSPARENT) != 0)
+			if ((flags & HIDDEN) != 0 || (textFlags & TRANSPARENT) != 0)
 			{
 				return;
 			}

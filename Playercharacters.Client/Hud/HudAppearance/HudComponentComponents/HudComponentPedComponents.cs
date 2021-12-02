@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Gaston11276.SimpleUi;
@@ -16,9 +17,9 @@ namespace Gaston11276.Playercharacters.Client
 		UiPanel uiColumnTextureDecrease = new UiPanel();
 		UiPanel uiColumnTextureIncrease = new UiPanel();
 
-		//UiEntryComponent uiFace;
+		UiEntryComponent uiFace;
 		UiEntryComponent uiMask;
-		//UiEntryComponent uiHair;
+		UiEntryComponent uiHair;
 		UiEntryComponent uiTorso;
 		UiEntryComponent uiLegs;
 		UiEntryComponent uiBack;
@@ -42,26 +43,232 @@ namespace Gaston11276.Playercharacters.Client
 
 		public override async void SetUi()
 		{
-			//uiFace.SetUi();
-			await uiMask.SetUi();
-			//uiHair.SetUi();
-			await uiTorso.SetUi();
-			await uiLegs.SetUi();
-			await uiBack.SetUi();
-			await uiShoes.SetUi();
-			await uiAccessory.SetUi();
-			await uiUndershirt.SetUi();
-			await uiKevlar.SetUi();
-			await uiBadge.SetUi();
-			await uiTorso2.SetUi();
+			if (character.ModelHash == PedHash.FreemodeMale01 || character.ModelHash == PedHash.FreemodeFemale01)
+			{
+				uiFace.Hide();
+				await uiMask.SetUi();
+				await uiHair.SetUi();
+				await uiTorso.SetUi();
+				await uiLegs.SetUi();
+				await uiBack.SetUi();
+				await uiShoes.SetUi();
+				await uiAccessory.SetUi();
+				await uiUndershirt.SetUi();
+				await uiKevlar.SetUi();
+				await uiBadge.SetUi();
+				await uiTorso2.SetUi();
+				await uiHat.SetUi();
+				await uiGlasses.SetUi();
+				await uiEar.SetUi();
+				await uiWatch.SetUi();
+				await uiBracelet.SetUi();
+			}
+			else
+			{
+				if (GetComponentIndexMax(PedComponentType.Face) > 1)
+				{
+					uiFace.Show();
+					await uiFace.SetUi();
+				}
+				else
+				{
+					uiFace.Hide();
+				}
 
-			await uiHat.SetUi();
-			await uiGlasses.SetUi();
-			await uiEar.SetUi();
-			await uiWatch.SetUi();
-			await uiBracelet.SetUi();
+				if (GetComponentIndexMax(PedComponentType.Mask) > 1)
+				{
+					uiMask.Show();
+					await uiMask.SetUi();
+				}
+				else
+				{
+					uiMask.Hide();
+				}
+
+				if (GetComponentIndexMax(PedComponentType.Hair) > 1)
+				{
+					uiHair.Show();
+					await uiHair.SetUi();
+				}
+				else
+				{
+					uiHair.Hide();
+				}
+
+				if (GetComponentIndexMax(PedComponentType.Torso) > 1)
+				{
+					uiTorso.Show();
+					await uiTorso.SetUi();
+				}
+				else
+				{
+					uiTorso.Hide();
+				}
+
+				if (GetComponentIndexMax(PedComponentType.Legs) > 1)
+				{
+					uiLegs.Show();
+					await uiLegs.SetUi();
+
+				}
+				else
+				{
+					uiLegs.Hide();
+				}
+
+				if (GetComponentIndexMax(PedComponentType.Back) > 1)
+				{
+					uiBack.Show();
+					await uiBack.SetUi();
+				}
+				else
+				{
+					uiBack.Hide();
+				}
+
+				if (GetComponentIndexMax(PedComponentType.Shoes) > 1)
+				{
+					uiShoes.Show();
+					await uiShoes.SetUi();
+				}
+				else
+				{
+					uiShoes.Hide();
+				}
+
+				if (GetComponentIndexMax(PedComponentType.Accessory) > 1)
+				{
+					uiAccessory.Show();
+					await uiAccessory.SetUi();
+				}
+				else
+				{
+					uiAccessory.Hide();
+				}
+
+				if (GetComponentIndexMax(PedComponentType.Undershirt) > 1)
+				{
+					uiUndershirt.Show();
+					await uiUndershirt.SetUi();
+				}
+				else
+				{
+					uiUndershirt.Hide();
+				}
+
+				if (GetComponentIndexMax(PedComponentType.Kevlar) > 1)
+				{
+					uiKevlar.Show();
+					await uiKevlar.SetUi();
+				}
+				else
+				{
+					uiKevlar.Hide();
+				}
+
+				if (GetComponentIndexMax(PedComponentType.Badge) > 1)
+				{
+					uiBadge.Show();
+					await uiBadge.SetUi();
+				}
+				else
+				{
+					uiBadge.Hide();
+				}
+
+				if (GetComponentIndexMax(PedComponentType.Torso2) > 1)
+				{
+					uiTorso2.Show();
+					await uiTorso2.SetUi();
+				}
+				else
+				{
+					uiTorso2.Hide();
+				}
+
+				if (GetPropIndexMax(PedPropType.Hat) > 1)
+				{
+					uiHat.Show();
+					await uiHat.SetUi();
+				}
+				else
+				{
+					uiHat.Hide();
+				}
+
+				if (GetPropIndexMax(PedPropType.Glasses) > 1)
+				{
+					uiGlasses.Show();
+					await uiGlasses.SetUi();
+				}
+				else
+				{
+					uiGlasses.Hide();
+				}
+
+				if (GetPropIndexMax(PedPropType.Ear) > 1)
+				{
+					uiEar.Show();
+					await uiEar.SetUi();
+				}
+				else
+				{
+					uiEar.Hide();
+				}
+
+				if (GetPropIndexMax(PedPropType.Watch) > 1)
+				{
+					uiWatch.Show();
+					await uiWatch.SetUi();
+				}
+				else
+				{
+					uiWatch.Hide();
+				}
+
+				if (GetPropIndexMax(PedPropType.Bracelet) > 1)
+				{
+					uiBracelet.Show();
+					await uiBracelet.SetUi();
+				}
+				else
+				{
+					uiBracelet.Hide();
+				}
+			}
+
+			contentFrame.Refresh();
 		}
-		
+
+		public async Task SetDefaults()
+		{
+			if (character.Gender == (short)Gender.Male)
+			{
+				character.PedComponents.Torso.Index = 15;
+				character.PedComponents.Hair.Index = 4;
+				character.PedComponents.Legs.Index = 21;
+				character.PedComponents.Shoes.Index = 34;
+				character.PedComponents.Undershirt.Index = 15;
+				character.PedComponents.Torso2.Index = 15;
+				character.PedProps.Hat.Index = 11;
+				character.PedProps.Glasses.Index = 6;
+			}
+			else if (character.Gender == (short)Gender.Female)
+			{
+				character.PedComponents.Torso.Index = 15;
+				character.PedComponents.Hair.Index = 4;
+				character.PedComponents.Legs.Index = 15;
+				character.PedComponents.Shoes.Index = 35;
+				character.PedComponents.Undershirt.Index = 15;
+				character.PedComponents.Torso2.Index = 15;
+				character.PedProps.Hat.Index = 57;
+				character.PedProps.Glasses.Index = 5;
+				character.PedProps.Watch.Texture = 5;
+			}
+			
+			await Delay(10);
+		}
+
 		protected override void CreateColumns()
 		{
 			UiPanel uiCenterPanel = new UiPanel();
@@ -497,9 +704,9 @@ namespace Gaston11276.Playercharacters.Client
 			uiAppearanceMain.SetAlignment(HAlignment.Right);  // Make buttons (right-aligned) appear at the same location regardless of position or size
 			uiAppearanceMain.SetAlignment(VAlignment.Bottom);	// Make buttons (bottom-aligned) appear at the same location regardless of position or size
 
-			//uiFace = CreateComponent(PedComponentType.Face, "Face");
+			uiFace = CreateComponent(PedComponentType.Face, "Face");
 			uiMask = CreateComponent(PedComponentType.Mask, "Mask");
-			//uiHair = CreateComponent(PedComponentType.Hair, "Hair");
+			uiHair = CreateComponent(PedComponentType.Hair, "Hair");
 			uiTorso = CreateComponent(PedComponentType.Torso, "Torso");
 			uiLegs = CreateComponent(PedComponentType.Legs, "Legs");
 			uiBack = CreateComponent(PedComponentType.Back, "Back");
@@ -614,9 +821,9 @@ namespace Gaston11276.Playercharacters.Client
 
 		public void ApplyToPed()
 		{
-			//API.SetPedComponentVariation(Game.PlayerPed.Handle, (int)PedComponentType.Face, character.PedComponents.Face.Index, character.PedComponents.Face.Texture, 0);
+			API.SetPedComponentVariation(Game.PlayerPed.Handle, (int)PedComponentType.Face, character.PedComponents.Face.Index, character.PedComponents.Face.Texture, 0);
 			API.SetPedComponentVariation(Game.PlayerPed.Handle, (int)PedComponentType.Mask, character.PedComponents.Mask.Index, character.PedComponents.Mask.Texture, 0);
-			//API.SetPedComponentVariation(Game.PlayerPed.Handle, (int)PedComponentType.Hair, character.PedComponents.Hair.Index, character.PedComponents.Hair.Texture, 0);
+			API.SetPedComponentVariation(Game.PlayerPed.Handle, (int)PedComponentType.Hair, character.PedComponents.Hair.Index, character.PedComponents.Hair.Texture, 0);
 			API.SetPedComponentVariation(Game.PlayerPed.Handle, (int)PedComponentType.Torso, character.PedComponents.Torso.Index, character.PedComponents.Torso.Texture, 0);
 			API.SetPedComponentVariation(Game.PlayerPed.Handle, (int)PedComponentType.Legs, character.PedComponents.Legs.Index, character.PedComponents.Legs.Texture, 0);
 			API.SetPedComponentVariation(Game.PlayerPed.Handle, (int)PedComponentType.Back, character.PedComponents.Back.Index, character.PedComponents.Back.Texture, 0);

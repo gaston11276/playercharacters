@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Gaston11276.SimpleUi;
@@ -61,6 +62,11 @@ namespace Gaston11276.Playercharacters.Client
 			await JawBoneLength.SetUi();
 			await JawBoneWidth.SetUi();
 			await NeckThickness.SetUi();
+		}
+
+		public async Task SetDefaults()
+		{
+			await Delay(10);
 		}
 
 		private UiEntryFaceFeature CreateFaceFeature(PedFaceFeatureType type, string label)

@@ -35,7 +35,7 @@ namespace Gaston11276.Playercharacters.Server
 			this.comms.Event(PlayercharactersEvents.CreateCharacter).FromClients().OnRequest<Character>(CreateCharacter);
 			this.comms.Event(PlayercharactersEvents.DeleteCharacter).FromClients().OnRequest<Guid>(DeleteCharacter);
 			this.comms.Event(PlayercharactersEvents.Select).FromClients().OnRequest<Guid>(Select);
-			this.comms.Event(PlayercharactersEvents.SaveCharacter).FromClients().On<Character>(SaveCharacter);
+			this.comms.Event(PlayercharactersEvents.SaveCharacter).FromClients().OnRequest<Character>(SaveCharacter);
 			this.comms.Event(PlayercharactersEvents.SavePosition).FromClients().On<Guid, Position>(SavePosition);
 			this.comms.Event(PlayercharactersEvents.GetActive).FromServer().OnRequest(e => e.Reply(this.characterSessions));
 			this.comms.Event(SessionEvents.ClientDisconnected).FromServer().On<IClient, Session>(OnClientDisconnected);
@@ -247,6 +247,7 @@ namespace Gaston11276.Playercharacters.Server
 
 		private async void CreateCharacter(ICommunicationMessage e, Character character)
 		{
+			
 			//this.Logger.Debug($"Server: Creating character {character.FullName}");
 			// TODO: Validate client sent values
 
@@ -266,8 +267,6 @@ namespace Gaston11276.Playercharacters.Server
 			character.PedComponents = new PedComponents();
 			character.PedProps = new PedProps();
 			
-			SetDefaults(ref character);
-
 			// Save character
 			using (var context = new StorageContext())
 			{
@@ -298,6 +297,7 @@ namespace Gaston11276.Playercharacters.Server
 
 		public async void SaveCharacter(ICommunicationMessage e, Character character)
 		{
+			this.Logger.Debug($"Server: Saving character {character.FullName}");
 			using (var context = new StorageContext())
 			using (var transaction = context.Database.BeginTransaction())
 			{
@@ -314,6 +314,9 @@ namespace Gaston11276.Playercharacters.Server
 
 					await context.SaveChangesAsync();
 					transaction.Commit();
+
+					// Send back updated user
+					e.Reply(character);
 				}
 				catch (Exception ex)
 				{
@@ -422,44 +425,6 @@ namespace Gaston11276.Playercharacters.Server
 
 			// Send out new configuration
 			this.comms.Event(PlayercharactersEvents.Configuration).ToClients().Emit(this.Configuration);
-		}
-
-		private void SetDefaults(ref Character character)
-		{
-			if (character.Gender == 0)
-			{
-				character.PedHeadBlendData.Parent1 = 4;
-				character.PedHeadBlendData.Parent2 = 10;
-				character.PedHeadBlendData.ShapeMix = 0.5f;
-				character.PedHeadBlendData.SkinMix = 0.5f;
-				character.PedHeadOverlays.Eyebrows.Opacity = 1f;
-				character.PedComponents.Torso.Index = 15;
-				character.PedComponents.Hair.Index = 4;
-				character.PedComponents.Legs.Index = 21;
-				character.PedComponents.Shoes.Index = 34;
-				character.PedComponents.Undershirt.Index = 15;
-				character.PedComponents.Torso2.Index = 15;
-				character.PedProps.Hat.Index = 11;
-				character.PedProps.Glasses.Index = 6;
-			}
-			else
-			{
-				character.PedHeadBlendData.Parent1 = 10;
-				character.PedHeadBlendData.Parent2 = 31;
-				character.PedHeadBlendData.ShapeMix = 0.9f;
-				character.PedHeadBlendData.SkinMix = 0.3f;
-				character.PedHeadOverlays.Eyebrows.Opacity = 1f;
-				character.PedComponents.Torso.Index = 15;
-				character.PedComponents.Hair.Index = 4;
-				character.PedComponents.Legs.Index = 15;
-				character.PedComponents.Shoes.Index = 35;
-				character.PedComponents.Undershirt.Index = 15;
-				character.PedComponents.Torso2.Index = 15;
-				character.PedProps.Hat.Index = 57;
-				character.PedProps.Glasses.Index = 5;
-				character.PedProps.Watch.Texture = 5;
-				character.PedHeadOverlays.Eyebrows.Index = 10;
-			}
 		}
 	}
 }

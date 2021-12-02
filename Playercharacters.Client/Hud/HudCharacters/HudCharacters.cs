@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CitizenFX.Core;
 using Gaston11276.SimpleUi;
 using Gaston11276.Playercharacters.Client.Models;
 
@@ -9,8 +8,8 @@ namespace Gaston11276.Playercharacters.Client
 {
 	class HudCharacters : Hud
 	{
-		protected List<fpVoid> onCreatorOpenCallbacks = new List<fpVoid>();
-		protected List<fpGuid> onCreatorCloseCallbacks = new List<fpGuid>();
+		protected List<fpVoid> onCharacterListOpenCallbacks = new List<fpVoid>();
+		protected List<fpGuid> onCharacterListCloseCallbacks = new List<fpGuid>();
 
 		private List<Character> characters;
 
@@ -26,40 +25,40 @@ namespace Gaston11276.Playercharacters.Client
 			uiNewCharacter.SetInput(inputsOnMouseMove, inputsOnMouseButton, inputsOnKey);
 		}
 
-		public void RegisterOnCreatorOpenCallback(fpVoid OnOpen)
+		public void RegisterOnCharacterListOpenCallback(fpVoid OnOpen)
 		{
-			onCreatorOpenCallbacks.Add(OnOpen);
+			onCharacterListOpenCallbacks.Add(OnOpen);
 		}
 
-		public void RegisterOnCreatorCloseCallback(UiPanel.fpGuid OnClose)
+		public void RegisterOnCharacterListCloseCallback(UiPanel.fpGuid OnClose)
 		{
-			onCreatorCloseCallbacks.Add(OnClose);
+			onCharacterListCloseCallbacks.Add(OnClose);
 		}
 
-		private void OnCreatorOpen()
+		private void OnCharacterListOpen()
 		{
-			foreach (fpVoid onCreatorOpen in onCreatorOpenCallbacks)
+			foreach (fpVoid onCharacterListOpen in onCharacterListOpenCallbacks)
 			{
-				onCreatorOpen();
+				onCharacterListOpen();
 			}
 		}
 
-		private void OnCreatorClose()
+		private void OnCharacterListClose()
 		{
-			foreach (UiPanel.fpGuid onCreatorClose in onCreatorCloseCallbacks)
+			foreach (UiPanel.fpGuid onCharacterListClose in onCharacterListCloseCallbacks)
 			{
-				onCreatorClose(uiCharacterList.selectedCharacterId);
+				onCharacterListClose(uiCharacterList.selectedCharacterId);
 			}
 		}
 
-		public void GetCharacterInfo(ref Character character)
+		public void SetCharacterInfo(Character character)
 		{
-			uiNewCharacter.GetCharacterInfo(ref character);
+			uiNewCharacter.SetCharacterInfo(character);
 		}
 
-		public void ClearCreatorEdit()
+		public void ClearCharacterListEdit()
 		{
-			uiNewCharacter.ClearCreatorEdit();
+			uiNewCharacter.ClearCharacterListEdit();
 		}
 
 		public void SetCharacters(List<Character> characters)
@@ -88,13 +87,13 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			uiCharacterList.Open();
 			base.OnOpen();
-			OnCreatorOpen();
+			OnCharacterListOpen();
 		}
 
 		protected override void OnClose()
 		{
 			base.OnClose();
-			OnCreatorClose();
+			OnCharacterListClose();
 		}
 
 		public override void OnInputKey(int state, int keycode)
@@ -145,13 +144,13 @@ namespace Gaston11276.Playercharacters.Client
 			uiCharacterList.RegisterOnPlayCallback(OnPlay);
 			uiCharacterList.RegisterOnDeleteCallback(OnDelete);
 
-			uiCharacterList.RegisterOnToggleCallback(ToggleCreator);
+			uiCharacterList.RegisterOnToggleCallback(ToggleCharacterList);
 
 			uiCharacterList.CreateUi(uiMain);
 			uiNewCharacter.CreateUi(uiMain);
 		}
 
-		private void ToggleCreator()
+		private void ToggleCharacterList()
 		{
 			if (uiNewCharacter.IsOpen())
 			{

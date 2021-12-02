@@ -1,4 +1,4 @@
-
+using System.Threading.Tasks;
 
 namespace Gaston11276.Playercharacters.Client
 {
@@ -23,5 +23,10 @@ namespace Gaston11276.Playercharacters.Client
 
 		public void ApplyToPed()
 		{ }
+
+		public async Task SetDefaults()
+		{
+			await Delay(10);
+		}
 	}
 }

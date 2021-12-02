@@ -3,8 +3,6 @@ using Gaston11276.SimpleUi;
 using CitizenFX.Core;
 using Gaston11276.Playercharacters.Client.Models;
 
-using fpGuid = Gaston11276.SimpleUi.UiPanel.fpGuid;
-
 namespace Gaston11276.Playercharacters.Client
 {
 	public class HudComponentNewCharacter : HudComponent
@@ -40,11 +38,13 @@ namespace Gaston11276.Playercharacters.Client
 			await uiEntrySpawnLocation.SetUi();
 		}
 
-		public void GetCharacterInfo(ref Character character)
+		public void SetCharacterInfo(Character character)
 		{
 			character.Forename = uiEditForename.GetText();
 			character.Middlename = uiEditMiddlename.GetText();
 			character.Surname = uiEditLastname.GetText();
+
+			if (string.IsNullOrWhiteSpace(character.Middlename)) character.Middlename = null;
 
 			string genderText = uiEditGender.GetText();
 
@@ -68,7 +68,7 @@ namespace Gaston11276.Playercharacters.Client
 			character.Position = pos;
 		}
 
-		public void ClearCreatorEdit()
+		public void ClearCharacterListEdit()
 		{
 			uiEditForename.ClearText();
 			uiEditMiddlename.ClearText();

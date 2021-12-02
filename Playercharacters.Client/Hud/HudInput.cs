@@ -17,8 +17,6 @@ namespace Gaston11276.Playercharacters.Client
 			}
 		}
 
-		
-
 		static void AddKeyData(int keycode, InputControl control, ref List<KeyData> keys)
 		{
 			KeyData keydata = new KeyData(keycode, control);

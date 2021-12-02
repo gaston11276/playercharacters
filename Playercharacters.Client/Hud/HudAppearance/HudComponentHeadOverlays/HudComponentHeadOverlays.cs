@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Gaston11276.SimpleUi;
@@ -68,6 +69,19 @@ namespace Gaston11276.Playercharacters.Client
 			await uiBodyBlemishes.SetUi();
 			await uiHair.SetUi();
 			await uiEyeColor.SetUi();
+		}
+
+		public async Task SetDefaults()
+		{	
+			character.PedHeadOverlays.Eyebrows.Opacity = 1f;
+
+			if (character.Gender == (short)Gender.Female)
+			{
+				character.PedHeadOverlays.Eyebrows.Index = 10;
+			}
+				
+
+			await Delay(10);
 		}
 
 		protected override void CreateColumns()

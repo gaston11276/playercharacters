@@ -1,5 +1,4 @@
 using NFive.SDK.Core.Diagnostics;
-
 namespace Gaston11276.Playercharacters.Client
 {
 	public abstract class HudEntry

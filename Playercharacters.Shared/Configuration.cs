@@ -6,8 +6,6 @@ namespace Gaston11276.Playercharacters.Shared
 {
 	public class Configuration : ControllerConfiguration
 	{
-		public string Example { get; set; } = "Hello World";
-
 		public SelectionScreenConfiguration SelectionScreen { get; set; } = new SelectionScreenConfiguration();
 		public int MaximumCharacters { get; set; } = -1;
 
@@ -22,8 +20,8 @@ namespace Gaston11276.Playercharacters.Shared
 
 		public class SelectionScreenConfiguration
 		{
-			public InputControl HotkeyCreator { get; set; } = InputControl.ReplayStartStopRecording; // Default to F1
-			public InputControl HotkeyLooks { get; set; } = InputControl.ReplayStartStopRecordingSecondary; // Default to F2
+			public InputControl HotkeyCharacterList { get; set; } = InputControl.ReplayStartStopRecording; // Default to F1
+			public InputControl HotkeyAppearanceMenu { get; set; } = InputControl.ReplayStartStopRecordingSecondary; // Default to F2
 			public InputControl HotkeySpawnLocation{ get; set; } = InputControl.SelectCharacterMichael; // Default to F5
 		}
 	}

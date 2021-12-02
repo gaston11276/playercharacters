@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Gaston11276.SimpleUi;
@@ -33,6 +34,26 @@ namespace Gaston11276.Playercharacters.Client
 			CreateColumn(uiCenterPanel, HGravity.Right, uiColumnValues);
 			CreateColumn(uiCenterPanel, HGravity.Center, uiColumnDecrease);
 			CreateColumn(uiCenterPanel, HGravity.Center, uiColumnIncrease);
+		}
+
+		public async Task SetDefaults()
+		{
+			if (character.Gender == (short)Gender.Male)
+			{
+				character.PedHeadBlendData.Parent1 = 4;
+				character.PedHeadBlendData.Parent2 = 10;
+				character.PedHeadBlendData.ShapeMix = 0.5f;
+				character.PedHeadBlendData.SkinMix = 0.5f;
+			}
+			else if (character.Gender == (short)Gender.Female)
+			{
+				character.PedHeadBlendData.Parent1 = 10;
+				character.PedHeadBlendData.Parent2 = 31;
+				character.PedHeadBlendData.ShapeMix = 0.9f;
+				character.PedHeadBlendData.SkinMix = 0.3f;
+			}
+
+			await Delay(10);
 		}
 
 		protected override void CreateContent()

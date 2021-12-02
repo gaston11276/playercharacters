@@ -37,9 +37,9 @@ namespace Gaston11276.Playercharacters.Client
 		HudAppearance hudAppearance = new HudAppearance();
 		HudSpawnLocation hudSpawnLocation = new HudSpawnLocation();
 		
-		private Hotkey openCreator;
-		private Hotkey openLooks;
-		private Hotkey openSpawn;
+		private Hotkey HotkeyCharacterList;
+		private Hotkey HotkeyAppearanceMenu;
+		private Hotkey HotkeySpawnLocation;
 
 		private bool holdFocus = true;
 
@@ -58,16 +58,16 @@ namespace Gaston11276.Playercharacters.Client
 			hudCharacters.SetLogger(this.Logger);
 			hudCharacters.RegisterOnCreateCallback(OnCreate);
 			hudCharacters.RegisterOnDeleteCallback(OnDelete);
-			hudCharacters.RegisterOnCreatorOpenCallback(OnCreatorOpen);
-			hudCharacters.RegisterOnCreatorCloseCallback(OnCreatorClose);
+			hudCharacters.RegisterOnCharacterListOpenCallback(OnCharacterListOpen);
+			hudCharacters.RegisterOnCharacterListCloseCallback(OnCharacterListClose);
 			hudCharacters.CreateUi();
 
 			hudAppearance.SetLogger(this.Logger);
 			hudAppearance.SetDelay(Delay);
 			hudAppearance.RegisterSaveCallback(SaveCharacter);
 			hudAppearance.RegisterRevertCallback(RevertCharacter);
-			hudAppearance.RegisterOnOpenCallback(OnLooksOpen);
-			hudAppearance.RegisterOnCloseCallback(OnLooksClose);
+			hudAppearance.RegisterOnOpenCallback(OnAppearanceMenuOpen);
+			hudAppearance.RegisterOnCloseCallback(OnAppearanceMenuClose);
 			hudAppearance.CreateUi();
 
 			hudSpawnLocation.SetLogger(this.Logger);
@@ -78,15 +78,15 @@ namespace Gaston11276.Playercharacters.Client
 			this.config = await this.Comms.Event(PlayercharactersEvents.Configuration).ToServer().Request<Configuration>();
 			this.Comms.Event(PlayercharactersEvents.Configuration).FromServer().On<Configuration>((e, c) => this.config = c);
 
-			this.openCreator = new Hotkey(this.config.SelectionScreen.HotkeyCreator);
-			this.openLooks = new Hotkey(this.config.SelectionScreen.HotkeyLooks);
-			this.openSpawn = new Hotkey(this.config.SelectionScreen.HotkeySpawnLocation);
+			this.HotkeyCharacterList = new Hotkey(this.config.SelectionScreen.HotkeyCharacterList);
+			this.HotkeyAppearanceMenu = new Hotkey(this.config.SelectionScreen.HotkeyAppearanceMenu);
+			this.HotkeySpawnLocation = new Hotkey(this.config.SelectionScreen.HotkeySpawnLocation);
 			this.LMB = new Hotkey(InputControl.CursorAccept);
 			this.RMB = new Hotkey(InputControl.CursorCancel);
 			
-			hudCharacters.SetHotkey((int)HudInput.ConvertKeycode(openCreator.UserKeyboardKey));
-			hudAppearance.SetHotkey((int)HudInput.ConvertKeycode(openLooks.UserKeyboardKey));
-			hudSpawnLocation.SetHotkey((int)HudInput.ConvertKeycode(openSpawn.UserKeyboardKey));
+			hudCharacters.SetHotkey((int)HudInput.ConvertKeycode(HotkeyCharacterList.UserKeyboardKey));
+			hudAppearance.SetHotkey((int)HudInput.ConvertKeycode(HotkeyAppearanceMenu.UserKeyboardKey));
+			hudSpawnLocation.SetHotkey((int)HudInput.ConvertKeycode(HotkeySpawnLocation.UserKeyboardKey));
 
 			this.Ticks.On(new Action(OnInput));
 			this.Ticks.On(new Action(OnDraw));
@@ -125,7 +125,7 @@ namespace Gaston11276.Playercharacters.Client
 			hudSpawnLocation.Refresh();
 		}
 
-		void OnCreatorOpen()
+		void OnCharacterListOpen()
 		{
 			this.Ticks.Off(OnSaveCharacter);
 			this.Ticks.Off(OnSavePosition);
@@ -134,7 +134,7 @@ namespace Gaston11276.Playercharacters.Client
 			OpenNui();
 		}
 
-		async void OnCreatorClose(Guid characterId)
+		async void OnCharacterListClose(Guid characterId)
 		{
 			CloseNui();
 			Screen.Hud.IsVisible = true;
@@ -150,7 +150,7 @@ namespace Gaston11276.Playercharacters.Client
 			Screen.Fading.FadeIn(200);
 		}
 
-		void OnLooksOpen()
+		void OnAppearanceMenuOpen()
 		{
 			this.Ticks.Off(OnSaveCharacter);
 			this.Ticks.Off(OnSavePosition);
@@ -158,7 +158,7 @@ namespace Gaston11276.Playercharacters.Client
 			OpenNui();
 		}
 
-		void OnLooksClose()
+		void OnAppearanceMenuClose()
 		{
 			CloseNui();
 			Screen.Hud.IsVisible = true;
@@ -217,22 +217,18 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			Character selectedCharacter = characters.First(c => c.Id == selectedCharacterId);
 			await this.Comms.Event(PlayercharactersEvents.Select).ToServer().Request<CharacterSession>(selectedCharacter.Id);
-			await SwitchCharacter(selectedCharacter);
-			hudAppearance.SetCharacter(activeCharacter);
-			hudAppearance.ApplyToPed();
+			activeCharacter = selectedCharacter;
+
+			await hudAppearance.SetCharacter(activeCharacter);
+			await hudAppearance.ApplyToPed();
+			SwitchCharacter(selectedCharacter);
 			await hudAppearance.RefreshUi();
 		}
 
-		private async Task SwitchCharacter(Character character)
+		private void SwitchCharacter(Character character)
 		{
 			Game.Player.Character.IsPositionFrozen = false;
 			API.SwitchInPlayer(API.PlayerPedId());
-
-			while (!await Game.Player.ChangeModel(new Model(character.ModelHash)))
-			{
-				await Delay(10);
-			}
-
 			Game.Player.Character.Position = character.Position.ToVector3().ToCitVector3();
 			Game.Player.Character.Armor = character.Armor;
 			this.activeCharacter = character;
@@ -241,13 +237,17 @@ namespace Gaston11276.Playercharacters.Client
 		private async void OnCreate()
 		{
 			Character character = new Character();
-			hudCharacters.GetCharacterInfo(ref character);
-			hudCharacters.ClearCreatorEdit();
+			hudCharacters.SetCharacterInfo(character);
+			
+			character = await this.Comms.Event(PlayercharactersEvents.CreateCharacter).ToServer().Request<Character>(character);
 
-			if (string.IsNullOrWhiteSpace(character.Middlename)) character.Middlename = null;
+			await hudAppearance.SetCharacter(character);
+			await hudAppearance.SetDefaults();
 
-			var character2 = await this.Comms.Event(PlayercharactersEvents.CreateCharacter).ToServer().Request<Character>(character);
+			await this.Comms.Event(PlayercharactersEvents.SaveCharacter).ToServer().Request<Character>(character);
 			await RequestCharacters();
+
+			hudCharacters.ClearCharacterListEdit();
 		}
 
 		private void OnDisconnect(object sender, OverlayEventArgs e)
@@ -282,8 +282,8 @@ namespace Gaston11276.Playercharacters.Client
 		private async void RevertCharacter()
 		{
 			await RequestCharacter();
-			hudAppearance.SetCharacter(activeCharacter);
-			hudAppearance.ApplyToPed();
+			await hudAppearance.SetCharacter(activeCharacter);
+			await hudAppearance.ApplyToPed();
 		}
 
 		private async Task RequestCharacter()
@@ -307,17 +307,17 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			// Non Nui Input
 
-			if (openCreator.IsJustReleased()) // default F1
+			if (HotkeyCharacterList.IsJustReleased()) // default F1
 			{
 				hudCharacters.Open();
 			}
 
-			if (openLooks.IsJustReleased()) // default F2
+			if (HotkeyAppearanceMenu.IsJustReleased()) // default F2
 			{
 				hudAppearance.Open();
 			}
 
-			if (openSpawn.IsJustReleased()) // default F5
+			if (HotkeySpawnLocation.IsJustReleased()) // default F5
 			{
 				hudSpawnLocation.Toggle();
 			}

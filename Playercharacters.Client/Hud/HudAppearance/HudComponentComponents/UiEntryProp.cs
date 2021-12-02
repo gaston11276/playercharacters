@@ -51,15 +51,37 @@ namespace Gaston11276.Playercharacters.Client
 			btnTextureIncrease = new Textbox();
 		}
 
+		public void Hide()
+		{
+			uiComponentLabel.SetFlags(UiElement.HIDDEN);
+			uiComponentIndex.SetFlags(UiElement.HIDDEN);
+			btnComponentDecrease.SetFlags(UiElement.HIDDEN);
+			btnComponentIncrease.SetFlags(UiElement.HIDDEN);
+			uiTextureId.SetFlags(UiElement.HIDDEN);
+			btnTextureDecrease.SetFlags(UiElement.HIDDEN);
+			btnTextureIncrease.SetFlags(UiElement.HIDDEN);
+		}
+
+		public void Show()
+		{
+			uiComponentLabel.ClearFlags(UiElement.HIDDEN);
+			uiComponentIndex.ClearFlags(UiElement.HIDDEN);
+			btnComponentDecrease.ClearFlags(UiElement.HIDDEN);
+			btnComponentIncrease.ClearFlags(UiElement.HIDDEN);
+			uiTextureId.ClearFlags(UiElement.HIDDEN);
+			btnTextureDecrease.ClearFlags(UiElement.HIDDEN);
+			btnTextureIncrease.ClearFlags(UiElement.HIDDEN);
+		}
+
 		public async Task SetUi()
 		{
 			index = GetIndex(type);
 			int indexMax = GetIndexMax(type);
-			uiComponentIndex.SetText($"{index}/{indexMax}");
+			uiComponentIndex.SetText($"{index+1}/{indexMax}");
 
 			int textureId = GetTexture(type);
 			int textureIdMax = GetTextureMax(type, index);
-			uiTextureId.SetText($"{textureId}/{textureIdMax}");
+			uiTextureId.SetText($"{textureId + 1}/{textureIdMax}");
 			await Delay(HudComponent.delayMs);
 		}
 
@@ -69,17 +91,17 @@ namespace Gaston11276.Playercharacters.Client
 			int indexMax = GetIndexMax(type);
 			index++;
 
-			if (index > indexMax)
+			if (index > indexMax-1)
 			{
-				index = indexMax;
+				index = indexMax-1;
 			}
 
-			uiComponentIndex.SetText($"{index}/{indexMax}");
+			uiComponentIndex.SetText($"{index + 1}/{indexMax}");
 			SetIndex(type, index);
 
 			int textureId = 0;
 			int textureIdMax = GetTextureMax(type, index);
-			uiTextureId.SetText($"{textureId}/{textureIdMax}");
+			uiTextureId.SetText($"{textureId + 1}/{textureIdMax}");
 		}
 
 		public void DecreaseIndex()
@@ -94,12 +116,12 @@ namespace Gaston11276.Playercharacters.Client
 				DettachProp(type);
 			}
 
-			uiComponentIndex.SetText($"{index}/{indexMax}");
+			uiComponentIndex.SetText($"{index + 1}/{indexMax}");
 			SetIndex(type, index);
 
 			int textureId = 0;
 			int textureIdMax = GetTextureMax(type, index);
-			uiTextureId.SetText($"{textureId}/{textureIdMax}");
+			uiTextureId.SetText($"{textureId + 1}/{textureIdMax}");
 		}
 
 		public void IncreaseTexture()
@@ -108,12 +130,12 @@ namespace Gaston11276.Playercharacters.Client
 			int textureMax = GetTextureMax(type, index);
 			textureId++;
 
-			if (textureId > textureMax)
+			if (textureId > textureMax-1)
 			{
-				textureId = textureMax;
+				textureId = textureMax-1;
 			}
 
-			uiTextureId.SetText($"{textureId}/{textureMax}");
+			uiTextureId.SetText($"{textureId + 1}/{textureMax}");
 			SetTexture(type, textureId);
 		}
 
@@ -128,7 +150,7 @@ namespace Gaston11276.Playercharacters.Client
 				textureId = 0;
 			}
 
-			uiTextureId.SetText($"{textureId}/{textureMax}");
+			uiTextureId.SetText($"{textureId + 1}/{textureMax}");
 			SetTexture(type, textureId);
 		}
 	}
