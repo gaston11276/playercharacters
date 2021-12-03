@@ -48,7 +48,7 @@ namespace Gaston11276.Playercharacters.Client
 			await Delay(delayMs);
 		}
 
-		public void SetLogger(ILogger Logger)
+		public virtual void SetLogger(ILogger Logger)
 		{
 			this.Logger = Logger;
 		}

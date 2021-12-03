@@ -15,7 +15,7 @@ namespace Gaston11276.Playercharacters.Client
 
 		public Guid selectedCharacterId;
 
-		fpVoid OnPlayCallback;
+		fpGuid OnPlayCallback;
 		fpGuid OnDeleteCallback;
 		fpVoid OnToggleNewCharacter;
 
@@ -23,7 +23,7 @@ namespace Gaston11276.Playercharacters.Client
 		{ }
 
 
-		public void RegisterOnPlayCallback(fpVoid OnPlayCallback)
+		public void RegisterOnPlayCallback(fpGuid OnPlayCallback)
 		{
 			this.OnPlayCallback = OnPlayCallback;
 		}
@@ -71,8 +71,6 @@ namespace Gaston11276.Playercharacters.Client
 			}
 			contentFrame.Refresh();
 		}
-
-
 
 		protected override void CreateColumns()
 		{
@@ -146,7 +144,7 @@ namespace Gaston11276.Playercharacters.Client
 
 		private void OnPlay()
 		{
-			OnPlayCallback();
+			OnPlayCallback(selectedCharacterId);
 		}
 
 		private void OnDelete()

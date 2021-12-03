@@ -22,7 +22,6 @@ namespace Gaston11276.Playercharacters.Shared
 		{
 			public InputControl HotkeyCharacterList { get; set; } = InputControl.ReplayStartStopRecording; // Default to F1
 			public InputControl HotkeyAppearanceMenu { get; set; } = InputControl.ReplayStartStopRecordingSecondary; // Default to F2
-			public InputControl HotkeySpawnLocation{ get; set; } = InputControl.SelectCharacterMichael; // Default to F5
 		}
 	}
 }

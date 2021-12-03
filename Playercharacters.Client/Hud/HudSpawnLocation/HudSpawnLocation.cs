@@ -61,6 +61,7 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			base.CreateUi();
 			uiSpawnLocation.SetLogger(Logger);
+			uiSpawnLocation.SetDelay(Delay);
 			uiSpawnLocation.CreateUi(uiMain);
 			uiSpawnLocation.SetUi();
 		}

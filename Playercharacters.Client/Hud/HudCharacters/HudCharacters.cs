@@ -18,6 +18,7 @@ namespace Gaston11276.Playercharacters.Client
 
 		private fpVoid OnCreateCallback;
 		private fpGuid OnDeleteCallback;
+		private fpGuid OnPlayCallback;
 
 		public HudCharacters()
 		{
@@ -35,6 +36,11 @@ namespace Gaston11276.Playercharacters.Client
 			onCharacterListCloseCallbacks.Add(OnClose);
 		}
 
+		public void RegisterOnPlayCallback(fpGuid OnPlay)
+		{
+			OnPlayCallback = OnPlay;
+		}
+
 		private void OnCharacterListOpen()
 		{
 			foreach (fpVoid onCharacterListOpen in onCharacterListOpenCallbacks)
@@ -49,6 +55,12 @@ namespace Gaston11276.Playercharacters.Client
 			{
 				onCharacterListClose(uiCharacterList.selectedCharacterId);
 			}
+		}
+
+		private void OnPlay(System.Guid selectedCharacterId)
+		{
+			Close();
+			OnPlayCallback(selectedCharacterId);
 		}
 
 		public void SetCharacterInfo(Character character)
@@ -102,7 +114,7 @@ namespace Gaston11276.Playercharacters.Client
 			{
 				base.OnInputKey(state, keycode);
 
-				if (uiCharacterList.selectedCharacterId != null && uiCharacterList.selectedCharacterId.GetHashCode() != 0) // Force player to select a character
+				//if (uiCharacterList.selectedCharacterId != null && uiCharacterList.selectedCharacterId.GetHashCode() != 0) // Force player to select a character
 				{
 					if (state == 3 && keycode == 27)// Escape
 					{
@@ -117,12 +129,7 @@ namespace Gaston11276.Playercharacters.Client
 				
 			}
 		}
-
-		private void OnPlay()
-		{
-			Close();
-		}
-
+		
 		private void OnCreate()
 		{
 			OnCreateCallback();
@@ -144,13 +151,13 @@ namespace Gaston11276.Playercharacters.Client
 			uiCharacterList.RegisterOnPlayCallback(OnPlay);
 			uiCharacterList.RegisterOnDeleteCallback(OnDelete);
 
-			uiCharacterList.RegisterOnToggleCallback(ToggleCharacterList);
+			uiCharacterList.RegisterOnToggleCallback(ToggleNewCharacterMenu);
 
 			uiCharacterList.CreateUi(uiMain);
 			uiNewCharacter.CreateUi(uiMain);
 		}
 
-		private void ToggleCharacterList()
+		private void ToggleNewCharacterMenu()
 		{
 			if (uiNewCharacter.IsOpen())
 			{
@@ -167,6 +174,13 @@ namespace Gaston11276.Playercharacters.Client
 			this.Delay = Delay;
 			uiCharacterList.SetDelay(Delay);
 			uiNewCharacter.SetDelay(Delay);
+		}
+
+		public override void InitUi()
+		{
+			base.InitUi();
+			uiCharacterList.SetUi();
+			uiNewCharacter.SetUi();
 		}
 
 		public override async Task RefreshUi()

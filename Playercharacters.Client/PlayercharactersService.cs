@@ -9,7 +9,6 @@ using CitizenFX.Core.UI;
 using NFive.SDK.Core.Models.Player;
 using NFive.SDK.Core.Extensions;
 using NFive.SDK.Core.Diagnostics;
-using NFive.SDK.Core.Input;
 using NFive.SDK.Client.Commands;
 using NFive.SDK.Client.Communications;
 using NFive.SDK.Client.Events;
@@ -35,32 +34,26 @@ namespace Gaston11276.Playercharacters.Client
 
 		HudCharacters hudCharacters = new HudCharacters();
 		HudAppearance hudAppearance = new HudAppearance();
-		HudSpawnLocation hudSpawnLocation = new HudSpawnLocation();
 		
 		private Hotkey HotkeyCharacterList;
 		private Hotkey HotkeyAppearanceMenu;
-		private Hotkey HotkeySpawnLocation;
 
 		private bool holdFocus = true;
-
-		private Hotkey LMB;
-		private Hotkey RMB;
-		private int lastCursorX;
-		private int lastCursorY;
 
 		public PlayercharactersService(ILogger logger, ITickManager ticks, ICommunicationManager comms, ICommandManager commands, IOverlayManager overlay, User user) : base(logger, ticks, comms, commands, overlay, user)
 		{}
 
 		public override async Task Started()
 		{
-			OnResolutionChanged(); // Should be called if resolution (or screen size) is changed.
-
 			hudCharacters.SetLogger(this.Logger);
+			hudCharacters.SetDelay(Delay);
 			hudCharacters.RegisterOnCreateCallback(OnCreate);
 			hudCharacters.RegisterOnDeleteCallback(OnDelete);
 			hudCharacters.RegisterOnCharacterListOpenCallback(OnCharacterListOpen);
 			hudCharacters.RegisterOnCharacterListCloseCallback(OnCharacterListClose);
+			hudCharacters.RegisterOnPlayCallback(OnPlay);
 			hudCharacters.CreateUi();
+			hudCharacters.InitUi();
 
 			hudAppearance.SetLogger(this.Logger);
 			hudAppearance.SetDelay(Delay);
@@ -69,24 +62,18 @@ namespace Gaston11276.Playercharacters.Client
 			hudAppearance.RegisterOnOpenCallback(OnAppearanceMenuOpen);
 			hudAppearance.RegisterOnCloseCallback(OnAppearanceMenuClose);
 			hudAppearance.CreateUi();
+			hudAppearance.InitUi();
 
-			hudSpawnLocation.SetLogger(this.Logger);
-			hudSpawnLocation.RegisterOnOpenCallback(OnSpawnLocationOpen);
-			hudSpawnLocation.RegisterOnCloseCallback(OnSpawnLocationClose);
-			hudSpawnLocation.CreateUi();
+			OnResolutionChanged(); // Should be called if resolution (or screen size) is changed.
 
 			this.config = await this.Comms.Event(PlayercharactersEvents.Configuration).ToServer().Request<Configuration>();
 			this.Comms.Event(PlayercharactersEvents.Configuration).FromServer().On<Configuration>((e, c) => this.config = c);
 
 			this.HotkeyCharacterList = new Hotkey(this.config.SelectionScreen.HotkeyCharacterList);
 			this.HotkeyAppearanceMenu = new Hotkey(this.config.SelectionScreen.HotkeyAppearanceMenu);
-			this.HotkeySpawnLocation = new Hotkey(this.config.SelectionScreen.HotkeySpawnLocation);
-			this.LMB = new Hotkey(InputControl.CursorAccept);
-			this.RMB = new Hotkey(InputControl.CursorCancel);
 			
 			hudCharacters.SetHotkey((int)HudInput.ConvertKeycode(HotkeyCharacterList.UserKeyboardKey));
 			hudAppearance.SetHotkey((int)HudInput.ConvertKeycode(HotkeyAppearanceMenu.UserKeyboardKey));
-			hudSpawnLocation.SetHotkey((int)HudInput.ConvertKeycode(HotkeySpawnLocation.UserKeyboardKey));
 
 			this.Ticks.On(new Action(OnInput));
 			this.Ticks.On(new Action(OnDraw));
@@ -121,8 +108,6 @@ namespace Gaston11276.Playercharacters.Client
 			hudCharacters.Refresh();
 			hudAppearance.SetResolution(screenWidth, screenHeight);
 			hudAppearance.Refresh();
-			hudSpawnLocation.SetResolution(screenWidth, screenHeight);
-			hudSpawnLocation.Refresh();
 		}
 
 		void OnCharacterListOpen()
@@ -134,17 +119,23 @@ namespace Gaston11276.Playercharacters.Client
 			OpenNui();
 		}
 
-		async void OnCharacterListClose(Guid characterId)
+		void OnCharacterListClose(Guid characterId)
 		{
 			CloseNui();
 			Screen.Hud.IsVisible = true;
 
-			if (activeCharacter == null || activeCharacter.Id != characterId)
+			if (activeCharacter != null)
 			{
-				Screen.Fading.FadeOut(200);
-				await SetNewCharacter(characterId);
+				this.Ticks.On(OnSaveCharacter);
+				this.Ticks.On(OnSavePosition);
 			}
+		}
 
+		async void OnPlay(Guid characterId)
+		{
+			Screen.Fading.FadeOut(200);
+			await SetNewCharacter(characterId);
+			
 			this.Ticks.On(OnSaveCharacter);
 			this.Ticks.On(OnSavePosition);
 			Screen.Fading.FadeIn(200);
@@ -163,19 +154,6 @@ namespace Gaston11276.Playercharacters.Client
 			CloseNui();
 			Screen.Hud.IsVisible = true;
 
-			this.Ticks.On(OnSaveCharacter);
-			this.Ticks.On(OnSavePosition);
-		}
-
-		async void OnSpawnLocationOpen()
-		{
-			await hudSpawnLocation.RefreshUi();
-			this.Ticks.Off(OnSaveCharacter);
-			this.Ticks.Off(OnSavePosition);	
-		}
-
-		void OnSpawnLocationClose()
-		{
 			this.Ticks.On(OnSaveCharacter);
 			this.Ticks.On(OnSavePosition);
 		}
@@ -300,13 +278,11 @@ namespace Gaston11276.Playercharacters.Client
 		{
 			hudCharacters.Draw();
 			hudAppearance.Draw();
-			hudSpawnLocation.Draw();
 		}
 
 		private void OnInput()
 		{
 			// Non Nui Input
-
 			if (HotkeyCharacterList.IsJustReleased()) // default F1
 			{
 				hudCharacters.Open();
@@ -316,82 +292,12 @@ namespace Gaston11276.Playercharacters.Client
 			{
 				hudAppearance.Open();
 			}
-
-			if (HotkeySpawnLocation.IsJustReleased()) // default F5
-			{
-				hudSpawnLocation.Toggle();
-			}
-
-			if (hudSpawnLocation.IsOpen())
-			{
-				int cursorX = new int();
-				int cursorY = new int();
-				API.GetNuiCursorPosition(ref cursorX, ref cursorY);
-
-
-				bool mouseHasMoved = false;
-				if (lastCursorX != cursorX || lastCursorY != cursorY)
-				{
-					mouseHasMoved = true;
-				}
-
-				int leftMouseButtonState = 0;
-				if (this.LMB.IsJustPressed())
-				{
-					leftMouseButtonState = 1;
-
-				}
-				if (this.LMB.IsJustReleased())
-				{
-					leftMouseButtonState = 3;
-				}
-
-				int rightMouseButtonState = 0;
-				if (this.RMB.IsJustPressed())
-				{
-					rightMouseButtonState = 1;
-
-				}
-				else if (this.RMB.IsPressed())
-				{
-					rightMouseButtonState = 2;
-
-				}
-				else if (this.RMB.IsJustReleased())
-				{
-					rightMouseButtonState = 3;
-				}
-
-				if (rightMouseButtonState == 0)
-				{
-					API.SetMouseCursorActiveThisFrame();
-				}
-
-				if (hudSpawnLocation.IsOpen())
-				{					
-					if (leftMouseButtonState == 1 || leftMouseButtonState == 3)
-					{
-						hudSpawnLocation.OnMouseButton(leftMouseButtonState, 0, cursorX, cursorY);
-					}
-					if (rightMouseButtonState == 1 || rightMouseButtonState == 3)
-					{
-						hudSpawnLocation.OnMouseButton(rightMouseButtonState, 2, cursorX, cursorY);
-					}
-					if (mouseHasMoved)
-					{
-						hudSpawnLocation.OnMouseMove(cursorX, cursorY);
-					}
-				}			
-				lastCursorX = cursorX;
-				lastCursorY = cursorY;
-			}
 		}
 
 		private void OnNuiKey(object sender, OnKeyOverlayEventArgs args)
 		{
 			hudCharacters.OnInputKey(args.state, args.keycode);
 			hudAppearance.OnInputKey(args.state, args.keycode);
-			hudSpawnLocation.OnInputKey(args.state, args.keycode);
 		}
 		private void OnNuiMouseButton(object sender, OnMouseButtonOverlayEventArgs args)
 		{
@@ -405,10 +311,6 @@ namespace Gaston11276.Playercharacters.Client
 			if (hudAppearance.IsOpen())
 			{
 				hudAppearance.OnMouseButton(args.state, args.button, x, y);
-			}
-			if (hudSpawnLocation.IsOpen())
-			{
-				hudSpawnLocation.OnMouseButton(args.state, args.button, x, y);
 			}
 		}
 
@@ -424,11 +326,6 @@ namespace Gaston11276.Playercharacters.Client
 			if (hudAppearance.IsOpen())
 			{
 				hudAppearance.OnMouseMove(x, y);
-			}
-
-			if (hudSpawnLocation.IsOpen())
-			{
-				hudSpawnLocation.OnMouseMove(x, y);
 			}
 		}	
 	}

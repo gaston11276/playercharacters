@@ -359,9 +359,11 @@ namespace Gaston11276.Playercharacters.Client
 
 			entry.uiComponentLabel.SetPadding(new UiRectangle(defaultPadding));
 			entry.uiComponentLabel.SetText(label);
+			entry.uiComponentLabel.SetFlags(UiElement.TRANSPARENT);
 			uiColumnIndexLabels.AddElement(entry.uiComponentLabel);
 
 			entry.uiComponentIndex.SetPadding(new UiRectangle(defaultPadding));
+			entry.uiComponentIndex.SetFlags(UiElement.TRANSPARENT);
 			uiColumnIndexValues.AddElement(entry.uiComponentIndex);
 
 			entry.btnComponentDecrease.SetText("-");
@@ -381,6 +383,7 @@ namespace Gaston11276.Playercharacters.Client
 			uiColumnIndexIncrease.AddElement(entry.btnComponentIncrease);
 
 			entry.uiTextureId.SetPadding(new UiRectangle(defaultPadding));
+			entry.uiTextureId.SetFlags(UiElement.TRANSPARENT);
 			uiColumnTextureValues.AddElement(entry.uiTextureId);
 
 			entry.btnTextureDecrease.SetText("-");

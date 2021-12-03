@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Gaston11276.SimpleUi;
 using CitizenFX.Core;
+using Gaston11276.SimpleUi;
 using Gaston11276.Playercharacters.Client.Models;
 
 namespace Gaston11276.Playercharacters.Client
@@ -87,6 +87,7 @@ namespace Gaston11276.Playercharacters.Client
 			float defaultPadding = 0.0025f;
 
 			UiEntrySpawnPosition entry = new UiEntrySpawnPosition();
+			entry.SetLogger(Logger);
 			entry.SetDelay(Delay);
 
 			entry.uiLabel.SetPadding(new UiRectangle(defaultPadding));
@@ -96,7 +97,6 @@ namespace Gaston11276.Playercharacters.Client
 			uiColumnLabels.AddElement(entry.uiLabel);
 
 			entry.uiIndex.SetPadding(new UiRectangle(defaultPadding));
-			//entry.uiIndex.SetFlags(UiElement.TRANSPARENT);
 			uiColumnIndex.AddElement(entry.uiIndex);
 
 			entry.uiName.SetPadding(new UiRectangle(defaultPadding));

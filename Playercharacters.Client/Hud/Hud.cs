@@ -112,6 +112,11 @@ namespace Gaston11276.Playercharacters.Client
 			}
 		}
 
+		public virtual void InitUi()
+		{
+			
+		}
+
 		public void Refresh()
 		{
 			uiMain.Refresh();
